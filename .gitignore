@@ -1,0 +1,23 @@
+/vendor/
+# dependencies
+/node_modules
+/.idea
+
+# webpack build
+/js/build
+/css/build
+
+
+# misc
+.DS_Store
+.idea
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env*.local

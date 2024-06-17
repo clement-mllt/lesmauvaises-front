@@ -1,0 +1,14 @@
+<svg id="love" ... >
+  <g id="clips">  <!-- These are your clipping paths or stencils -->
+    <clipPath id="clipPath-1">
+      <path d="..." />
+    </clipPath>
+    <clipPath id="clipPath-2">
+      <path d="..." />
+    </clipPath>
+  </g>
+  <g id="strokes"> <!-- These are your paths or lines -->
+    <path clip-path="url(#clipPath-1)" class="path" d="..." />
+    <path clip-path="url(#clipPath-2)" class="path" d="..." />
+  </g>
+</svg>

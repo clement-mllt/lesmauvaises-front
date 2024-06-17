@@ -1,0 +1,29 @@
+/** @format */
+$GREEN: #CDDD20;
+$PINK: #C62369;
+$PURPLE : #9B9BC1;
+$BLACK: #000;
+$WHITE: #fff;
+
+$H1_SIZE_DESKTOP: 80px;
+$H2_SIZE_DESKTOP: 42px;
+$H3_SIZE_DESKTOP: 24px;
+$H1_SIZE_MOBILE: 45px;
+$H2_SIZE_MOBILE: 32px;
+$A_SIZE_MENU: 16px;
+$BUTTON_SIZE_MENU: 12px;
+
+@mixin flex($direction, $align, $justify) {
+	display: flex !important;
+	flex-direction: $direction !important;
+	align-items: $align !important;
+	justify-content: $justify !important;
+}
+
+@mixin ellipsis($number) {
+	display: -webkit-box;
+	-webkit-line-clamp: $number;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
