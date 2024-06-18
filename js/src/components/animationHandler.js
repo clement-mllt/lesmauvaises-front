@@ -47,30 +47,28 @@ export class animationHandler {
     animationHandler.loadSliderProject(tl, tlProject);
 
     // SCROLL TRIGGER TOP
-    const timelineHeader = prepareAnimationHandler.animationHomePage();
+    const timelineHeaderFirst =
+      prepareAnimationHandler.animationFirstSectionHomepage();
+    const timelineHeaderSecond =
+      prepareAnimationHandler.animationSecondSectionHomepage();
+      
 
     ScrollTrigger.create({
-      animation: timelineHeader,
+      animation: timelineHeaderFirst,
       scrub: true,
       pin: true,
-      trigger: "#content",
+      trigger: "#landingSection",
       start: "top",
       end: "bottom",
-      markers: true,
     });
-    // gsap.to(".main-container-top", {
-    //   animation: timeLinePage,
-    //   scrollTrigger: {
-    //     trigger: ".main-container-top",
-    //     start: "top top",
-    //     end: "bottom-=270px top",
-    //     markers: true,
-    //     scrub: 1,
-    //     pin: true,
-    //     onComplete: () => {
-    //       console.log("end scroll");
-    //     },
-    //   },
+
+    // ScrollTrigger.create({
+    //   animation: timelineHeaderSecond,
+    //   scrub: true,
+    //   pin: true,
+    //   trigger: "#screenSection",
+    //   start: "top",
+    //   end: "bottom",
     // });
   }
 

@@ -88,3 +88,37 @@
     }
   }
 }
+
+.container-curseur {
+  .curseur {
+    z-index: 999;
+    transform-origin: center;
+    overflow: visible;
+    #path2 {
+      visibility: hidden;
+    }
+    #path3 {
+      visibility: hidden;
+    }
+    #path4 {
+      visibility: hidden;
+    }
+    #mooving1 {
+      visibility: hidden;
+    }
+    #mooving2 {
+      visibility: hidden;
+    }
+    #mooving3 {
+      visibility: hidden;
+    }
+    #mooving4 {
+      visibility: hidden;
+    }
+    width: 50px;
+    height: 50px;
+    fill: black;
+    pointer-events: none;
+    transform-origin: center center;
+  }
+}

@@ -41,18 +41,185 @@ export class prepareAnimationHandler {
   static colors = ["#C62369", "#9B9BC1", "#CDDD20", "#29292E"]; // Ordre des couleurs : purple, pink, yellow
   static isOpen = false;
 
-  static animationHomePage() {
+  static animationFirstSectionHomepage() {
     const tl = gsap.timeline({paused: true});
     const containerFirstSection = document.querySelector(".main-container-top");
-    const firstTransitionBlocs = document.querySelector(
+    const firstTransitionBlocs = document.querySelectorAll(
       ".container-transition-top > div"
     );
 
-    // tl.to(containerFirstSection, {
-    //   padding: "120px 0 0 0",
-    // }).to(firstTransitionBlocs, {
+    // ANIMATION PADDING FIRST SECTION
+    tl.to(containerFirstSection, {
+      padding: "120px 0 0 0",
+    });
 
-    // }
+    // ANIMATION TRANSITION FIRST SECTION
+
+    tl.to(firstTransitionBlocs[0], {
+      height: "100%",
+    })
+      .to(
+        firstTransitionBlocs[1],
+        {
+          height: "100%",
+        },
+        "-=0.3"
+      )
+      .to(
+        firstTransitionBlocs[2],
+        {
+          height: "100%",
+        },
+        "-=0.3"
+      )
+      .to(
+        firstTransitionBlocs[3],
+        {
+          height: "100%",
+        },
+        "-=0.3"
+      )
+      .to(
+        firstTransitionBlocs[4],
+        {
+          height: "100%",
+        },
+        "-=0.3"
+      )
+      .to(
+        firstTransitionBlocs[5],
+        {
+          height: "100%",
+        },
+        "-=0.3"
+      );
+
+    // ANIMATION APPEAR SECOND SECTION
+
+    const container = document.getElementById("screenSection");
+    tl.set(container, {
+      position: "fixed",
+      top: 0,
+      duration: 0,
+      zIndex: 10,
+      onComplete: () => {
+        // ANIMATION DRAW FIRST LIGNE SECOND SECTION
+        const tlSecondSection = gsap.timeline({});
+
+        const containerBlocText = document.querySelectorAll(
+          ".second-section-bloc-text"
+        );
+
+        // ANIMATION SVG PATH
+
+        // ANIMATION APPEAR TEXT WITH BLOC
+        containerBlocText.forEach((element, index) => {
+          const blackBlock = document.createElement("div");
+          blackBlock.style.position = "absolute";
+          blackBlock.style.top = "0";
+          blackBlock.style.background = "#29292E";
+          blackBlock.style.left = "0";
+          blackBlock.style.width = "0%";
+          blackBlock.style.height = "100%";
+          blackBlock.style.zIndex = "10";
+
+          const h2Element = element.querySelectorAll("h2");
+          const imgElement = element.querySelector("img");
+          // Ajouter le bloc noir à l'élément parent
+          element.appendChild(blackBlock);
+
+          tlSecondSection.set(
+            h2Element,
+            {
+              opacity: 0,
+            },
+            0
+          );
+          tlSecondSection.set(
+            imgElement,
+            {
+              opacity: 0,
+            },
+            0
+          );
+
+          // Utiliser index pour décaler chaque animation séquentiellement
+          const delay = index * 0.3; // ajustez la valeur du délai pour correspondre à vos besoins
+
+          tlSecondSection
+            .to(
+              blackBlock,
+              {
+                duration: 0.2,
+                width: "100%",
+                background: "#000000",
+                ease: "none",
+                onComplete: () => {
+                  // Supprimer le bloc noir
+                  blackBlock.style.right = "0";
+                  blackBlock.style.left = null;
+                },
+              },
+              delay
+            )
+            .to(
+              h2Element,
+              {
+                duration: 0,
+                opacity: 1,
+              },
+              delay + 0.2
+            )
+            .to(
+              imgElement,
+              {
+                duration: 0,
+                opacity: 1,
+              },
+              delay + 0.2
+            )
+            .to(
+              blackBlock,
+              {
+                duration: 0.2,
+                width: "0%",
+                ease: "none",
+              },
+              delay + 0.2
+            ); // commence après la première animation
+        });
+      },
+    });
+
+    // ANIMATION APPEAR TV MAN BOY
+    const tvMan = document.querySelector(".tv_man");
+    // tl.fromTo(
+    //   tvMan,
+    //   {
+    //     y: "100%",
+    //   },
+    //   {
+    //     y: "0",
+    //     ease: "none",
+    //     duration: 0.5,
+    //   }
+    // )
+    //   .to(tvMan, {
+    //     width: "100vw",
+    //     left: 0,
+    //   })
+    //   .to(tvMan, {
+    //     scale: 5,
+    //     y: 1000,
+    //   });
+
+    return tl;
+  }
+
+  static animationSecondSectionHomepage() {
+    const tl = gsap.timeline({paused: true});
+    console.log("test");
+    const container = document.getElementById("screenSection");
 
     return tl;
   }
@@ -534,6 +701,7 @@ export class prepareAnimationHandler {
   static detailMenu() {
     menuHandler.setStaticValue();
     menuHandler.loadCursor();
+    menuHandler.cursorMorph();
     menuHandler.initChangeColor();
 
     const menu = document.querySelector(".menu");

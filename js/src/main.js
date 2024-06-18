@@ -11,6 +11,7 @@ import {actuHandler} from "./components/actuHandler";
 import {prepareAnimationHandler} from "./components/prepareAnimationHandler";
 import {transitionPageHandler} from "./components/transitionPageHandler";
 import {letterSource} from "./components/letterSource";
+import {faqHandler} from "./components/faqHandler";
 
 document.addEventListener("readystatechange", (event) => {
   switch (document.readyState) {
@@ -48,6 +49,10 @@ document.addEventListener("readystatechange", (event) => {
               serviceHandler.loadSwitchService();
               serviceHandler.trashContent();
               utilsHandler.showBrunchText();
+              break;
+            case location.pathname.includes("foire-aux-questions"):
+              faqHandler.sliderFaq();
+              faqHandler.sliderQuestionsNumber();
               break;
             default:
               break;

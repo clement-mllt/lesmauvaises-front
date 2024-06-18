@@ -294,27 +294,151 @@ export class menuHandler {
   }
 
   static loadCursor() {
-    var cursor = document.querySelector(".curseur svg");
-    let lastX = 0;
-    let lastY = 0;
+    let cursor = document.querySelector(".curseur svg");
+    // Définissez la largeur et la hauteur de votre SVG
+    const svgWidth = cursor.clientWidth;
+    const svgHeight = cursor.clientHeight;
+
+    console.log("SVG Width: " + svgWidth);
+    console.log("SVG Height: " + svgHeight);
 
     function updatePosition(e) {
       const mouseX = e.clientX;
       const mouseY = e.clientY;
 
-      const deltaX = mouseX - lastX;
-      const deltaY = mouseY - lastY;
+      // Ajustez la position pour centrer le SVG
+      const offsetX = mouseX - svgWidth / 2;
+      const offsetY = mouseY - svgHeight / 2;
 
       gsap.to(cursor, {
         duration: 0.2, // Durée de l'animation
-        x: mouseX - 12, // Position horizontale de la souris
-        y: mouseY - 12, // Position verticale de la souris
+        x: offsetX - 12, // Position horizontale ajustée
+        y: offsetY - 12, // Position verticale ajustée
         ease: "power2.out", // Facilité de l'animation
       });
     }
 
     // Associer la fonction à l'événement de déplacement de la souris
     document.addEventListener("mousemove", updatePosition);
+  }
+
+  static cursorMorph() {
+    let cursor = document.querySelector(".curseur #path1");
+    let morphTl = gsap.timeline({repeat: -1});
+
+    morphTl.to(".curseur #path1", {
+      duration: 0.5,
+      morphSVG: ".curseur #path2",
+      ease: "linear",
+    });
+    morphTl.to(".curseur #path1", {
+      duration: 0.5,
+      morphSVG: ".curseur #path3",
+      ease: "linear",
+    });
+    morphTl.to(".curseur #path1", {
+      duration: 0.5,
+      morphSVG: ".curseur #path4",
+      ease: "linear",
+    });
+    morphTl.to(".curseur #path1", {
+      duration: 0.5,
+      morphSVG:
+        "M44.1575 57.412C44.1575 57.412 53.826 33.2875 70.0552 28L99.4058 35.9313C120.563 46.8129 120.784 56.3859 117.361 74.5966C115.662 91.9126 111.056 97.8797 99.4058 105C83.6285 100.741 76.6162 105 59.0055 94.0944C41.3949 83.1888 44.1575 57.412 44.1575 57.412Z",
+      ease: "linear",
+    });
+
+    // Fonction pour calculer l'angle entre deux points
+    function calculateAngle(centerX, centerY, mouseX, mouseY) {
+      const radians = Math.atan2(mouseY - centerY, mouseX - centerX);
+      let angle = radians * (180 / Math.PI);
+      return angle;
+    }
+
+    // Variables pour stocker la position précédente de la souris
+    let prevMouseX = null;
+    let prevMouseY = null;
+    let mouseMoveTimeout;
+    let moovingMorphTl; // Stocker la référence de la timeline ici
+
+    function handleMouseMove(event) {
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+
+      // Si c'est le premier mouvement de la souris, initialisez la position précédente
+      if (prevMouseX === null || prevMouseY === null) {
+        prevMouseX = mouseX;
+        prevMouseY = mouseY;
+        return; // Pas d'angle à calculer lors du premier mouvement
+      }
+
+      // Calculer l'angle en fonction de la position précédente de la souris
+      const angle = calculateAngle(prevMouseX, prevMouseY, mouseX, mouseY);
+
+      // Si une timeline existe déjà, la tuer pour éviter des timelines multiples
+      if (moovingMorphTl) {
+        moovingMorphTl.kill();
+      }
+
+      moovingMorphTl = gsap.timeline({repeat: -1});
+      morphTl.pause();
+
+      moovingMorphTl.to(".curseur #path1", {
+        duration: 0.5,
+        morphSVG: ".curseur #mooving1",
+        ease: "linear",
+      });
+      moovingMorphTl.to(".curseur #path1", {
+        duration: 0.5,
+        morphSVG: ".curseur #mooving2",
+        ease: "linear",
+      });
+      moovingMorphTl.to(".curseur #path1", {
+        duration: 0.5,
+        morphSVG: ".curseur #mooving3",
+        ease: "linear",
+      });
+      moovingMorphTl.to(".curseur #path1", {
+        duration: 0.5,
+        morphSVG: ".curseur #mooving4",
+        ease: "linear",
+      });
+
+      gsap.to(".curseur #path1", {
+        rotate: angle,
+        duration: 0.2,
+        transformOrigin: "center center", // Assurez-vous que l'origine de transformation est définie au centre
+      });
+
+      // Mettre à jour la position précédente de la souris
+      prevMouseX = mouseX;
+      prevMouseY = mouseY;
+
+      // Réinitialiser le délai d'inactivité
+      clearTimeout(mouseMoveTimeout);
+
+      mouseMoveTimeout = setTimeout(() => {
+        console.log("Mouse stopped moving");
+        moovingMorphTl.pause();
+        gsap.to(".curseur #path1", {
+          duration: 0.5,
+          morphSVG: ".curseur #path4",
+          onComplete: () => {
+            morphTl.resume(4);
+          },
+        });
+      }, 100); // 1 seconde d'inactivité
+    }
+
+    // Ajouter l'événement de mouvement de la souris
+    document.addEventListener("mousemove", handleMouseMove);
+
+    // Fonction pour calculer l'angle (doit être définie ailleurs dans votre code)
+    function calculateAngle(x1, y1, x2, y2) {
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      return Math.atan2(dy, dx) * (180 / Math.PI);
+    }
   }
 
   static initChangeColor() {
