@@ -1,0 +1,25 @@
+/** @format */
+
+// variables
+@import "./variables";
+// fonts
+
+// media query responsive
+@import "./media_query";
+
+// utils css
+@import "./utils";
+
+// reset css
+@import "./reset";
+
+// heritage
+@import "./heritage";
+
+// components
+@import "./components/home";
+@import "./components/agency";
+@import "./components/services";
+@import "./components/menu";
+@import "./components/project";
+@import "./components/faq";

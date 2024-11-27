@@ -1,0 +1,118 @@
+.bloc-quality {
+  .quality {
+    flex: 1;
+    width: 100%;
+    .fake-section {
+      .fake-title {
+        h4 {
+          font-size: calc(700vw / 1018) !important;
+        }
+        .elementor-widget-container {
+          opacity: 0;
+          &.active {
+            transform: translate(0, 0);
+          }
+        }
+      }
+    }
+
+    .container-image {
+      img {
+        opacity: 0;
+        &.active {
+          opacity: 1;
+        }
+      }
+    }
+
+    .line-decoration {
+      display: none;
+    }
+
+    .title {
+      h2 {
+        font-size: calc(1200vw / 1018);
+        font-weight: 400;
+        letter-spacing: normal;
+        text-transform: uppercase;
+        font-family: "MADE SOULMAZE", Sans-serif;
+        color: rgb(255, 255, 255);
+        &.active {
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 41px;
+          font-style: normal;
+          letter-spacing: 3px;
+          font-weight: 400;
+          line-height: normal;
+        }
+      }
+    }
+  }
+}
+
+.erase-word {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.container-text {
+  position: relative; /* ou position: absolute; */
+}
+.section-agency {
+  position: relative;
+  height: fit-content;
+  .text-agency {
+    width: 100%;
+    // .letter {
+    //   color: white; /* Couleur du texte */
+    //   transition: opacity 0.2s ease-out;
+    //   color: #fff;
+
+    //   text-align: center;
+    //   font-family: Quicksand;
+    //   font-size: 60px;
+    //   font-style: normal;
+    //   font-weight: 400;
+    //   line-height: normal;
+    //   text-transform: uppercase;
+    // }
+  }
+}
+
+.lever {
+  transform-origin: 50% 56.5%;
+}
+
+.socle {
+  transform: translate(-50%, -60%);
+}
+
+.team_section {
+  overflow: hidden;
+  height: 100vh;
+}
+
+.team_image_slider {
+  .e-child {
+    width: 100%;
+    max-width: 940px;
+    height: fit-content;
+    margin: 0 auto;
+  }
+  .team_image {
+    height: fit-content;
+  }
+}
+
+.swiper-container {
+  pointer-events: none;
+  user-select: none;
+}
+
+.pointer-even-none {
+  pointer-events: none;
+  user-select: none;
+  cursor: pointer;
+}

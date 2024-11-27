@@ -1,0 +1,87 @@
+.bloc-tchat {
+  max-height: 80vh;
+}
+
+.icon-home {
+  svg {
+    transform: rotate(25deg);
+  }
+}
+
+// .video-tv {
+//   background: url("/wp-content/uploads/2024/10/Projet_Video_Site_Internet_Les_Mauvaises.png")
+//     no-repeat; /* Remplace par ton sprite */
+//   background-position: 0 0; /* Commence à la première frame */
+// }
+
+.video-tv *,
+.video-tv-2 * {
+  background: transparent !important;
+}
+
+.video-tv-2 {
+  background-color: black;
+  .e-hosted-video {
+    height: 100%;
+  }
+  video {
+    position: absolute;
+    width: 100vw !important;
+    height: 100vh !important;
+    object-fit: contain;
+  }
+}
+
+.container-curious {
+  opacity: 1;
+}
+
+.lineHome {
+  position: absolute;
+  top: 0;
+  width: 120vw;
+  height: 120vh;
+  left: -5vw;
+}
+
+.main-container-img {
+  width: calc(45000vw / 1018);
+  height: calc(45000vw / 1018);
+  left: calc(50% - (45000vw / 2032));
+  top: calc(50% - (45000vw / 2032));
+  .project-img {
+    position: absolute;
+    mix-blend-mode: darken;
+  }
+}
+
+.target-adresse {
+  display: flex;
+  gap: 10px !important;
+  flex-direction: column-reverse !important;
+}
+
+.container-transition-top {
+  > div {
+    height: 0;
+  }
+}
+
+.flex-1 {
+  flex: 1 0 0;
+}
+
+#current-img {
+  filter: url(#distortion);
+}
+
+.container-project {
+  transform: rotate(90deg);
+  transform-origin: left;
+  left: 45px;
+  width: fit-content;
+  .current-title {
+    width: fit-content;
+    white-space: nowrap;
+  }
+}

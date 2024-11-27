@@ -1,0 +1,18 @@
+{
+    "name": "clementmullet/starter-wordpress",
+    "require-dev": {
+        "altorouter/altorouter": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Clementmullet\\StarterWordpress\\": "php/"
+        }
+    },
+    "authors": [
+        {
+            "name": "les-mauvaises",
+            "email": "support@les-mauvaises.fr"
+        }
+    ],
+    "require": {}
+}

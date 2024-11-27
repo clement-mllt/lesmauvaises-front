@@ -1,0 +1,323 @@
+/** @format */
+
+@import "./variables";
+@import "./media_query";
+$breakpoints: (
+  "phone": 450px,
+  "tablet": 900px,
+  "desktop": 1024px,
+);
+
+$media-expressions: (
+  "screen": "screen",
+  "print": "print",
+  "handheld": "handheld",
+  "landscape": "(orientation: landscape)",
+  "portrait": "(orientation: portrait)",
+  "retina2x":
+    "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx)",
+  "retina3x":
+    "(-webkit-min-device-pixel-ratio: 3), (min-resolution: 350dpi), (min-resolution: 3dppx)",
+);
+
+.no-scroll {
+  overflow: hidden;
+}
+.content,
+.page-content,
+main,
+body {
+  width: 100vw;
+}
+* {
+  cursor: none;
+}
+
+.elementor-field-type-submit {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.container-curseur {
+  .curseur {
+    fill: black;
+    pointer-events: none;
+    transform-origin: center;
+  }
+}
+
+.newsletter {
+  .elementor-message {
+    position: absolute;
+    top: -40px;
+    &:before {
+      content: "" !important;
+    }
+  }
+}
+
+.category-categorie-filter {
+  position: relative;
+  .jet-select {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  p {
+    font-family: "STAND ROCK", Sans-serif;
+    font-size: calc(2000vw / 1018);
+    color: var(--e-global-color-0259c30);
+    background-color: rgba(2, 1, 1, 0);
+    border-style: none;
+    border-radius: 0px 0px 0px 0px;
+    padding: 15px 50px 10px 50px;
+    transform: rotate(5deg);
+  }
+  .menu-filter {
+    position: absolute;
+    &.open {
+      display: block;
+    }
+    display: none;
+    width: 20vw;
+    height: auto;
+    padding: 80px 60px;
+    background: url("/wp-content/themes/lesmauvaises-front/assets/content/line/support-menu-filter.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    top: 6vw;
+    z-index: 100;
+    left: -5vw;
+    &::before {
+      content: "";
+      position: absolute;
+      width: 10vw;
+      height: 12vh;
+      background: url("/wp-content/themes/lesmauvaises-front/assets/content/line/scotch.png");
+      background-repeat: no-repeat;
+      background-size: contain;
+      top: -80px;
+      left: 5vw;
+      z-index: 200;
+    }
+
+    ul {
+      position: relative;
+      list-style: none;
+      z-index: 9999;
+      text-align: center;
+      li {
+        font-family: "STAND ROCK", Sans-serif;
+        font-size: calc(2000vw / 1018);
+        color: black;
+        width: fit-content;
+        border-style: none;
+        border-radius: 0px 0px 0px 0px;
+        &:first-child {
+          display: none;
+        }
+      }
+    }
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url("/wp-content/themes/lesmauvaises-front/assets/content/line/border-line.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    top: 5px;
+    left: 0;
+    z-index: 0;
+  }
+}
+
+.transition-text {
+  z-index: 10;
+}
+
+.on-target-1 {
+  overflow: hidden;
+}
+
+.search-filtre {
+  .jet-search-filter__input {
+    transform: rotate(5deg);
+  }
+  .jet-search-filter__input {
+    text-align: center;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    background: url("/wp-content/themes/lesmauvaises-front/assets/content/line/border-recherche.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+}
+
+.swiper-wrapper,
+.team_image_slider {
+  overflow: visible !important;
+}
+
+#gameShoot {
+  max-height: 100vh;
+}
+
+.category-tag-filter {
+  .jet-select {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  p {
+    font-family: "STAND ROCK", Sans-serif;
+    font-size: calc(2000vw / 1018);
+    color: var(--e-global-color-0259c30);
+    background-color: rgba(2, 1, 1, 0);
+    border-style: none;
+    border-radius: 0px 0px 0px 0px;
+    padding: 5px 80px 10px 80px;
+    transform: rotate(5deg);
+  }
+  .menu-filter {
+    position: absolute;
+    &.open {
+      display: block;
+    }
+    display: none;
+    width: 20vw;
+    height: auto;
+    padding: 80px 60px;
+    background: url("/wp-content/themes/lesmauvaises-front/assets/content/line/support-menu-filter.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    top: 5vw;
+    z-index: 100;
+    left: -5vw;
+    &::before {
+      content: "";
+      position: absolute;
+      width: 10vw;
+      height: 12vh;
+      background: url("/wp-content/themes/lesmauvaises-front/assets/content/line/scotch.png");
+      background-repeat: no-repeat;
+      background-size: contain;
+      top: -60px;
+      left: 5vw;
+      z-index: 200;
+    }
+
+    ul {
+      position: relative;
+      list-style: none;
+      z-index: 9999;
+      text-align: center;
+      li {
+        font-family: "STAND ROCK", Sans-serif;
+        font-size: calc(2000vw / 1018);
+        color: black;
+        width: fit-content;
+        border-style: none;
+        border-radius: 0px 0px 0px 0px;
+        &:first-child {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    background: url("/wp-content/themes/lesmauvaises-front/assets/content/line/border-line-reversed.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+    top: 5px;
+    left: 0;
+    z-index: 0;
+  }
+}
+
+.pixel {
+  background-image: url("https://static.tildacdn.com/tild3265-3261-4333-a361-353739633737/noise.gif");
+  background-size: 70px;
+  opacity: calc(15 / 100);
+  height: 100%;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+// .transition,
+// .blackscreen {
+//   display: none;
+// }
+.absolute {
+  position: absolute;
+}
+
+.invisible-container,
+.invisible-container-footer {
+  position: absolute;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.footer_menu {
+  ul {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
+
+.elementor-item {
+  width: fit-content;
+}
+
+.green_screen {
+  opacity: 0;
+}
+
+.number svg path {
+  fill: #cbd62b;
+}
+
+.article-card {
+  .number {
+    width: fit-content !important;
+  }
+  .elementor-element {
+    width: 100%;
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.line-service-erase {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}

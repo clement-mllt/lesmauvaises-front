@@ -1,0 +1,59 @@
+.list-articles {
+  &::before {
+    position: absolute;
+    content: "PROJETS";
+    color: var(--e-global-color-0259c30);
+    font-family: "MADE SOULMAZE", Sans-serif;
+    font-size: 98px;
+    width: fit-content;
+    height: fit-content;
+    font-weight: 400;
+    left: -120px;
+    top: 60px;
+    transform-origin: 0 0;
+    writing-mode: vertical-rl;
+  }
+}
+
+.typo-project {
+  .jet-listing-dynamic-repeater__items {
+    display: flex;
+    gap: 20px;
+    > div {
+      &:first-child {
+        opacity: 1;
+      }
+      opacity: 0.6;
+    }
+  }
+}
+
+.list-card {
+  .jet-listing-dynamic-repeater__items {
+    .jet-listing-dynamic-repeater__item {
+      @for $i from 2 through 8 {
+        &:nth-child(#{$i}) {
+          transform: translate(-#{$i * 80 - 80}px, 0);
+        }
+      }
+    }
+  }
+  .color-card {
+    position: relative;
+    width: 200px;
+    height: 300px;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    p {
+      color: white;
+      font-family: "QUICKSAND", Sans-serif;
+      mix-blend-mode: difference;
+      font-size: 20px;
+      font-weight: 400;
+    }
+  }
+}

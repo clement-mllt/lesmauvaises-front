@@ -1,0 +1,47 @@
+.container-service {
+  transition: background-color 0.7s ease-out;
+  cursor: pointer;
+
+  .container-title-op {
+    span {
+      transition: color 0.7s ease-out;
+    }
+  }
+  .title {
+    h2 {
+      transition: color 0.7s ease-out;
+    }
+  }
+
+  &:hover {
+    background-color: #28282d;
+    .container-title-op {
+      span {
+        color: rgba(
+          $color: var(--e-global-color-0259c30),
+          $alpha: 0.1
+        ) !important;
+      }
+    }
+    svg {
+      path {
+        stroke: var(--e-global-color-0259c30) !important;
+      }
+    }
+    .title {
+      h2 {
+        color: var(--e-global-color-0259c30) !important;
+      }
+    }
+  }
+}
+
+.tres-bon-choix {
+  > div {
+    min-height: 190px;
+  }
+}
+
+.section-service {
+  display: none;
+}
