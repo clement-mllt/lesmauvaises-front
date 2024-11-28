@@ -56,6 +56,18 @@ body {
   }
 }
 
+.team {
+  img {
+
+    width: 100% !important;
+    scale : 0.5;
+  }
+}
+
+.no-click {
+  pointer-events: none; 
+}
+
 .category-categorie-filter {
   position: relative;
   .jet-select {

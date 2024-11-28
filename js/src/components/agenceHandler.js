@@ -19,6 +19,7 @@ import Swiper from "swiper";
 import "swiper/css";
 import {Value} from "sass";
 import {utilsHandler} from "./utilsHandler";
+import { blur } from "d3";
 
 gsap.registerPlugin(CSSPlugin);
 gsap.registerPlugin(
@@ -65,6 +66,119 @@ export class agenceHandler {
     });
   }
 
+  static teamData = [
+    {
+        id: "clement",
+        nom: "Clément",
+        surnom: "Le Malin",
+        description: "Expert en développement web, Clément adore résoudre les casse-têtes.",
+        dessert: "Tiramisu",
+        musique: "Pop",
+        chanteur: "Ed Sheeran",
+    },
+    {
+        id: "carla",
+        nom: "Carla",
+        surnom: "La Créative",
+        description: "Spécialiste en design UX/UI, Carla trouve l’inspiration dans les musées.",
+        dessert: "Cheesecake",
+        musique: "Jazz",
+        chanteur: "Norah Jones",
+    },
+    {
+        id: "lucas",
+        nom: "Lucas",
+        surnom: "Le Stratège",
+        description: "Analyste chevronné, Lucas excelle dans la prise de décision rapide.",
+        dessert: "Millefeuille",
+        musique: "Rock",
+        chanteur: "Bruce Springsteen",
+    },
+    {
+        id: "ines",
+        nom: "Inès",
+        surnom: "L'Énergique",
+        description: "Toujours en mouvement, Inès apporte dynamisme et énergie à l'équipe.",
+        dessert: "Macarons",
+        musique: "Classique",
+        chanteur: "Ludovico Einaudi",
+    },
+    {
+      id: "matteo",
+      nom: "Mattéo",
+      surnom: " le nouveau",
+      description: "Toujours le nouveau , Mattéo apporte du nouveau et del' énergie à l'équipe.",
+      dessert: "flan",
+      musique: "ma meilleur enemie",
+      chanteur: "Lomepal Pomme",
+  },
+    
+];
+  static handleTeamClick() {
+    const teams = document.querySelectorAll(".team");
+
+
+    teams.forEach((team) => {
+      team.addEventListener("click", (event) => { 
+        const timelineDetail = agenceHandler.timelineDetailTeam(team);
+        const selectedTeamData = agenceHandler.teamData.find((data) => data.id === team.id);
+        agenceHandler.updateTeamInfo(selectedTeamData);
+      });
+    });
+  }
+
+static updateTeamInfo(data) {
+  document.getElementById("textNom").textContent = data.nom;
+  document.getElementById("textSurnom").textContent = data.surnom;
+  document.getElementById("textDescription").textContent = data.description;
+  document.getElementById("textDessert").textContent = `Dessert préféré : ${data.dessert}`;
+  document.getElementById("textMusique").textContent = `Musique préférée : ${data.musique}`;
+  document.getElementById("textChanteur").textContent = `Chanteur préféré : ${data.chanteur}`;
+}
+
+  static timelineDetailTeam(team) {
+    const tl = gsap.timeline();
+  
+    const containerShoot = document.getElementById('backgroundShoot');
+    containerShoot.classList.add('no-click');
+    const containerPic = document.getElementById('backgroundPic');
+    const containerBlur = document.getElementById('backgroundBlur');
+    const containerText = document.getElementById('backgroundText');
+    
+    const containerRect = containerPic.getBoundingClientRect(); 
+  
+    const detailTeam = team.getBoundingClientRect();
+  
+    const targetX = containerRect.left + containerRect.width / 2 - (detailTeam.left + detailTeam.width / 2);
+    const targetY = containerRect.top + containerRect.height / 2 - (detailTeam.top + detailTeam.height / 2);
+  
+  
+    tl.to(containerBlur,{
+      zIndex : 15,
+    },"sync").to(team,{
+      zIndex : 16,
+    },'sync').to(containerText,{
+      zIndex : 16,
+    },'sync');
+
+    tl.to(team, {
+      duration: 5,
+      x: targetX,
+      y: targetY,
+      scale: 2.5, 
+      ease: "power2.out",
+    },"sync").to(containerBlur,{
+      duration :5,
+      filter:"blur(50px)"
+  },"sync");
+
+  tl.call(() => {
+    container.classList.remove('no-click'); 
+  });
+  
+    return tl;
+  }
+  
   static shootTeam() {
     const timelineShoot = agenceHandler.timelineShoot();
 
@@ -78,6 +192,8 @@ export class agenceHandler {
       anticipePin: 1,
       pin: true,
     });
+
+    agenceHandler.handleTeamClick();
   }
 
   static timelineShoot() {
@@ -88,31 +204,11 @@ export class agenceHandler {
     const teams = document.querySelectorAll(".team");
 
     const teamsName = [
-      {
-        name: "clement",
-        ax: -20,
-        ay: 20,
-      },
-      {
-        name: "carla",
-        ax: -20,
-        ay: 20,
-      },
-      {
-        name: "ines",
-        ax: -20,
-        ay: 20,
-      },
-      {
-        name: "lucas",
-        ax: -20,
-        ay: 20,
-      },
-      {
-        name: "matteo",
-        ax: -20,
-        ay: 20,
-      },
+      { name: "clement", ax: -20, ay: 20 },
+      { name: "carla", ax: -20, ay: 20 },
+      { name: "ines", ax: -20, ay: 20 },
+      { name: "lucas", ax: -20, ay: 20 },
+      { name: "matteo", ax: -20, ay: 20 },
     ];
 
     tl.from(letters, {
@@ -127,38 +223,38 @@ export class agenceHandler {
         duration: 1,
         stagger: 0.1,
       })
-      .set(".menu", {
-        backgroundColor: "transparent",
-        onComplete: () => {
-          gsap.from(teams, {
-            opacity: 0,
-            duration: 4,
-            stagger: 0.3,
-          });
-          teams.forEach((team, i) => {
-            gsap.to(team, {
-              skewY: () => gsap.utils.random(-20, 20),
-              skewX: () => gsap.utils.random(-10, 10),
-              duration: 0.2,
-              ease: "power1.inOut",
-              yoyo: true,
-              delay: i * 0.1,
-              repeat: -1,
-              onRepeat: () => {
-                gsap.to(team, {
-                  skewY: () => gsap.utils.random(-20, 20),
-                  skewX: () => gsap.utils.random(-10, 10),
-                  duration: 0.2,
-                  ease: "power1.inOut",
-                  yoyo: true,
-                  delay: i * 0.1,
-                  repeat: -1,
-                });
-              },
-            });
-          });
-        },
-      })
+      // .set(".menu", {
+      //   backgroundColor: "transparent",
+      //   onComplete: () => {
+      //     gsap.from(teams, {
+      //       opacity: 0,
+      //       duration: 4,
+      //       stagger: 0.3,
+      //     });
+      //     teams.forEach((team, i) => {
+      //       gsap.to(team, {
+      //         skewY: () => gsap.utils.random(-20, 20),
+      //         skewX: () => gsap.utils.random(-10, 10),
+      //         duration: 0.2,
+      //         ease: "power1.inOut",
+      //         yoyo: true,
+      //         delay: i * 0.1,
+      //         repeat: -1,
+      //         onRepeat: () => {
+      //           gsap.to(team, {
+      //             skewY: () => gsap.utils.random(-20, 20),
+      //             skewX: () => gsap.utils.random(-10, 10),
+      //             duration: 0.2,
+      //             ease: "power1.inOut",
+      //             yoyo: true,
+      //             delay: i * 0.1,
+      //             repeat: -1,
+      //           });
+      //         },
+      //       });
+      //     });
+      //   },
+      // })
       .to(containerGame, {
         zIndex: 10,
         border: "red 1px solid",
@@ -171,6 +267,8 @@ export class agenceHandler {
     console.log(tl); // Vérifie si la timeline est générée
     return tl;
   }
+
+
 
   static animateTextOpacityOnScroll() {
     const text = new SplitText(".container-text h2", {type: "words"});
