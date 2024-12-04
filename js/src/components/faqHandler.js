@@ -7,7 +7,6 @@ export class faqHandler {
   static sliderFaq() {
     let upArrow = document.querySelector(".slider_arrow_up");
     let downArrow = document.querySelector(".slider_arrow_down");
-    console.log("cc");
     const swiper_categorie = new Swiper(".swiper_faq_response", {
       direction: "vertical",
       slidesPerView: "auto",

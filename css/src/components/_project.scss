@@ -15,12 +15,26 @@
   }
 }
 
+.typo-project {
+  .jet-listing-dynamic-repeater__items {
+    display: flex;
+    gap: 20px;
+    > div {
+      &:first-child {
+        opacity: 1;
+      }
+      opacity: 0.6;
+    }
+  }
+}
 
 .list-card {
   .jet-listing-dynamic-repeater__items {
     .jet-listing-dynamic-repeater__item {
-      &:nth-child(2) {
-        transform: translate(-80px, 0px);
+      @for $i from 2 through 8 {
+        &:nth-child(#{$i}) {
+          transform: translate(-#{$i * 80 - 80}px, 0);
+        }
       }
     }
   }

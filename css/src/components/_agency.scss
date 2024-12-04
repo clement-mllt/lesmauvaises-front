@@ -81,10 +81,6 @@
   }
 }
 
-.team_section {
-  height: 100vh;
-}
-
 .lever {
   transform-origin: 50% 56.5%;
 }
@@ -93,15 +89,20 @@
   transform: translate(-50%, -60%);
 }
 
+.team_section {
+  overflow: hidden;
+  height: 100vh;
+}
+
 .team_image_slider {
   .e-child {
     width: 100%;
     max-width: 940px;
-    height: 500px;
+    height: fit-content;
     margin: 0 auto;
   }
   .team_image {
-    height: 737px;
+    height: fit-content;
   }
 }
 
@@ -114,4 +115,489 @@
   pointer-events: none;
   user-select: none;
   cursor: pointer;
+}
+
+
+
+
+
+/* GUN CSS */
+
+.stamp{
+  height: 35vh;
+  position:relative;
+  -webkit-animation-name: pulse;
+  animation-name: pulse;
+  animation-delay:0s;
+  -webkit-animation-delay:0s;
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  opacity: 0;
+  -webkit-animation-fill-mode:forwards;
+   animation-fill-mode:forwards;
+}
+
+@keyframes pulse{
+  0%{
+    opacity: 0;
+  }
+  10%{
+    opacity:.50;
+    transform-origin: 50% 50%;
+    transform: rotate(-2deg) scale(5);
+    transition: all .3s cubic-bezier(0.6, 0.04, 0.98, 0.335);
+  }
+  70%{
+    opacity:1;
+    transform: rotate(0.2turn);
+    transform: rotate(-15deg) scale(1);
+  }
+  80% {
+    opacity:1;
+    transform: rotate(-0.2turn);
+  }
+  100% {
+    opacity:1;
+  }
+  
+}
+
+
+
+#GUNplace {
+  border: red solid 3px;
+}
+
+/* Canvas */
+canvas {
+  z-index: 0;
+}
+
+h3 {
+  font-family: "STAND ROCK", Sans-serif;
+}
+
+/* Bille */
+#bille {
+  z-index: 5;
+  display: block;
+  height: 40px;
+}
+
+/* Masquer les éléments */
+.hidden {
+  display: none;
+}
+
+
+
+
+/* Info overlay */
+.info {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  color: white; 
+  z-index: 18;
+  animation: infoStart 1s linear forwards;
+}
+
+/* Effet de flou sur l'info */
+.info::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.infoDetails {
+  height: 100%;
+  width: 50%;
+}
+
+.detailsText {
+  margin-right: 5%;
+}
+
+.detailsImg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#teamName {
+  font-family: "MADE SOULMAZE";
+}
+
+.infoDetails img {
+  height: 50em;
+  margin-top: 8%;
+}
+
+.div_btnClose {
+  display: flex;
+  justify-content: end;
+  padding-top: 15%;
+  padding-right: 15%;
+  font-size: 75px !important;
+  border: none !important;
+}
+
+.div_btnClose :hover {
+  background-color: transparent;
+}
+
+.div_teamName {
+  display: flex;
+  justify-content: center;
+  font-size: 18vh;
+}
+
+.rotateText {
+  margin-top: 5%;
+  margin-bottom: 10%;
+  transform: rotate(9.74deg);
+}
+
+.yellowText {
+  color: #CDDD20;
+}
+
+.badges {
+  display: flex;
+  gap: 8%;
+}
+
+.badges img {
+  height: 25vh;
+}
+
+#Animal {
+  margin-top: 25%;
+}
+
+@keyframes infoStart {
+  0% {
+    background-color: rgba(0, 0, 0, 0.0);
+    backdrop-filter: blur(0px); 
+  }
+
+  50% {
+    background-color: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(5px); 
+  }
+
+  100% {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px); 
+  }
+}
+
+
+/* Animation des éléments de bille */
+.HasBeenShoot0 {
+  animation: moveAndScale0 1s linear;
+}
+
+.HasBeenShoot1 {
+  animation: moveAndScale1 1s linear;
+}
+
+.HasBeenShoot2 {
+  animation: moveAndScale2 1s linear;
+}
+
+.HasBeenShoot3 {
+  animation: moveAndScale3 1s linear;
+}
+
+.HasBeenShoot4 {
+  animation: moveAndScale4 1s linear;
+}
+
+.HasBeenShoot5 {
+  animation: moveAndScale5 1s linear;
+}
+
+.HasBeenShoot6 {
+  animation: moveAndScale6 1s linear;
+}
+/* Taille des images de bille */
+#bille img {
+  height: 4em;
+}
+
+/* Bille après tir */
+#hasBeenShootBille {
+  height: 12em;
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  z-index: 15;
+}
+
+/* Images animées */
+.images {
+  position: absolute;
+  width: 15em;
+  height: 15em;
+  z-index: 10;
+}
+
+/* Animation de la première image */
+.img1 {
+  top: 25em;
+  left: 5vw;
+  width: 22em !important;
+  height: 22em !important;
+  z-index: 11;
+  animation: moove1 4s infinite linear;
+}
+
+/* Animation de la deuxième image */
+.img2 {
+  top: 5em;
+  left: 17vw;
+  width: 22em !important;
+  height: 22em !important;
+  z-index: 11;
+  animation: moove2 4s infinite linear;
+}
+
+/* Animation de la troisième image */
+.img3 {
+  top: 13em;
+  left: 33vw;
+  z-index: 11;
+  animation: moove3 4s infinite linear;
+}
+
+/* Animation de la quatrième image */
+.img4 {
+  top: 10em;
+  left: 48vw;
+  z-index: 11;
+  animation: moove4 4s infinite linear;
+}
+
+/* Animation de la cinquième image */
+.img5 {
+  top: 3em;
+  left: 65vw;
+  z-index: 11;
+  animation: moove5 4s infinite linear;
+}
+
+/* Animation de la sixième image */
+.img6 {
+  top: 35em;
+  left: 69vw;
+  z-index: 11;
+  animation: moove6 4s infinite linear;
+}
+
+/* Animation de la septième image */
+.img7 {
+  top: 3em;
+  left: 85vw;
+  width: 20em !important;
+  height: 20em !important;
+  z-index: 11;
+  animation: moove7 4s infinite linear;
+}
+
+/* Animation de la bille */
+@keyframes moveAndScale0 {
+  0% {
+    transform: translateX(0vw) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateX(1vw) translateY(-1vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateX(2vw) translateY(-3vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateX(3vw) scale(3) rotateY(540deg);
+  }
+  100% {
+    transform: translateX(4vw) scale(4) rotateY(720deg);
+  }
+}
+
+@keyframes moveAndScale1 {
+  0% {
+    transform: translateX(0%) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateY(2vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateY(5vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateY(7vw) scale(2.2) rotateY(540deg);
+  }
+  100% {
+    transform: translateY(10vw) scale(4) rotateY(720deg);
+  }
+}
+
+@keyframes moveAndScale2 {
+  0% {
+    transform: translateX(0%) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateX(-2vw) translateY(2vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateX(-5vw) translateY(5vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateX(-5vw) translateY(7vw) scale(2.2) rotateY(540deg);
+  }
+  100% {
+    transform: translateX(-5vw) translateY(10vw) scale(4) rotateY(720deg);
+  } 
+}
+
+@keyframes moveAndScale3 {
+  0% {
+    transform: translateX(0%) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateX(-5vw) translateY(2vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateX(-9vw) translateY(5vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateX(-13vw) translateY(7vw) scale(2.2) rotateY(540deg);
+  }
+  100% {
+    transform: translateX(-25vw) translateY(10vw) scale(4) rotateY(720deg);
+  } 
+}
+
+@keyframes moveAndScale4 {
+  0% {
+    transform: translateX(0%) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateX(-10vw) translateY(2vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateX(-20vw) translateY(5vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateX(-30vw) translateY(7vw) scale(2.2) rotateY(540deg);
+  }
+  100% {
+    transform: translateX(-42vw) translateY(10vw) scale(4) rotateY(720deg);
+  } 
+}
+
+@keyframes moveAndScale5 {
+  0% {
+    transform: translateX(0%) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateX(-15vw) translateY(2vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateX(-30vw) translateY(2vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateX(-40vw) translateY(2vw) scale(2.2) rotateY(540deg);
+  }
+  100% {
+    transform: translateX(-55vw) translateY(2vw) scale(4) rotateY(720deg);
+  } 
+}
+
+@keyframes moveAndScale6 {
+  0% {
+    transform: translateX(0%) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateX(-15vw) translateY(2vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateX(-30vw) translateY(5vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateX(-40vw) translateY(8vw) scale(2.2) rotateY(540deg);
+  }
+  100% {
+    transform: translateX(-60vw) translateY(15vw) scale(4) rotateY(720deg);
+  } 
+}
+
+/* Animation de la première image en mouvement */
+@keyframes moove1 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(50px, -25px); }
+  50% { transform: translate(100px, 0); }
+  75% { transform: translate(50px, 25px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Animation de la deuxième image en mouvement */
+@keyframes moove2 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-50px, 25px); }
+  50% { transform: translate(-25px, 50px); }
+  75% { transform: translate(25px, 25px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Animation de la troisième image en mouvement */
+@keyframes moove3 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(75px, -75px); }
+  50% { transform: translate(0, -100px); }
+  75% { transform: translate(-75px, -75px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Animation de la quatrième image en mouvement */
+@keyframes moove4 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-100px, 25px); }
+  50% { transform: translate(-50px, -25px); }
+  75% { transform: translate(50px, -25px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Animation de la cinquième image en mouvement */
+@keyframes moove5 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(50px, 50px); }
+  50% { transform: translate(0, 100px); }
+  75% { transform: translate(-50px, 50px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Animation de la sixième image en mouvement */
+@keyframes moove6 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(100px, 0); }
+  50% { transform: translate(75px, -75px); }
+  75% { transform: translate(25px, -25px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Animation de la septième image en mouvement */
+@keyframes moove7 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-75px, 25px); }
+  50% { transform: translate(-100px, 0); }
+  75% { transform: translate(-75px, -25px); }
+  100% { transform: translate(0, 0); }
 }

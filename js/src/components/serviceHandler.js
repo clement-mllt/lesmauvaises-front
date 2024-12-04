@@ -37,6 +37,7 @@ import {menuHandler} from "./menuHandler";
 import {prepareAnimationHandler} from "./prepareAnimationHandler";
 
 export class serviceHandler {
+  static index = 0;
   static loadSwitchService() {
     const containers = document.querySelectorAll(".container-service-overlay");
     const containersTitle = document.querySelectorAll(
@@ -47,18 +48,22 @@ export class serviceHandler {
       {
         className: "words-management",
         text: "P,A,R,C,E,*,Q,U,*,A,C,H,E,T,E,R,*,D,E,S,*,A,B,O,N,N,E,S,*,N,E,*,F,O,N,C,T,I,O,N,N,E,*,P,L,U,S",
+        size: 18,
       },
       {
         className: "words-comple",
         text: "Q,U,A,N,D,*,Y,*,E,N,*,A,*,P,L,U,S,*,Y,*,E,N,*,A,*,E,N,C,O,R,E",
+        size: 18,
       },
       {
         className: "words-internet",
         text: "T,R,O,P,*,C,*,E,S,T,*,J,A,M,A,I,S,*,A,S,S,E,Z",
+        size: 18,
       },
       {
         className: "words-maintenance",
         text: "M,E,M,E,*,V,O,T,R,E,*,S,I,T,E,*,M,E,R,I,T,E,*,U,N,*,C,O,N,T,R,O,L,E,*,T,E,C,H,N,I,Q,U,E",
+        size: 18,
       },
     ];
 
@@ -86,6 +91,7 @@ export class serviceHandler {
       titles.forEach((title) => {
         const randomNumberDuration = Math.floor(Math.random() * 3) + 2;
         const randomNumberTransform = Math.floor(Math.random() * 200) + 1;
+
         switch (index) {
           case 0:
             tl.to(
@@ -134,7 +140,7 @@ export class serviceHandler {
 
         const tlLetterSourceAnime = prepareAnimationHandler.animeLetterSource(
           container,
-          14,
+          element.size,
           0.5,
           "#000000",
           1
@@ -147,53 +153,73 @@ export class serviceHandler {
       container.addEventListener("click", (e) => {
         const target = document.querySelectorAll(".section-service");
         const tl = serviceHandler.prepareScrollSection(target[index]);
-        serviceHandler.resetDisplay(target);
 
-        const firstContainerChoose = target[index].querySelector(
-          ".tres-bon-choix > div:first-child"
-        );
-        const secondContainerChoose = target[index].querySelector(
-          ".tres-bon-choix > div:last-child"
-        );
+        const firstContainerChoose = target[index].querySelector(".tres-bon");
+        const secondContainerChoose = target[index].querySelector(".choix");
+
+        target.forEach((element) => {
+          gsap.set(element, {display: "none"});
+        });
+
+        if (
+          serviceHandler.index > 0 &&
+          firstContainerChoose.querySelector(".lm-typo")
+        ) {
+          serviceHandler.resetDisplay(
+            target,
+            firstContainerChoose,
+            secondContainerChoose
+          );
+        }
+        serviceHandler.index = index++;
 
         letterSource.getLetters("T,R,E,S,*,*,*,*,B,O,N").then((letters) => {
           const container = firstContainerChoose;
           const svgHTML = letters
             .map((svg) =>
-              svg != "*" ? "<span>" + svg + "</span>" : "<b class='space'></b>"
+              svg !== "*" ? "<span>" + svg + "</span>" : '<b class="space"></b>'
             )
             .join("");
-          container.innerHTML = `<div class="lm-typo index z-9 rotate ro--359">${svgHTML}</div>`;
+          container.innerHTML +=
+            '<div class="lm-typo index z-9 rotate ro--359">' +
+            svgHTML +
+            "</div>";
 
-          const width = container.getBoundingClientRect().width;
           const tlLetterSourceAnime = prepareAnimationHandler.animeLetterSource(
             container,
             150,
-            0.5,
+            0.05,
             "var(--e-global-color-0259c30)",
             1.5
           );
-          return tlLetterSourceAnime.play();
-        });
 
-        letterSource.getLetters("C,H,O,I,X").then((letters) => {
-          const container = secondContainerChoose;
-          const svgHTML = letters
-            .map((svg) =>
-              svg != "*" ? "<span>" + svg + "</span>" : "<b class='space'></b>"
-            )
-            .join("");
-          container.innerHTML = `<div class="lm-typo index z-9 rotate ro--359">${svgHTML}</div>`;
+          tlLetterSourceAnime.eventCallback("onComplete", () => {
+            letterSource.getLetters("C,H,O,I,X").then((letters) => {
+              const container = secondContainerChoose;
+              const svgHTML = letters
+                .map((svg) =>
+                  svg !== "*"
+                    ? "<span>" + svg + "</span>"
+                    : '<b class="space"></b>'
+                )
+                .join("");
+              container.innerHTML +=
+                '<div class="lm-typo index z-9 rotate ro--359">' +
+                svgHTML +
+                "</div>";
+              const tlLetterSourceAnime2 =
+                prepareAnimationHandler.animeLetterSource(
+                  container,
+                  150,
+                  0.05,
+                  "var(--e-global-color-0259c30)",
+                  1.5
+                );
+              tlLetterSourceAnime2.play();
+            });
+          });
 
-          const width = container.getBoundingClientRect().width;
-          const tlLetterSourceAnime = prepareAnimationHandler.animeLetterSource(
-            container,
-            150,
-            0.5,
-            "var(--e-global-color-0259c30)",
-            1.5
-          );
-          return tlLetterSourceAnime.play();
+          tlLetterSourceAnime.play();
         });
 
         target.animationTimeline = tl;
@@ -203,10 +229,9 @@ export class serviceHandler {
     });
   }
 
-  static resetDisplay(elements) {
-    elements.forEach((element) => {
-      gsap.set(element, {display: "none"});
-    });
+  static resetDisplay(elements, firstElement, secondElement) {
+    firstElement.querySelector(".lm-typo").remove();
+    secondElement.querySelector(".lm-typo").remove();
   }
 
   static trashContent() {

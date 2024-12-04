@@ -38,9 +38,67 @@ gsap.registerPlugin(
 
 export class utilsHandler {
   static isEnglishVersion = location.pathname.includes("/en/");
+  static lenis = new Lenis({
+    smooth: true,
+    smoothTouch: true, // Activer pour limiter également sur mobile
+    direction: "vertical",
+    lerp: 0.1,
+    wheelMultiplier: 1,
+  });
 
   static sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  /**
+   * Scrolle la page jusqu'à la fin d'une animation spécifique dans une timeline GSAP liée à un ScrollTrigger
+   * @param {gsap.core.Timeline} tl - La timeline GSAP
+   * @param {ScrollTrigger} scrollTrigger - L'instance de ScrollTrigger associée
+   * @param {string} label - Le label à atteindre dans la timeline
+   * @param {string} targetClass - La classe de l'élément pour lequel on veut obtenir la durée
+   * @param {number} speed - La durée de l'animation (facultatif)
+   * @param {number} offset - Décalage supplémentaire en pixels (facultatif)
+   */
+  static scrollToEndOfAnimation(
+    tl,
+    scrollTrigger,
+    label,
+    targetClass,
+    speed = 2,
+    offset = 0
+  ) {
+    if (!scrollTrigger || !tl || !tl.labels[label]) return;
+
+    // Obtenir la position du label dans la timeline
+    const labelPosition = tl.labels[label];
+
+    // Obtenir la durée de l'animation associée à la classe spécifiée (si elle existe)
+    const tweens = tl.getTweensOf(targetClass);
+    const animationDuration = tweens[1]?.duration() || 0;
+
+    // Calculer la progression pour atteindre la fin de l'animation
+    const progressEnd = (labelPosition + animationDuration) / tl.duration();
+
+    // Faire défiler la page jusqu'à la position calculée
+    gsap.to(window, {
+      scrollTo: {
+        y:
+          scrollTrigger.start +
+          (scrollTrigger.end - scrollTrigger.start) * progressEnd +
+          offset,
+        autoKill: false,
+      },
+      duration: speed,
+      ease: "power2.out",
+      onComplete: () => {
+        utilsHandler.unblockScroll();
+      },
+    });
+  }
+
+  static setWheelMultiplier(wheelMultiplier, lerp) {
+    utilsHandler.lenis.options.wheelMultiplier = wheelMultiplier;
+    utilsHandler.lenis.options.lerp = lerp;
   }
 
   static isPositive(num) {
@@ -51,16 +109,45 @@ export class utilsHandler {
     return false;
   }
 
+  static calculCards() {
+    const countCards = document.querySelector(".count-cards");
+
+    if (countCards) {
+      const cards = document.querySelectorAll(".jet-listing-grid__items > div");
+
+      countCards.innerHTML = "P/00" + cards.length;
+    }
+  }
+
+  static blockScroll() {
+    utilsHandler.lenis.stop();
+  }
+
+  // Fonction pour débloquer le scroll
+  static unblockScroll() {
+    utilsHandler.lenis.start();
+  }
+
   static loadLenis() {
-    const lenis = new Lenis();
+    document.addEventListener("DOMContentLoaded", () => {
+      // Fonction pour synchroniser Lenis avec ScrollTrigger
+      function raf(time) {
+        utilsHandler.lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
 
-    lenis.on("scroll", ScrollTrigger.update);
+      // Limiter la vitesse de défilement
+      utilsHandler.lenis.on("scroll", () => {
+        ScrollTrigger.update();
+      });
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
+      ScrollTrigger.defaults({
+        scroller: document.body,
+      });
+
+      ScrollTrigger.refresh();
     });
-
-    gsap.ticker.lagSmoothing(0);
   }
   static convertCmToFeet(cm) {
     const factor = 2.54;
@@ -162,6 +249,44 @@ export class utilsHandler {
     window.scrollTo({top: 0, behavior: "smooth"});
   }
 
+  static unScaleCursor() {
+    let container = document.querySelector(".curseur");
+    let cursor = container.querySelector("svg");
+
+    gsap
+      .timeline()
+      .to(".text-overlay", {
+        opacity: 0,
+        duration: 0.5,
+        ease: "power1.inOut",
+      })
+      .to(cursor, {
+        scale: 1,
+        duration: 1,
+        transformOrigin: "center",
+        ease: "power1.inOut",
+      });
+  }
+
+  static scaleCursor() {
+    let container = document.querySelector(".curseur");
+    let cursor = container.querySelector("svg");
+
+    gsap
+      .timeline()
+      .to(cursor, {
+        scale: 2,
+        duration: 1,
+        transformOrigin: "center",
+        ease: "power1.inOut",
+      })
+      .to(".text-overlay", {
+        opacity: 1,
+        duration: 0.5,
+        ease: "power1.inOut",
+      });
+  }
+
   static detectScreenWidthChange() {
     const logo = document.querySelector("#mainLogo");
     const screenWidth = window.innerWidth;
@@ -169,13 +294,16 @@ export class utilsHandler {
     const width = logo.getBoundingClientRect().width;
     const height = logo.getBoundingClientRect().height;
 
+    const detailMenu = document.querySelector(".detail-menu");
+    const heightMenu = detailMenu.offsetHeight;
+
     // FOR OPEN MENU BACKGROUND
 
     gsap.set(".openMenu", {
       attr: {
         width: screenWidth,
-        height: screenHeight / 1.5,
-        viewBox: `0 0 ${screenWidth} ${screenHeight / 1.5}`,
+        height: heightMenu,
+        viewBox: `0 0 ${screenWidth} ${heightMenu}`,
       },
     });
     // FOR LINE LOGO UPDATE
@@ -300,7 +428,7 @@ export class utilsHandler {
       });
     }
 
-    if (lineErase) {
+    if (lineErase && targetTitle) {
       const widthElement = targetTitle.getBoundingClientRect().width;
       const heightElement = targetTitle.getBoundingClientRect().height;
 
@@ -316,7 +444,7 @@ export class utilsHandler {
       });
     }
 
-    if (svgEraseMauvaises) {
+    if (svgEraseMauvaises && targetTitle) {
       const widthElement = targetTitle.getBoundingClientRect().width;
       const heightElement = targetTitle.getBoundingClientRect().height;
 
@@ -358,7 +486,7 @@ export class utilsHandler {
             svg !== "*" ? `<span>${svg}</span>` : "<b class='space'></b>"
           )
           .join("");
-        container.innerHTML += `<div class="lm-typo top rotate ro-${rotation} left index z-9">${svgHTML}</div>`;
+        container.innerHTML += `<div class="lm-typo absolute top rotate ro-${rotation} left index z-9">${svgHTML}</div>`;
         const title = mainContainer.querySelector(
           ".main-text-plan .elementor-heading-title"
         );
@@ -387,83 +515,79 @@ export class utilsHandler {
 
   static loadPlanA3() {
     const mainContainer = document.querySelector(".section-plan");
-    const textFixContainer = mainContainer.querySelector(".vous-nous-succes");
 
-    // arrete-scroll attend jeu
+    if (mainContainer) {
+      const textFixContainer = mainContainer.querySelector(".vous-nous-succes");
 
-    gsap.to(mainContainer, {
-      scrollTrigger: {
-        trigger: mainContainer,
-        start: "top+=200px bottom",
-        end: "bottom bottom",
-        scrub: true,
-        onEnter: () => {
-          if (!agenceHandler.onEnter) {
-            agenceHandler.onEnter = true;
-            const containerScroll =
-              mainContainer.querySelector(".arrete-scroll");
-            const containerAttend = mainContainer.querySelector(".attend");
-            const containerJeu = mainContainer.querySelector(".jeu");
+      gsap.to(mainContainer, {
+        scrollTrigger: {
+          trigger: mainContainer,
+          start: "top+=200px bottom",
+          end: "bottom bottom",
+          scrub: true,
+          onEnter: () => {
+            if (!agenceHandler.onEnter) {
+              agenceHandler.onEnter = true;
+              const containerScroll =
+                mainContainer.querySelector(".arrete-scroll");
+              const containerAttend = mainContainer.querySelector(".attend");
+              const containerJeu = mainContainer.querySelector(".jeu");
 
-            utilsHandler.setupAnimation(
-              containerAttend,
-              "A,H,H,H,*,A,T,T,E,N,D",
-              "top rotate ro--15 left index z-9",
-              -15,
-              () => {
-                utilsHandler.setupAnimation(
-                  containerScroll,
-                  "A,R,R,E,T,E,*,D,E,*,S,C,R,O,L,L",
-                  "top rotate ro--04 left index z-9",
-                  -4,
-                  () => {
-                    utilsHandler.setupAnimation(
-                      containerJeu,
-                      "O,N,*,V,E,U,T,*,T,E,*,P,R,O,P,O,S,E,R,*,U,N,*,J,E,U",
-                      "top rotate ro-10 left index z-9",
-                      10,
-                      () => {
-                        console.log("Toutes les animations sont terminées.");
-                      }
-                    );
-                  }
-                );
-              }
-            );
-          }
+              utilsHandler.setupAnimation(
+                containerAttend,
+                "A,H,H,H,*,A,T,T,E,N,D",
+                "top rotate ro--15 left index z-9",
+                -15,
+                () => {
+                  utilsHandler.setupAnimation(
+                    containerScroll,
+                    "A,R,R,E,T,E,*,D,E,*,S,C,R,O,L,L",
+                    "top rotate ro--04 left index z-9",
+                    -4,
+                    () => {
+                      utilsHandler.setupAnimation(
+                        containerJeu,
+                        "O,N,*,V,E,U,T,*,T,E,*,P,R,O,P,O,S,E,R,*,U,N,*,J,E,U",
+                        "top rotate ro-10 left index z-9",
+                        10
+                      );
+                    }
+                  );
+                }
+              );
+            }
+          },
         },
-      },
-    });
-
-    letterSource
-      .getLetters("V,O,U,S,*,N,O,U,S,*,E,T,*,L,E,*,S,U,C,C,E,S")
-      .then((letters) => {
-        const container = textFixContainer;
-        const svgHTML = letters
-          .map((svg) =>
-            svg != "*" ? "<span>" + svg + "</span>" : "<b class='space'></b>"
-          )
-          .join("");
-        container.innerHTML += `<div class="lm-typo top right index z-9">${svgHTML}</div>`;
-        const title = container
-          .closest(".section-plan")
-          .querySelector(".main-text-plan .elementor-heading-title");
-        console.log(title);
-        const fontSize = window.getComputedStyle(title).fontSize;
-        const size = parseFloat(fontSize.match(/[+-]?([0-9]*[.])?[0-9]+/)[0]);
-        console.log(size);
-        const tlLetterSourceAnime = prepareAnimationHandler.animeLetterSource(
-          container,
-          size / 4,
-          0.5,
-          "var(--e-global-color-1fe2b94)",
-          1.5
-        );
-        return tlLetterSourceAnime.play();
-      })
-      .catch((error) => {
-        console.error("Une erreur s'est produite :", error);
       });
+
+      letterSource
+        .getLetters("V,O,U,S,*,N,O,U,S,*,E,T,*,L,E,*,S,U,C,C,E,S")
+        .then((letters) => {
+          const container = textFixContainer;
+          const svgHTML = letters
+            .map((svg) =>
+              svg != "*" ? "<span>" + svg + "</span>" : "<b class='space'></b>"
+            )
+            .join("");
+          container.innerHTML += `<div class="lm-typo top right index z-9">${svgHTML}</div>`;
+          const title = container
+            .closest(".section-plan")
+            .querySelector(".main-text-plan .elementor-heading-title");
+          const fontSize = window.getComputedStyle(title).fontSize;
+          const size = parseFloat(fontSize.match(/[+-]?([0-9]*[.])?[0-9]+/)[0]);
+          const tlLetterSourceAnime = prepareAnimationHandler.animeLetterSource(
+            container,
+            size / 4,
+            0.5,
+            "var(--e-global-color-1fe2b94)",
+            1.5
+          );
+          return tlLetterSourceAnime.play();
+        })
+        .catch((error) => {
+          console.error("Une erreur s'est produite :", error);
+        });
+    }
   }
 
   static showBrunchText() {

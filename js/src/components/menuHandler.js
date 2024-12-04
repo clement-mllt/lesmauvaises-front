@@ -19,6 +19,7 @@ import Matter from "matter-js";
 import {Engine, Render, World, Bodies} from "matter-js";
 
 import {PhysicsPropsPlugin} from "gsap/PhysicsPropsPlugin.js";
+import {color, text} from "d3";
 
 gsap.registerPlugin(
   ScrollTrigger,
@@ -35,12 +36,18 @@ gsap.registerPlugin(
 );
 
 export class menuHandler {
+  static isOpen = false;
+
   static loadLoader() {
     let storedValue = localStorage.getItem("loader")
       ? localStorage.getItem("loader")
       : localStorage.setItem("loader", false);
 
     if (storedValue != "true") {
+      gsap.set(".menu", {
+        opacity: 0,
+      });
+
       localStorage.setItem("loader", true);
       let engine = Matter.Engine.create(),
         world = engine.world;
@@ -294,13 +301,29 @@ export class menuHandler {
   }
 
   static loadCursor() {
-    let cursor = document.querySelector(".curseur svg");
+    let container = document.querySelector(".curseur");
+    let containerDetail = container.querySelector(".elementor-icon");
+    let cursor = container.querySelector("svg");
+
     // Définissez la largeur et la hauteur de votre SVG
     const svgWidth = cursor.clientWidth;
     const svgHeight = cursor.clientHeight;
 
-    console.log("SVG Width: " + svgWidth);
-    console.log("SVG Height: " + svgHeight);
+    const textOverlay = document.createElement("div");
+    textOverlay.textContent = "SKIP";
+    textOverlay.style.position = "absolute";
+    textOverlay.style.top = "50%";
+    textOverlay.style.left = "25px";
+    textOverlay.style.transform = "translate(-50%, -50%)";
+    textOverlay.style.fontSize = "1.2rem";
+    textOverlay.style.fontFamily = "MADE SOULMAZE, Sans-serif";
+    textOverlay.style.color = "#000000";
+    textOverlay.style.opacity = "0"; // Masqué au départ
+    textOverlay.style.pointerEvents = "none";
+    textOverlay.classList.add("text-overlay");
+
+    // Ajout du texte dans le body (ou dans le conteneur spécifique si besoin)
+    containerDetail.appendChild(textOverlay);
 
     function updatePosition(e) {
       const mouseX = e.clientX;
@@ -310,7 +333,7 @@ export class menuHandler {
       const offsetX = mouseX - svgWidth / 2;
       const offsetY = mouseY - svgHeight / 2;
 
-      gsap.to(cursor, {
+      gsap.to([cursor, textOverlay], {
         duration: 0.2, // Durée de l'animation
         x: offsetX - 12, // Position horizontale ajustée
         y: offsetY - 12, // Position verticale ajustée
@@ -320,166 +343,213 @@ export class menuHandler {
 
     // Associer la fonction à l'événement de déplacement de la souris
     document.addEventListener("mousemove", updatePosition);
+
+    // Création et stylisation du texte "SKIP" avec GSAP
+    // Création et stylisation du texte "SKIP" avec GSAP
   }
 
   static cursorMorph() {
-    let cursor = document.querySelector(".curseur #path1");
+    // Crée l'animation avec GSAP
     let morphTl = gsap.timeline({repeat: -1});
 
-    morphTl.to(".curseur #path1", {
-      duration: 0.5,
-      morphSVG: ".curseur #path2",
-      ease: "linear",
-    });
-    morphTl.to(".curseur #path1", {
-      duration: 0.5,
-      morphSVG: ".curseur #path3",
-      ease: "linear",
-    });
-    morphTl.to(".curseur #path1", {
-      duration: 0.5,
-      morphSVG: ".curseur #path4",
-      ease: "linear",
-    });
-    morphTl.to(".curseur #path1", {
-      duration: 0.5,
-      morphSVG:
-        "M44.1575 57.412C44.1575 57.412 53.826 33.2875 70.0552 28L99.4058 35.9313C120.563 46.8129 120.784 56.3859 117.361 74.5966C115.662 91.9126 111.056 97.8797 99.4058 105C83.6285 100.741 76.6162 105 59.0055 94.0944C41.3949 83.1888 44.1575 57.412 44.1575 57.412Z",
-      ease: "linear",
-    });
-
-    // Fonction pour calculer l'angle entre deux points
-    function calculateAngle(centerX, centerY, mouseX, mouseY) {
-      const radians = Math.atan2(mouseY - centerY, mouseX - centerX);
-      let angle = radians * (180 / Math.PI);
-      return angle;
-    }
-
-    // Variables pour stocker la position précédente de la souris
-    let prevMouseX = null;
-    let prevMouseY = null;
-    let mouseMoveTimeout;
-    let moovingMorphTl; // Stocker la référence de la timeline ici
-
-    function handleMouseMove(event) {
-      const mouseX = event.clientX;
-      const mouseY = event.clientY;
-
-      // Si c'est le premier mouvement de la souris, initialisez la position précédente
-      if (prevMouseX === null || prevMouseY === null) {
-        prevMouseX = mouseX;
-        prevMouseY = mouseY;
-        return; // Pas d'angle à calculer lors du premier mouvement
-      }
-
-      // Calculer l'angle en fonction de la position précédente de la souris
-      const angle = calculateAngle(prevMouseX, prevMouseY, mouseX, mouseY);
-
-      // Si une timeline existe déjà, la tuer pour éviter des timelines multiples
-      if (moovingMorphTl) {
-        moovingMorphTl.kill();
-      }
-
-      moovingMorphTl = gsap.timeline({repeat: -1});
-      morphTl.pause();
-
-      moovingMorphTl.to(".curseur #path1", {
-        duration: 0.5,
-        morphSVG: ".curseur #mooving1",
+    morphTl
+      .to("#start", {
+        duration: 0.7,
+        morphSVG: "#path1",
         ease: "linear",
-      });
-      moovingMorphTl.to(".curseur #path1", {
-        duration: 0.5,
-        morphSVG: ".curseur #mooving2",
-        ease: "linear",
-      });
-      moovingMorphTl.to(".curseur #path1", {
-        duration: 0.5,
-        morphSVG: ".curseur #mooving3",
-        ease: "linear",
-      });
-      moovingMorphTl.to(".curseur #path1", {
-        duration: 0.5,
-        morphSVG: ".curseur #mooving4",
-        ease: "linear",
-      });
-
-      gsap.to(".curseur #path1", {
-        rotate: angle,
-        duration: 0.2,
-        transformOrigin: "center center", // Assurez-vous que l'origine de transformation est définie au centre
-      });
-
-      // Mettre à jour la position précédente de la souris
-      prevMouseX = mouseX;
-      prevMouseY = mouseY;
-
-      // Réinitialiser le délai d'inactivité
-      clearTimeout(mouseMoveTimeout);
-
-      mouseMoveTimeout = setTimeout(() => {
-        console.log("Mouse stopped moving");
-        moovingMorphTl.pause();
-        gsap.to(".curseur #path1", {
+      })
+      .to(
+        "#start",
+        {
+          duration: 0.7,
+          morphSVG: "#path2",
+          ease: "linear",
+        },
+        "-=0.3"
+      )
+      .to(
+        "#start",
+        {
+          duration: 0.7,
+          morphSVG: "#path3",
+          ease: "linear",
+        },
+        "-=0.3"
+      )
+      .to(
+        "#start",
+        {
           duration: 0.5,
-          morphSVG: ".curseur #path4",
-          onComplete: () => {
-            morphTl.resume(4);
+          morphSVG: "#start",
+          ease: "linear",
+        },
+        "-=0.3"
+      );
+
+    // Ajoute les événements pour les liens
+    document.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("mouseenter", () => {
+        // Arrête l'animation en cours
+        morphTl.pause();
+
+        // Morph vers la forme #reset
+        gsap.to(".curseur #start", {
+          duration: 0.5,
+          morphSVG: ".curseur #reset",
+          ease: "linear",
+        });
+      });
+
+      link.addEventListener("mouseleave", () => {
+        // Morph directement vers #start en douceur
+        gsap.to(".curseur #start", {
+          duration: 0.5,
+          morphSVG: ".curseur #start",
+          ease: "linear",
+          onStart: () => {
+            // Relance l'animation principale après avoir terminé la transition
+            morphTl.play();
           },
         });
-      }, 100); // 1 seconde d'inactivité
-    }
-
-    // Ajouter l'événement de mouvement de la souris
-    document.addEventListener("mousemove", handleMouseMove);
-
-    // Fonction pour calculer l'angle (doit être définie ailleurs dans votre code)
-    function calculateAngle(x1, y1, x2, y2) {
-      const dx = x2 - x1;
-      const dy = y2 - y1;
-      return Math.atan2(dy, dx) * (180 / Math.PI);
-    }
+      });
+    });
   }
 
   static initChangeColor() {
     const icon = document.querySelector(".icon");
 
+    localStorage.getItem("currentColorIndex") === null
+      ? localStorage.setItem("currentColorIndex", 2)
+      : null;
+
+    menuHandler.switchColor(icon);
+
     icon.addEventListener("click", () => {
+      const currentColorIndex = parseInt(
+        localStorage.getItem("currentColorIndex")
+      );
+      prepareAnimationHandler.currentColorIndex = (currentColorIndex + 1) % 3;
+
+      localStorage.setItem(
+        "currentColorIndex",
+        prepareAnimationHandler.currentColorIndex
+      );
+
       gsap.set(".svg-line", {zIndex: 10});
       gsap.set("#lineLogo path", {drawSVG: "0% 0%"});
-      prepareAnimationHandler.currentColorIndex =
-        (prepareAnimationHandler.currentColorIndex + 1) % 3;
+      const iconSwitchLogo = document.querySelector(".color-switch");
 
-      const tlSwitchColor = prepareAnimationHandler.switchColor(
-        prepareAnimationHandler.currentColorIndex
-      );
-      // MENU OPEN BURGER
-      const iconTimeline = prepareAnimationHandler.animationColor(
-        icon,
-        prepareAnimationHandler.currentColorIndex
-      );
-      const burgerTimeline = prepareAnimationHandler.changeBurgerColor(
-        prepareAnimationHandler.currentColorIndex
-      );
-      const lineLogoTimeline = prepareAnimationHandler.changeLineMorph(
-        prepareAnimationHandler.currentColorIndex
-      );
-      tlSwitchColor.play();
-      iconTimeline.play();
-      burgerTimeline.play();
-      lineLogoTimeline.play();
+      menuHandler.switchColor(icon);
     });
   }
 
+  static switchColor(icon) {
+    const currentColorIndex = parseInt(
+      localStorage.getItem("currentColorIndex")
+    );
+
+    menuHandler.setCurrentColor(currentColorIndex);
+
+    const tlSwitchColor =
+      prepareAnimationHandler.switchColor(currentColorIndex);
+    // MENU OPEN BURGER
+    const iconTimeline = prepareAnimationHandler.animationColor(
+      icon,
+      currentColorIndex
+    );
+    const burgerTimeline =
+      prepareAnimationHandler.changeBurgerColor(currentColorIndex);
+    const lineLogoTimeline =
+      prepareAnimationHandler.changeLineMorph(currentColorIndex);
+    tlSwitchColor.play();
+    iconTimeline.play();
+    burgerTimeline.play();
+    lineLogoTimeline.play();
+  }
+
+  static setCurrentColor(currentColorIndex) {
+    const nextColorIndex =
+      (currentColorIndex + 1) % prepareAnimationHandler.colors.length;
+    const colorCurrent = prepareAnimationHandler.colors[currentColorIndex];
+    const colorNext = prepareAnimationHandler.colors[nextColorIndex];
+
+    const animateColor = (elements, prop, color) => {
+      elements.forEach((el) => {
+        const targets = el.querySelectorAll("path, h2 div, h1");
+        gsap.to(targets, {[prop]: color});
+      });
+    };
+
+    animateColor(document.querySelectorAll(".curseur"), "fill", colorCurrent);
+
+    animateColor(
+      document.querySelectorAll(".text-color-switch"),
+      "color",
+      colorCurrent
+    );
+    animateColor(
+      document.querySelectorAll(".text-color-switch-h1"),
+      "color",
+      colorCurrent
+    );
+    animateColor(
+      document.querySelectorAll(".color-switch-except-stroke"),
+      "stroke",
+      colorCurrent
+    );
+    animateColor(
+      document.querySelectorAll(".color-switch-except-fill"),
+      "fill",
+      colorCurrent
+    );
+    animateColor(
+      document.querySelectorAll(".list-card svg"),
+      "fill",
+      colorCurrent
+    );
+
+    document
+      .querySelectorAll(".background-switch-color-next")
+      .forEach((container) => {
+        const color = nextColorIndex === 2 ? "#29292E" : colorNext;
+        gsap.to(container, {backgroundColor: color});
+        animateColor([container], "color", color);
+      });
+
+    // Application des couleurs spécifiques pour les icônes
+    document.querySelectorAll(".color-switch").forEach((icon) => {
+      const svgElement = icon.querySelector("svg");
+      const paths = svgElement.querySelectorAll("path");
+      const circle = svgElement.querySelector("circle");
+
+      gsap.to(paths, {fill: currentColorIndex === 2 ? "black" : "white"});
+      gsap.to(circle, {fill: colorCurrent});
+    });
+
+    // Application des couleurs aux "next" versions de stroke et path
+    animateColor(
+      document.querySelectorAll(".color-switch-except-stroke-next"),
+      "stroke",
+      colorNext
+    );
+    animateColor(
+      document.querySelectorAll(".color-switch-except-path-next"),
+      "path",
+      colorNext
+    );
+  }
+
   static setStaticValue() {
+    const detailMenu = document.querySelector(".detail-menu");
+    const height = detailMenu.offsetHeight;
     gsap.set(".svg-line", {zIndex: -1});
     gsap.set("#lineLogo path", {drawSVG: "0% 0%"});
     gsap.set("#burgerDraw1", {drawSVG: "0% 0%"});
     gsap.set(".openMenu", {
       attr: {
         width: window.innerWidth,
-        height: window.innerHeight / 1.5,
-        viewBox: `0 0 ${window.innerWidth} ${window.innerHeight / 1.5}`,
+        height: height,
+        viewBox: `0 0 ${window.innerWidth} ${height}`,
       },
     });
   }

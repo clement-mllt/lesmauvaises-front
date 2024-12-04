@@ -16,6 +16,8 @@ import {TextPlugin} from "gsap/TextPlugin";
 import {index} from "d3";
 import {letterSource} from "./letterSource";
 import {prepareAnimationHandler} from "./prepareAnimationHandler";
+import {controlSpeedHandler} from "./controlSpeedHandler";
+import {utilsHandler} from "./utilsHandler";
 
 gsap.registerPlugin(
   Flip,
@@ -34,8 +36,26 @@ gsap.registerPlugin(
 );
 
 export class animationHandler {
-  static indexProject = 1;
+  static indexProject = 2;
   static isAnimating = false;
+
+  static projects = {
+    1: {
+      title: "Sharp & Cheesy",
+      description:
+        "Studio de direction artistique très talentueux basé à Paris",
+      image:
+        "/wp-content/themes/lesmauvaises-front/assets/content/image-top/sharpandcheesy.png",
+      link: "/projet/sharpandcheesy",
+    },
+    2: {
+      title: "Galerie Diurne",
+      description: "Une galerie d’art située dans le 16ème arrondissement",
+      image:
+        "/wp-content/themes/lesmauvaises-front/assets/content/image-top/diurne.png",
+      link: "/projet/galeriediurne",
+    },
+  };
 
   static startHomepage() {
     const tl = gsap.timeline();
@@ -49,48 +69,25 @@ export class animationHandler {
     // SCROLL TRIGGER TOP
     const timelineHeaderFirst =
       prepareAnimationHandler.animationFirstSectionHomepage();
-    const timelineHeaderSecond =
-      prepareAnimationHandler.animationSecondSectionHomepage();
-      
+
+    // SET VALUE SPEED SCROLL
+    // utilsHandler.setWheelMultiplier(0.1, 0.01);
+
+    console.log(utilsHandler.lenis.options);
 
     ScrollTrigger.create({
       animation: timelineHeaderFirst,
       scrub: true,
       pin: true,
+      anticipatePin: 1,
       trigger: "#landingSection",
       start: "top",
       end: "bottom",
+      id: "mainScrollTrigger",
     });
-
-    // ScrollTrigger.create({
-    //   animation: timelineHeaderSecond,
-    //   scrub: true,
-    //   pin: true,
-    //   trigger: "#screenSection",
-    //   start: "top",
-    //   end: "bottom",
-    // });
   }
 
   static loadSliderProject(tl, tlProject) {
-    let index, titleNextProject;
-    const projects = {
-      1: {
-        title: "Sharp & Cheesy",
-        description:
-          "Studio de direction artistique très tallentueux basé à Paris",
-        image:
-          "/wp-content/themes/lesmauvaises-front/assets/content/image-top/sharpandcheesy.png",
-        link: "/projet/sharpandcheesy",
-      },
-      2: {
-        title: "Galerie Diurne",
-        description: "Une galerie d’art située dans le 16ème arrondissement",
-        image:
-          "/wp-content/themes/lesmauvaises-front/assets/content/image-top/diurne.png",
-        link: "/projet/galeriediurne",
-      },
-    };
     const duration = 7;
     const currentImageElement = document.getElementById("current-img");
     const currentTitleElement = document.querySelector(".current-title h2");
@@ -100,25 +97,57 @@ export class animationHandler {
     );
     const barProgress = document.querySelector(".progress-project");
 
-    titleNextProject = projects[animationHandler.indexProject].title;
-    if (animationHandler.indexProject === Object.keys(projects).length) {
-      titleNextProject = projects[1].title;
+    // Initialise l'index du projet pour commencer avec "Sharp & Cheesy"
+    if (!animationHandler.indexProject) {
+      animationHandler.indexProject = 1;
     }
+
+    // Vérifie la présence des éléments dans le DOM
+    if (
+      !currentImageElement ||
+      !currentTitleElement ||
+      !currentDescriptionElement ||
+      !currentNextProjectElement ||
+      !barProgress
+    ) {
+      console.error(
+        "Un ou plusieurs éléments du DOM nécessaires sont introuvables."
+      );
+      return;
+    }
+
+    const currentProject =
+      animationHandler.projects[animationHandler.indexProject];
+    const nextProjectTitle =
+      animationHandler.projects[animationHandler.indexProject === 1 ? 2 : 1]
+        .title;
+
+    // Animation de la barre de progression
     tl.to(barProgress, {
       duration: duration,
       width: "100%",
       onComplete: () => {
-        animationHandler.updateProjectContent(
-          projects,
-          currentTitleElement,
-          currentDescriptionElement,
-          currentNextProjectElement,
-          titleNextProject
-        );
-        tl.to(barProgress, {
+        // Vérification de l'existence du projet courant et du titre suivant
+        if (currentProject && nextProjectTitle) {
+          animationHandler.updateProjectContent(
+            currentProject,
+            currentTitleElement,
+            currentDescriptionElement,
+            currentNextProjectElement,
+            nextProjectTitle
+          );
+        } else {
+          console.error("Le projet ou le titre suivant est introuvable.");
+        }
+
+        // Réinitialise la barre de progression et met à jour l'index
+        gsap.to(barProgress, {
           duration: 0.5,
           width: "0%",
           onComplete: () => {
+            animationHandler.indexProject =
+              animationHandler.indexProject === 1 ? 2 : 1;
+
             animationHandler.loadSliderProject(tl, tlProject);
           },
         });
@@ -127,24 +156,26 @@ export class animationHandler {
         setTimeout(() => {
           animationHandler.isAnimating = true;
         }, duration * 1000 - 1500);
+
         setTimeout(() => {
-          animationHandler.updateProjectImage(
-            tlProject,
-            projects,
-            currentImageElement
-          );
-          animationHandler.updateProjectNumber();
+          if (currentProject) {
+            animationHandler.updateProjectImage(
+              tlProject,
+              currentProject,
+              currentImageElement
+            );
+            animationHandler.updateProjectNumber();
+          } else {
+            console.error(
+              "Le projet actuel est introuvable pour updateProjectImage."
+            );
+          }
         }, duration * 1000 - 1000);
       },
     });
   }
 
   static updateProjectImage(tl, project, currentImageElement) {
-    animationHandler.indexProject++;
-    if (animationHandler.indexProject > 2) {
-      animationHandler.indexProject = 1;
-    }
-
     const scale = gsap.utils.random(-50, 50);
 
     tl.to(".main-img #distortion-scale", {
@@ -189,10 +220,7 @@ export class animationHandler {
             scale: -1000,
           },
           onComplete: () => {
-            currentImageElement.setAttribute(
-              "href",
-              project[animationHandler.indexProject].image
-            );
+            currentImageElement.setAttribute("href", project.image);
 
             tl.to(".main-img", {
               duration: 0.5,
@@ -266,7 +294,9 @@ export class animationHandler {
           0,
           100,
           1.5,
-          "right"
+          "right",
+          false,
+          "absolute"
         );
       },
     });
@@ -279,15 +309,16 @@ export class animationHandler {
     currentNextProjectElement,
     titleNextProject
   ) {
-    currentTitleElement.textContent =
-      project[animationHandler.indexProject].title;
-    currentDescriptionElement.textContent =
-      project[animationHandler.indexProject].description;
+    currentTitleElement.textContent = project.title;
+    currentDescriptionElement.textContent = project.description;
+
     currentNextProjectElement.textContent = titleNextProject;
   }
 
   static loadEventContent(tl) {
     const img = document.getElementById("current-img");
+    // const messageButton = document.querySelector(".message-button");
+
     img.addEventListener("mousemove", () => {
       tl.pause();
       if (!animationHandler.isAnimating) {
@@ -328,6 +359,14 @@ export class animationHandler {
         },
       });
     });
+
+    // messageButton.addEventListener("click", () => {
+    //   const tlTransitionClick = prepareAnimationHandler.animationClickButton();
+
+    //   tlTransitionClick.play();
+
+    //   tlTransitionClick.eventCallback("onComplete", () => {});
+    // });
   }
 
   static loadContentFirstSection() {
@@ -339,7 +378,9 @@ export class animationHandler {
       0,
       100,
       1.5,
-      "right"
+      "right",
+      false,
+      "absolute"
     );
 
     animationHandler.setupAnimation(
@@ -350,7 +391,9 @@ export class animationHandler {
       0,
       70,
       1.5,
-      "left"
+      "left",
+      false,
+      "absolute"
     );
 
     animationHandler.setupAnimation(
@@ -362,7 +405,8 @@ export class animationHandler {
       32,
       1.5,
       "left",
-      true
+      true,
+      "absolute"
     );
   }
 
@@ -375,7 +419,8 @@ export class animationHandler {
     size,
     division,
     direction,
-    autoAdapt = false
+    autoAdapt = false,
+    position
   ) {
     letterSource
       .getLetters(query)
@@ -385,7 +430,7 @@ export class animationHandler {
             svg !== "*" ? `<span>${svg}</span>` : "<b class='space'></b>"
           )
           .join("");
-        container.innerHTML += `<div class="lm-typo top rotate ro-${rotation} ${direction} index z-9">${svgHTML}</div>`;
+        container.innerHTML += `<div class="lm-typo ${position} top rotate ro-${rotation} ${direction} index z-9">${svgHTML}</div>`;
 
         const tl = prepareAnimationHandler.animeLetterSource(
           container,
@@ -405,7 +450,6 @@ export class animationHandler {
                 containerTypo.getBoundingClientRect().width;
 
               const diff = sizeContainer - sizecontainerTypo;
-              console.log(diff);
               gsap.to(containerTypo, {
                 x: diff / 2 + "px",
                 duration: 0.5,

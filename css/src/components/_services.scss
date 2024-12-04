@@ -17,12 +17,15 @@
     background-color: #28282d;
     .container-title-op {
       span {
-        color: rgba($color: #cddd20, $alpha: 0.1) !important;
+        color: rgba(
+          $color: var(--e-global-color-0259c30),
+          $alpha: 0.1
+        ) !important;
       }
     }
     svg {
       path {
-        stroke: #cddd20 !important;
+        stroke: var(--e-global-color-0259c30) !important;
       }
     }
     .title {

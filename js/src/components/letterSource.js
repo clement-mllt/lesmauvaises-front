@@ -1,7 +1,6 @@
 export class letterSource {
   static async getLetters(letters) {
     // Tableau des lettres de l'alphabet
-
     var alphabet = letters.split(",");
 
     // Tableau pour stocker les promesses de chargement des fichiers SVG
@@ -9,13 +8,23 @@ export class letterSource {
 
     // Parcours de chaque lettre de l'alphabet pour charger les fichiers SVG
     alphabet.forEach(function (letter) {
-      if (letter != "*") {
+      if (letter !== "*") {
+        // Création de la promesse pour récupérer le contenu SVG
         var svgPromise = fetch(
           "/wp-content/themes/lesmauvaises-front/assets/content/letters/" +
             letter +
             ".svg"
         )
           .then((response) => response.text())
+          .then((svgContent) => {
+            // Ajoute une balise <b> autour du SVG si la lettre correspond
+            return `${svgContent}`;
+            //   if (letter === "EACCENTGRAVE") {
+            //   return `<b class='${letter}'>${svgContent}</b>`;
+            // } else {
+            //   return `${svgContent}`;
+            // }
+          })
           .catch((error) => {
             console.error(
               "Une erreur s'est produite lors du chargement du fichier SVG pour la lettre " +
@@ -28,7 +37,7 @@ export class letterSource {
 
         svgPromises.push(svgPromise);
       } else {
-        svgPromises.push(letter);
+        svgPromises.push("<b class='space'></b>"); // Marqueur pour les espaces
       }
     });
 

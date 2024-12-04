@@ -45,15 +45,17 @@ export class transitionPageHandler {
           e.preventDefault();
           const href = link.getAttribute("href");
 
-          // if (href != "#") {
-          const tl = prepareAnimationHandler.constructTransition(true);
-          tl.play();
+          if (!href.includes("tag")) {
+            if (href != "#") {
+              const tl = prepareAnimationHandler.constructTransition(true);
+              tl.play();
 
-          tl.eventCallback("onComplete", () => {
-            setTimeout(callback, (tl.duration() - 0.6) * 1000);
-            window.location.href = href;
-          });
-          // }
+              tl.eventCallback("onComplete", () => {
+                setTimeout(callback, (tl.duration() - 0.6) * 1000);
+                window.location.href = href;
+              });
+            }
+          }
         });
       });
 
