@@ -46,7 +46,7 @@ export class projectHandler {
       const cards = container.querySelectorAll(
         ".jet-listing-grid__items > div"
       );
-      const endValue = "+=" + cards.length * 50 + "vh"; // Ajuste le multiplicateur (ici 500px) si besoin
+      const endValue = "+=" + cards.length * 50 + "vh";
 
       ScrollTrigger.create({
         animation: timelineHeaderFirst,
@@ -54,8 +54,8 @@ export class projectHandler {
         pin: true,
         anticipatePin: 1,
         trigger: ".container-project-card",
-        start: "top-=100px", // Commence quand le top de l'élément touche le top de la fenêtre
-        end: endValue, // Augmente la longueur de l'animation (ajuste en fonction du nombre de cartes)
+        start: "top-=100px",
+        end: endValue, 
       });
     }
   }
@@ -75,8 +75,8 @@ export class projectHandler {
               if (otherIndex > index) {
                 gsap.to(otherCard, {
                   x: -offset + 80,
-                  duration: 0.7,
-                  ease: "power2.out",
+                  duration: 0.25,
+                  ease: "power1.inOut",
                 });
               }
             });
@@ -84,12 +84,12 @@ export class projectHandler {
 
           card.addEventListener("mouseleave", () => {
             cards.forEach((otherCard, otherIndex) => {
-              const offset = (otherIndex + 1) * 80 - 80; // Calculer le décalage initial
+              const offset = (otherIndex + 1) * 80 - 80; 
               if (otherIndex > index) {
                 gsap.to(otherCard, {
                   x: -offset,
-                  duration: 0.7,
-                  ease: "power2.out",
+                  duration: 0.25,
+                  ease: "power1.inOut",
                 });
               }
             });
@@ -143,6 +143,37 @@ export class projectHandler {
             duration: 0.3,
           });
       });
+    });
+  }
+
+  static switchBackgroundColor() {
+    console.log("Coucou");
+    const currentIndexColor = localStorage.getItem('currentColorIndex')
+    const currentColor = prepareAnimationHandler.colors[currentIndexColor]
+    const container = document.querySelector(".cocktailHero");
+
+    gsap.to(container, {
+      backgroundColor: currentColor,
+      duration: 0.25
+    })
+  }
+
+  static animateStickyModel() {
+
+    // CONTAINERS
+    const globalContainer = document.querySelector('.globalContainer')
+    const stickyContainer = globalContainer.querySelector('.stickyContainer')
+    const stickyElement = stickyContainer.querySelector('.stickyElement')
+    const img = stickyElement.querySelector('img')
+
+    gsap.to(globalContainer, {
+      scrollTrigger: {
+        trigger: globalContainer,
+        start: `top top`,
+        end: "bottom bottom",
+        // Regler le problème de jump 
+        pin: stickyElement,
+      },
     });
   }
 }

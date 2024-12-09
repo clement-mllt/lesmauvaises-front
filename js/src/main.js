@@ -50,6 +50,7 @@ document.addEventListener("readystatechange", (event) => {
               utilsHandler.calculCards();
               projectHandler.getFontProject();
               projectHandler.switchColorProject();
+              projectHandler.animateStickyModel()
               break;
             case location.pathname.includes("actualites"):
               // actuHandler.setNumberOnArticle();

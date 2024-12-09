@@ -37,6 +37,7 @@ import {prepareAnimationHandler} from "./prepareAnimationHandler";
 export class serviceHandler {
   static index = 0;
   static loadSwitchService() {
+    const serviceContainers = document.querySelectorAll('.container-service')
     const containers = document.querySelectorAll(".container-service-overlay");
     const containersTitle = document.querySelectorAll(
       ".main-container-service .container-title-op"
@@ -64,6 +65,24 @@ export class serviceHandler {
         size: 18,
       },
     ];
+
+    const animateServiceContainers = () => {
+      serviceContainers.forEach((service, idx) => {
+        service.classList.add(`service-${idx}`)
+        const tl = gsap.timeline()
+      tl.fromTo("service-0", {
+        left: -20,
+        opacity: 0,
+      }, {
+        left: 0,
+        opacity: 1,
+        ease: "power4.inOut"
+      }, 0.75)
+      })
+      
+    }
+
+    animateServiceContainers()
 
     containersTitle.forEach((containerTitle, index) => {
       const titles = containerTitle.querySelectorAll(
