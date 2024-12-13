@@ -1,7 +1,10 @@
+@import '../variables';
+
 .swiper_faq_response {
     height: 550px !important;
     width: 100%;
     overflow: hidden;
+    border: 1ps solid #C62369;
 
     .swipper-wrapper {
         height: 550px !important;
@@ -40,12 +43,80 @@
     }
 }
 
-.swiper_faq_content {
-    height: 450px;
-    width: 100%;
-    align-items: end;
-    .swiper-wrapper {
-        max-width: 670px;
+.faqContainer {
+    height: calc(100vh - 100px);
+}
+
+.accordionContainer {
+    width: fit-content;
+
+    .swiper_faq_content {
+        width: fit-content;
+
+        .swiper-wrapper {
+            max-width: 650px;
+            width: 100%;
+            height: fit-content;
+        }
+
+        .elementor-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+
+
+            .elementor-accordion-item {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        .elementor-accordion-item .elementor-tab-title a.elementor-accordion-title,
+        .elementor-accordion-item .elementor-tab-title .elementor-active a.elementor-accordion-title {
+            font-family: "MADE SOULMAZE", Sans-serif;
+            color: $GREEN;
+            font-weight: 400;
+        }
+
+        p {
+            color: $GREEN;
+        }
+
+        a {
+            color: #C62369;
+        }
+
+        &:nth-child(2) {
+            text-align: right;
+        }
+    }
+
+    &:nth-child(2) {
+        .swiper_faq_content {
+            align-items: flex-end;
+
+            p,
+            h3 {
+                text-align: right;
+            }
+        }
+    }
+}
+
+.tubeContainer {
+    width: 125px;
+    height: 100%;
+    border: 3px solid $GREEN;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    justify-content: flex-end;
+    overflow: hidden;
+
+    .tube {
+        height: 35%;
+        background: $PINK;
+        animation: wave 0.25s ease-in-out infinite;
     }
 }
 

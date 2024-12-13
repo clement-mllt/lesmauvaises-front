@@ -14,6 +14,7 @@ import {letterSource} from "./components/letterSource";
 import {projectHandler} from "./components/projectHandler";
 import {faqHandler} from "./components/faqHandler";
 import {controlSpeedHandler} from "./components/controlSpeedHandler";
+import { contactHandler } from "./components/contactHandler";
 
 document.addEventListener("readystatechange", (event) => {
   switch (document.readyState) {
@@ -64,8 +65,14 @@ document.addEventListener("readystatechange", (event) => {
               utilsHandler.showBrunchText();
               break;
             case location.pathname.includes("foire-aux-questions"):
-              faqHandler.sliderFaq();
-              faqHandler.sliderQuestionsNumber();
+              // faqHandler.sliderFaq();
+              // faqHandler.sliderQuestionsNumber();
+              break;
+            case location.pathname.includes("contact"):
+              contactHandler.contactTextApparition()
+              contactHandler.animateFormCard()
+              contactHandler.animateDatePicker()
+              contactHandler.calendarHandler()
               break;
             default:
               break;
