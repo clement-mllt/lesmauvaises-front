@@ -1,23 +1,23 @@
-import {gsap} from "gsap";
-import {ScrollTrigger} from "gsap/ScrollTrigger.js";
-import {ScrollToPlugin} from "gsap/ScrollToPlugin.js";
-import {Draggable} from "gsap/Draggable.js";
-import {MotionPathPlugin} from "gsap/MotionPathPlugin.js";
-import {EaselPlugin} from "gsap/EaselPlugin.js";
-import {PixiPlugin} from "gsap/PixiPlugin.js";
-import {TextPlugin} from "gsap/TextPlugin.js";
-import {DrawSVGPlugin} from "gsap/DrawSVGPlugin.js";
-import {SplitText} from "gsap/SplitText.js";
-import {MorphSVGPlugin} from "gsap/MorphSVGPlugin.js";
-import {numberSource} from "./numberSource";
-import {PhysicsPropsPlugin} from "gsap/PhysicsPropsPlugin.js";
-import {letterSource} from "./letterSource";
-import {animationHandler} from "./animationHandler";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger.js";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin.js";
+import { Draggable } from "gsap/Draggable.js";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin.js";
+import { EaselPlugin } from "gsap/EaselPlugin.js";
+import { PixiPlugin } from "gsap/PixiPlugin.js";
+import { TextPlugin } from "gsap/TextPlugin.js";
+import { DrawSVGPlugin } from "gsap/DrawSVGPlugin.js";
+import { SplitText } from "gsap/SplitText.js";
+import { MorphSVGPlugin } from "gsap/MorphSVGPlugin.js";
+import { numberSource } from "./numberSource";
+import { PhysicsPropsPlugin } from "gsap/PhysicsPropsPlugin.js";
+import { letterSource } from "./letterSource";
+import { animationHandler } from "./animationHandler";
 
 // ES6 Modules
 import Matter from "matter-js";
 // Ou, si vous avez besoin d'accéder à des modules spécifiques
-import {Engine, Render, World, Bodies} from "matter-js";
+import { Engine, Render, World, Bodies } from "matter-js";
 
 gsap.registerPlugin(
   ScrollTrigger,
@@ -33,13 +33,13 @@ gsap.registerPlugin(
   DrawSVGPlugin
 );
 
-import {utilsHandler} from "./utilsHandler";
-import {serviceHandler} from "./serviceHandler";
-import {menuHandler} from "./menuHandler";
+import { utilsHandler } from "./utilsHandler";
+import { serviceHandler } from "./serviceHandler";
+import { menuHandler } from "./menuHandler";
 
 export class prepareAnimationHandler {
   static currentColorIndex = 0; // Indice de la couleur actuelle
-  static colors = ["#C62369", "#9B9BC1", "#CDDD20", "#29292E"]; // Ordre des couleurs : purple, pink, yellow
+  static colors = ["#C62369", "#9B9BC1", "#CDDD20"]; // Ordre des couleurs : purple, pink, yellow
   static isOpen = false;
   static activeVideo = false;
   static currentStepButton = 2;
@@ -47,8 +47,8 @@ export class prepareAnimationHandler {
   static hasClickedSecondAnimation = false;
 
   static animationFirstSectionHomepage() {
-    const tl = gsap.timeline({paused: true});
-    const tlButton = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
+    const tlButton = gsap.timeline({ paused: true });
     const containerFirstSection = document.querySelector(".main-container-top");
     const tvElement = document.querySelector(".tv_man");
     const skipVideo = document.querySelector(".skip");
@@ -80,8 +80,8 @@ export class prepareAnimationHandler {
       type: "chars", // Vous pouvez utiliser "chars", "words" ou "lines" selon vos besoins
     });
 
-    const menteurText = new SplitText(".menteur", {type: "chars"});
-    const lastChanceText = new SplitText(".last-chance", {type: "chars"});
+    const menteurText = new SplitText(".menteur", { type: "chars" });
+    const lastChanceText = new SplitText(".last-chance", { type: "chars" });
     const nextStepCuriousText = new SplitText(".next-step-text", {
       type: "chars",
     });
@@ -358,7 +358,7 @@ export class prepareAnimationHandler {
                 );
               }
             },
-            {once: true} // L'événement ne sera exécuté qu'une seule fois
+            { once: true } // L'événement ne sera exécuté qu'une seule fois
           );
 
           // Écouteur de fin de la vidéo
@@ -434,7 +434,7 @@ export class prepareAnimationHandler {
                 utilsHandler.unScaleCursor();
               }
             },
-            {once: true} // L'événement ne sera exécuté qu'une seule fois
+            { once: true } // L'événement ne sera exécuté qu'une seule fois
           );
 
           // Écouteur de fin de la vidéo
@@ -754,7 +754,7 @@ export class prepareAnimationHandler {
   }
 
   static animationsBrunchText(content) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
 
     content.forEach((element) => {
       const blackBlock = document.createElement("div");
@@ -820,7 +820,7 @@ export class prepareAnimationHandler {
     return tl;
   }
   static eraseText() {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
     const lineErase = document.querySelectorAll(".line-erase-mauvaises path");
 
     if (lineErase.length > 0) {
@@ -868,7 +868,7 @@ export class prepareAnimationHandler {
   static transitionCardProject() {}
 
   static animationSwitch(element) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
     const title = element.querySelector(".title h2");
     const fakeTitle = element.querySelector(
       ".fake-title .elementor-widget-container"
@@ -1049,7 +1049,7 @@ export class prepareAnimationHandler {
   }
 
   static animeLetterSource(target, size, duration, color, max) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
     const spanElement = target.querySelectorAll(".lm-typo > span");
     const pathElement = target.querySelectorAll(".lm-typo path");
     const svgElement = target.querySelectorAll(".lm-typo svg");
@@ -1117,8 +1117,26 @@ export class prepareAnimationHandler {
     return tl;
   }
 
+  static animeSVGline(paths) {
+    const tl = gsap.timeline({ paused: true });
+
+    tl.fromTo(
+      paths,
+      {
+        drawSVG: "0%",
+        duration: 0,
+      },
+      {
+        drawSVG: "100%",
+        duration: 2.5,
+      }
+    );
+
+    return tl;
+  }
+
   static animationMenuOpen(container, currentColorIndex) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
     const tlShowMenuItem = prepareAnimationHandler.showMenuItem();
     const menu = document.querySelector(".menu");
 
@@ -1134,9 +1152,9 @@ export class prepareAnimationHandler {
     tl.set("#burgerDraw1", {
       stroke: prepareAnimationHandler.colors[currentColorIndex],
     });
-    tl.set("#lineLogo path", {stroke: "#29292E"});
-    tl.set(".openMenu", {top: 0, duration: 0});
-    tl.set(".menu", {background: "transparent", duration: 0.5});
+    tl.set("#lineLogo path", { stroke: "#29292E" });
+    tl.set(".openMenu", { top: 0, duration: 0 });
+    tl.set(".menu", { background: "transparent", duration: 0.5 });
 
     // Lancement simultané des animations
     tl.to(["#burgerDraw1", "#lineLogo path"], {
@@ -1208,7 +1226,7 @@ export class prepareAnimationHandler {
   }
 
   static animationMenuClose(container, currentColorIndex) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
     const allLettersMenu = document.querySelectorAll(
       "#menu-1-4871bd2 li a > div:not(.invisible-container)"
     );
@@ -1231,9 +1249,9 @@ export class prepareAnimationHandler {
   }
 
   static splitText(contentNewsProject, type) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
 
-    const splitProject = new SplitText(contentNewsProject, {type: type});
+    const splitProject = new SplitText(contentNewsProject, { type: type });
     let project;
 
     switch (type) {
@@ -1267,14 +1285,14 @@ export class prepareAnimationHandler {
   }
 
   static animationLoaderPercent(balls, world, obstacleZero, ground) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
     const text = document.querySelector(".zero-text");
     const steps = 4;
 
     // Fonction récursive pour animer chaque étape
     function animateStep(step, duration, newText) {
       text.innerHTML = newText;
-      const splitText = new SplitText(text, {type: "chars"});
+      const splitText = new SplitText(text, { type: "chars" });
 
       tl.from(splitText.chars, {
         y: 200,
@@ -1376,7 +1394,7 @@ export class prepareAnimationHandler {
   }
 
   static showMenuItem() {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
 
     const menuItems = document.querySelectorAll("#menu-1-4871bd2 li a");
 
@@ -1395,7 +1413,7 @@ export class prepareAnimationHandler {
         drawSVG: "0% 0%",
       });
       const svgElement = line.querySelector("svg");
-      const chars = new SplitText(line, {type: "chars"}).chars;
+      const chars = new SplitText(line, { type: "chars" }).chars;
       const randomDelay = Math.random() * (0.3 - 0.1) + 0.1;
 
       if (index == 2) {
@@ -1450,7 +1468,7 @@ export class prepareAnimationHandler {
   }
 
   static animationColor(icon, currentColorIndex) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
     console.log(currentColorIndex === 2);
     tl.to(icon, {
       x: "-80px",
@@ -1477,7 +1495,7 @@ export class prepareAnimationHandler {
   }
 
   static changeLineMorph(currentColorIndex) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
 
     const logo = document.querySelector("#mainLogo");
     const logoPath = logo.querySelectorAll("path");
@@ -1532,7 +1550,7 @@ export class prepareAnimationHandler {
           duration: 0.5,
           ease: "power1.inOut",
           onComplete: function () {
-            tl.to(".svg-line", {zIndex: -1, duration: 0});
+            tl.to(".svg-line", { zIndex: -1, duration: 0 });
           },
         },
         "sync+=1"
@@ -1594,7 +1612,7 @@ export class prepareAnimationHandler {
     return tl;
   }
   static changeBurgerColor(currentColorIndex) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
 
     const circlePath = MorphSVGPlugin.convertToPath("#circle-start");
     const circlePathEnd = MorphSVGPlugin.convertToPath("#circle-end");
@@ -1647,7 +1665,7 @@ export class prepareAnimationHandler {
   }
 
   static switchColor(currentColorIndex) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
     const elements = document.querySelectorAll(".color-switcher");
     const allElements = document.querySelectorAll("main *");
 
@@ -1670,31 +1688,31 @@ export class prepareAnimationHandler {
   }
 
   static animationFooter(element) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
 
     tl.fromTo(
       element,
-      {drawSVG: "0% 0%"}, // SVG caché par défaut
-      {drawSVG: "0% 100%", duration: 0.5, ease: "power2.inOut"} // SVG visible au survol
+      { drawSVG: "0% 0%" }, // SVG caché par défaut
+      { drawSVG: "0% 100%", duration: 0.5, ease: "power2.inOut" } // SVG visible au survol
     );
 
     return tl;
   }
 
   static animationMenu(element) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
 
     tl.fromTo(
       element,
-      {drawSVG: "0% 0%"}, // SVG caché par défaut
-      {drawSVG: "0% 100%", duration: 0.5, ease: "power2.inOut"} // SVG visible au survol
+      { drawSVG: "0% 0%" }, // SVG caché par défaut
+      { drawSVG: "0% 100%", duration: 0.5, ease: "power2.inOut" } // SVG visible au survol
     );
 
     return tl;
   }
 
   static constructTransition(state) {
-    const tl = gsap.timeline({paused: true});
+    const tl = gsap.timeline({ paused: true });
     const containerTransition = document.querySelector(".transition");
     const clientReact = containerTransition.getBoundingClientRect();
     const width = clientReact.width;
@@ -1755,7 +1773,7 @@ export class prepareAnimationHandler {
       autoAlpha: 1,
       duration: 0,
       zIndex: 9999,
-      attr: {width: width, height: height},
+      attr: { width: width, height: height },
     });
 
     tl.to(svgLine, {
@@ -1764,13 +1782,13 @@ export class prepareAnimationHandler {
       left: -400,
       top: -200,
       position: "absolute",
-      attr: {width: width + 800, height: height + 400},
+      attr: { width: width + 800, height: height + 400 },
     });
 
     if (state) {
       // SETTER
-      tl.set(pathElement, {drawSVG: "0% 0%"});
-      tl.set(pathLine, {drawSVG: "0% 0%"});
+      tl.set(pathElement, { drawSVG: "0% 0%" });
+      tl.set(pathLine, { drawSVG: "0% 0%" });
 
       tl.to(containerTransition, {
         duration: 0.5,
@@ -1788,7 +1806,7 @@ export class prepareAnimationHandler {
         left: -400,
         top: -200,
         position: "absolute",
-        attr: {width: width + 800, height: height + 400},
+        attr: { width: width + 800, height: height + 400 },
       });
 
       tl.to(pathLine, {
@@ -1811,8 +1829,8 @@ export class prepareAnimationHandler {
         duration: 0,
         background: "#28282D",
       });
-      tl.set(pathElement, {drawSVG: "100%", duration: 0, stroke: "#CDDD20"});
-      tl.set(pathLine, {drawSVG: "0%", duration: 0});
+      tl.set(pathElement, { drawSVG: "100%", duration: 0, stroke: "#CDDD20" });
+      tl.set(pathLine, { drawSVG: "0%", duration: 0 });
 
       tl.to(svgLine, {
         autoAlpha: 1,
@@ -1820,7 +1838,7 @@ export class prepareAnimationHandler {
         left: -400,
         top: -200,
         position: "absolute",
-        attr: {width: width + 800, height: height + 400},
+        attr: { width: width + 800, height: height + 400 },
       });
 
       tl.set(".menu", {

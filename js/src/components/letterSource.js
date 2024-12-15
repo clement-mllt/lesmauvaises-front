@@ -8,7 +8,7 @@ export class letterSource {
 
     // Parcours de chaque lettre de l'alphabet pour charger les fichiers SVG
     alphabet.forEach(function (letter) {
-      if (letter !== "*") {
+      if (letter !== "*" && letter !== 'BR') {
         // Création de la promesse pour récupérer le contenu SVG
         var svgPromise = fetch(
           "/wp-content/themes/lesmauvaises-front/assets/content/letters/" +
@@ -36,11 +36,15 @@ export class letterSource {
           });
 
         svgPromises.push(svgPromise);
-      } else {
+      } else if (letter == "*") {
         svgPromises.push("<b class='space'></b>"); // Marqueur pour les espaces
+      } else if (letter == 'BR') {
+        svgPromises.push('<br>'); // Marqueur pour les espaces
+
       }
     });
 
+    
     // RETURN PROMISE
     return Promise.all(svgPromises);
   }
