@@ -147,7 +147,6 @@ export class projectHandler {
   }
 
   static switchBackgroundColor() {
-    console.log("Coucou");
     const currentIndexColor = localStorage.getItem('currentColorIndex')
     const currentColor = prepareAnimationHandler.colors[currentIndexColor]
     const container = document.querySelector(".cocktailHero");
