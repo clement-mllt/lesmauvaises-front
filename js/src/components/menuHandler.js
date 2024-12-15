@@ -18,6 +18,7 @@ import {Engine, Render, World, Bodies} from "matter-js";
 
 import {PhysicsPropsPlugin} from "gsap/PhysicsPropsPlugin.js";
 import {color, text} from "d3";
+import { projectHandler } from "./projectHandler";
 
 gsap.registerPlugin(
   ScrollTrigger,
@@ -413,6 +414,7 @@ export class menuHandler {
 
     const tlSwitchColor =
       prepareAnimationHandler.switchColor(currentColorIndex);
+      projectHandler.switchBackgroundColor()
 
     const iconTimeline = prepareAnimationHandler.animationColor(
       icon,

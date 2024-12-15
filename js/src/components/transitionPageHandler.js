@@ -30,6 +30,7 @@ import {prepareAnimationHandler} from "./prepareAnimationHandler";
 
 export class transitionPageHandler {
   static loadTransition(callback) {
+    
     let storedValue = localStorage.getItem("loader")
       ? localStorage.getItem("loader")
       : localStorage.setItem("loader", false);
