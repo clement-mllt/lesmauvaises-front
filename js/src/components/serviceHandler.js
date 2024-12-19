@@ -278,4 +278,52 @@ export class serviceHandler {
 
     return tl;
   }
+
+   // Confetti Projet Agence 
+   static createConfetti() {
+    const container = document.getElementById("confettisContainer");
+    const numberOfConfetti = 300; 
+    const wrapperRect = container.parentElement.getBoundingClientRect(); 
+    const startX = wrapperRect.width * 0.25 ; 
+    const startY = wrapperRect.height / 2;
+
+    for (let i = 0; i < numberOfConfetti; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        container.appendChild(confetti);
+
+        // Position initiale absolue dans le wrapper
+        confetti.style.position = "absolute";
+        confetti.style.left = `${startX}px`;
+        confetti.style.top = `${startY}px`;
+
+        // Calcul des déplacements
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * wrapperRect.width * 0.8; 
+        const xOffset = Math.cos(angle) * distance;
+        const yOffset = Math.sin(angle) * distance;
+
+        // Taille et couleur aléatoire
+        const size = Math.random() * 8 + 3;
+        confetti.style.width = `${size}px`;
+        confetti.style.height = `${size}px`;
+
+        const randomBackground =
+            prepareAnimationHandler.colors[
+                Math.floor(Math.random() * prepareAnimationHandler.colors.length)
+            ];
+
+        // Animation GSAP
+        gsap.to(confetti, {
+            opacity: 1,
+            x: xOffset,
+            y: yOffset + wrapperRect.height, 
+            background: randomBackground,
+            rotation: "+=360",
+            duration: 0.8 + Math.random(),
+            ease: "power2.out",
+            onComplete: () => confetti.remove(), 
+        });
+    }
+}
 }

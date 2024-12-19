@@ -42,6 +42,7 @@ add_filter( 'wp_check_filetype_and_ext', function($data, $file, $filename, $mime
   
   }, 10, 4 );
   
+  
   function wppln_mime_types( $mimes ){
 	$mimes['svg'] = 'image/svg+xml';
 	return $mimes;
@@ -59,4 +60,10 @@ add_filter( 'wp_check_filetype_and_ext', function($data, $file, $filename, $mime
   add_action( 'admin_head', 'wppln_fix_svg' );
 
 
+  function load_custom_scripts() {
+    wp_enqueue_script('jquery'); // WordPress jQuery
+    // wp_enqueue_script('underscore'); // WordPress Underscore
+    wp_enqueue_script('backbone'); // WordPress Backbone
+  }
+	add_action('wp_enqueue_scripts', 'load_custom_scripts');
 ?>

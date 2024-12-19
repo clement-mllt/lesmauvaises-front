@@ -16,7 +16,10 @@ import {faqHandler} from "./components/faqHandler";
 import {controlSpeedHandler} from "./components/controlSpeedHandler";
 import { contactHandler } from "./components/contactHandler";
 
+
 document.addEventListener("readystatechange", (event) => {
+  console.log(utilsHandler.setDynamicFontSize(500));
+  
   switch (document.readyState) {
     case "loading":
       break;
@@ -34,9 +37,14 @@ document.addEventListener("readystatechange", (event) => {
           footerHandler.loadFooter();
           // blogHandler.loadScrollLecture();
 
+
+          const currentIndexColor = localStorage.getItem('currentColorIndex')
+          const currentColor = prepareAnimationHandler.colors[currentIndexColor]
+
           switch (true) {
             case location.pathname.split('"')[0] === "/":
-              animationHandler.startHomepage();
+              animationHandler.startHomepage(currentColor);
+              utilsHandler.setupButtonAnimations(currentColor, utilsHandler.arrowSvg, "background.dynamic");
               break;
             case location.pathname.includes("les-mauvaises"):
               utilsHandler.showBrunchText();
@@ -52,6 +60,7 @@ document.addEventListener("readystatechange", (event) => {
               projectHandler.getFontProject();
               projectHandler.switchColorProject();
               projectHandler.animateStickyModel()
+              serviceHandler.createConfetti();
               break;
             case location.pathname.includes("actualites"):
               // actuHandler.setNumberOnArticle();

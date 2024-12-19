@@ -57,7 +57,7 @@ export class animationHandler {
     },
   };
 
-  static startHomepage() {
+  static startHomepage(currentColor) {
     const tl = gsap.timeline();
     const tlProject = gsap.timeline();
 
@@ -66,7 +66,7 @@ export class animationHandler {
     animationHandler.loadSliderProject(tl, tlProject);
 
     const timelineHeaderFirst =
-      prepareAnimationHandler.animationFirstSectionHomepage();
+      prepareAnimationHandler.animationFirstSectionHomepage(currentColor);
 
     ScrollTrigger.create({
       animation: timelineHeaderFirst,

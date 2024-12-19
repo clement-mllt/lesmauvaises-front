@@ -56,6 +56,13 @@
             z-index: 1;
         }
 
+        &.background-dynamic {
+            background: $GREEN;
+
+        }
+
+
+
         &:hover .overlay {
             animation: viber 0.3s linear;
         }

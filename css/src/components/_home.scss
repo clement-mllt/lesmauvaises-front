@@ -19,6 +19,16 @@
   background: transparent !important;
 }
 
+.mot-croise {
+  > div {
+    > div {
+      overflow: hidden;
+      * {
+      }
+    }
+  }
+}
+
 .video-tv-2 {
   background-color: black;
   .e-hosted-video {
