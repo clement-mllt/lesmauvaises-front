@@ -1560,7 +1560,7 @@ gsap.registerPlugin(ScrollTrigger);
             "background-repeat": "no-repeat",
           });
         }
-        console.log('coucou')
+        console.log('coucou ca va ?')
 
         texttitle.innerHTML = textData[elementId].title;
         textInfo.innerHTML = `<p>${textData[elementId].description}</p>`;
