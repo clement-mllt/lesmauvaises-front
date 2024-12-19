@@ -38,8 +38,10 @@ document.addEventListener("readystatechange", (event) => {
               animationHandler.startHomepage();
               break;
             case location.pathname.includes("les-mauvaises"):
-              agenceHandler.ShootTaMauvaise()
-              agenceHandler.SectionRoue()
+              agenceHandler.animateHeader();
+              agenceHandler.sectionPhoto();
+              agenceHandler.ShootTaMauvaise();
+              agenceHandler.SectionRoue();
               agenceHandler.Initialize3dRendered();
               utilsHandler.showBrunchText();
               agenceHandler.switchWhy();

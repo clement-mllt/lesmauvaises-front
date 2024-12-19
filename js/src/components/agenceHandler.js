@@ -39,7 +39,7 @@ gsap.registerPlugin(
 
 gsap.registerPlugin(ScrollTrigger);
 
-export class agenceHandler {
+ export class agenceHandler {
   static onEnter = false;
   static lineState = false;
   static switchWhy() {
@@ -66,6 +66,23 @@ export class agenceHandler {
         target.animationTimeline.reverse();
       });
     });
+  }
+
+  static animateHeader() {
+    const bonsoir = document.querySelector(".header-bonsoir");
+    const nous = document.querySelector(".header-nous");
+    const mauvaises = document.querySelector(".header-mauvaises");
+
+    gsap.set([nous, mauvaises], { scale: 100 });
+
+    const tl = gsap.timeline();
+
+    tl.to(bonsoir, { scale: 0.85, duration: 0.5, ease: "power2.inOut" })
+      .to(bonsoir, { scale: 1, duration: 0.15, ease: "power2.inOut" })
+      .to(nous, { scale: 0.85, duration: 0.5, ease: "power2.inOut" })
+      .to(nous, { scale: 1, duration: 0.15, ease: "power2.inOut" })
+      .to(mauvaises, { scale: 0.85, duration: 0.5, ease: "power2.inOut" })
+      .to(mauvaises, { scale: 1, duration: 0.15, ease: "power2.inOut" });
   }
 
   static animateTextOpacityOnScroll() {
@@ -305,8 +322,8 @@ export class agenceHandler {
         const timeline = gsap.timeline({
           scrollTrigger: {
             trigger: word,
-            start: "top bottom",
-            end: "bottom center",
+            start: "bottom bottom",
+            end: "bottom bottom",
             scrub: 1,
             toggleActions: "play reverse play reverse",
           },
@@ -1133,6 +1150,97 @@ export class agenceHandler {
     }, 1);
   }
 
+
+
+
+  static sectionPhoto() {
+    let navBar = document.querySelector(".elementor-element-26a7de8");
+
+    function hideNavBar() {
+      Object.assign(navBar.style, {
+        "background-color": "transparent",
+      });
+    }
+
+    function afficherNavBAr() {
+      Object.assign(navBar.style, {
+        "background-color": "var( --e-global-color-1fe2b94 )",
+      });
+    }
+
+    ScrollTrigger.create({
+      trigger: "#section-photo",
+      start: "top center",
+      end: "bottom center",
+      onEnter: () => hideNavBar(),
+      onLeave: () => afficherNavBAr(),
+      onEnterBack: () => hideNavBar(),
+      onLeaveBack: () => afficherNavBAr(),
+    });
+
+    // Sélectionne le conteneur principal et injecte le HTML
+
+    // Sélectionne la section principale
+    const sectionPhoto = document.querySelector("#section-photo");
+
+    const width = window.innerWidth;
+    // window.addEventListener("resize", detectDeviceByScreenSize);
+        
+  
+    //   sectionPhoto.innerHTML = `
+    //   <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/mobil/1.jpg" alt="Photo 1" style="z-index: 60;">
+    //   <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/mobil/2.jpg" alt="Photo 2" style="z-index: 50;">
+    //   <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/mobil/3.jpg" alt="Photo 3" style="z-index: 40;">
+    //   <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/mobil/4.jpg" alt="Photo 4" style="z-index: 30;">
+    //   <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/mobil/5.jpg" alt="Photo 5" style="z-index: 20;">
+    //   <img class='photoDivLast' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/mobil/6.jpg" alt="Photo 6" style="z-index: 10;">
+    // `;
+    //   console.log("L'utilisateur utilise un appareil mobile.");
+    
+      sectionPhoto.innerHTML = `
+      <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/ordinateur/1.jpg" alt="Photo 1" style="z-index: 60;">
+      <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/ordinateur/2.jpg" alt="Photo 2" style="z-index: 50;">
+      <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/ordinateur/3.jpg" alt="Photo 3" style="z-index: 40;">
+      <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/ordinateur/4.jpg" alt="Photo 4" style="z-index: 30;">
+      <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/ordinateur/5.jpg" alt="Photo 5" style="z-index: 20;">
+      <img class='photoDivLast' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/ordinateur/6.jpg" alt="Photo 6" style="z-index: 10;">
+    `;
+      console.log("L'utilisateur utilise un ordinateur ou une tablette.");
+    
+      
+    // Sélection de chaque photoDiv
+    const sections = document.querySelectorAll(".photoDiv");
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: sectionPhoto,
+          start: "top top",
+          end: "+=16.6%", 
+          pin: true, 
+          scrub: true, 
+          markers: true,
+          ease: 'none',
+          pinType: "transform",
+          anticipatePin: 1
+        },
+      })
+      .to(sections, {
+        opacity: 0, 
+        duration: 0,
+        delay: 1,
+        stagger: 0.5, 
+        ease: "linear", 
+      })
+
+        
+        // Écouteur d'événements pour s'adapter aux changements de taille de l'écran
+        
+  }
+
+
+
+
   static SectionRoue() {
     let navBar = document.querySelector(".elementor-element-26a7de8");
 
@@ -1158,41 +1266,106 @@ export class agenceHandler {
       onLeaveBack: () => afficherNavBAr(),
     });
 
-
+    let textData = [
+      {
+        number: 0,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/ANGE-NOIR.png",
+        title: "ce qu'on est",
+        description:
+          "Fous - Uniques - Pas si spéciaux - Drôles - Sympas - Têtus - Créatifs - Perchés - Sans filtre - Gentils",
+      },
+      {
+        number: 1,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/DEMON-NOIR.png",
+        title: "PERDU",
+        description: "On espère que t'es pas trop mauvais perdant...",
+      },
+      {
+        number: 2,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/ANGE-NOIR.png",
+        title: "Ce qu'on aime",
+        description:
+          "Teckels - café - bière - afterwork - la fête - coca - redbull - guarana - idée farfelu",
+      },
+      {
+        number: 3,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/DEMON-NOIR.png",
+        title: "PERDU",
+        description:
+          "Mais non t'es pas nul, t'as juste pas de chance t'inquiete",
+      },
+      {
+        number: 4,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/ANGE-NOIR.png",
+        title: "Ce qu'on fait",
+        description:
+          "Sites internet - Direction artistique - SEO - SEA - Marketing digital - UX - UI - Community Management - Maintenance - Conseil",
+      },
+      {
+        number: 5,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/DEMON-NOIR.png",
+        title: "PERDU",
+        description: "la prochaine c'est la bonne !",
+      },
+      {
+        number: 6,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/ANGE-NOIR.png",
+        title: "Ce qu'on veut",
+        description:
+          "Projets cools - Défis - Rencontres humaines - Oser - Changer - Créer - Idées innovantes - Choquer - Folie",
+      },
+      {
+        number: 7,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/DEMON-NOIR.png",
+        title: "PERDU",
+        description:
+          "Tu fais semblant de perdre pour qu'on reste amis, avoue ?",
+      },
+    ];
 
     let roueText = document.querySelector("#roue-text");
 
     // Ajout du contenu caché et du canvas
     roueText.innerHTML += `
       <div class="hidden-content">
-          🎉 Bravo, vous avez gagné !
+        <div class="tittleTicket"></div>
+        <div class="infoTicket"></div>
+        <canvas id="scratchCanvas"></canvas>
       </div>
-      <canvas id="scratchCanvas"></canvas>
     `;
-    
+
     // Récupération du canvas et du contexte
     const canvas = document.getElementById("scratchCanvas");
     const ctx = canvas.getContext("2d");
-    
+
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
-    
+
     // Charger une image à gratter
     const image = new Image();
-    image.src = "/wp-content/themes/lesmauvaises-front/assets/content/leopard.jpg"; // Exemple d'image
+    image.src =
+      "/wp-content/themes/lesmauvaises-front/assets/content/wheel/ticket.png"; // Exemple d'image
     image.onload = () => {
       ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
     };
-    
+
     // Activer le survol
     let isHovering = false;
-    
+
     // Fonction pour "gratter" au survol
     function scratchOnHover(e) {
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-    
+
       if (isHovering) {
         // Dessiner un cercle transparent pour "effacer"
         ctx.globalCompositeOperation = "destination-out";
@@ -1201,26 +1374,55 @@ export class agenceHandler {
         ctx.fill();
       }
     }
-    
+
+    function resetScratchCanvas() {
+      // Effacer le canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Réinitialiser le mode de composition
+      ctx.globalCompositeOperation = "source-over";
+
+      // Redessiner l'image de fond à gratter
+      image.onload = () => {
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      };
+      image.src =
+        "/wp-content/themes/lesmauvaises-front/assets/content/wheel/ticket.png";
+
+      console.log("Canvas réinitialisé !");
+    }
+
     // Vérification de progression du grattage
-    
-    
+    function checkScratchProgress() {
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const pixels = imageData.data;
+      let transparentPixels = 0;
+
+      for (let i = 3; i < pixels.length; i += 4) {
+        if (pixels[i] === 0) transparentPixels++;
+      }
+
+      const progress = (transparentPixels / (pixels.length / 4)) * 100;
+
+      if (progress > 90) {
+      }
+    }
+
     // Gestion des événements pour hover
     canvas.addEventListener("mouseenter", () => (isHovering = true));
     canvas.addEventListener("mouseleave", () => (isHovering = false));
     canvas.addEventListener("mousemove", (e) => {
       scratchOnHover(e);
+      checkScratchProgress();
     });
 
-
-    
     let roue = document.querySelector("#roue");
 
     roue.innerHTML = `
-      <div class="spinBtn">
-        <img class='smiley0' src='/wp-content/themes/lesmauvaises-front/assets/content/2024/01/HAPPY-VERT.png'>
-      </div>
-      <div class="bigWheel">
+    <div class="spinBtn">
+      <img class='smiley0' src='/wp-content/themes/lesmauvaises-front/assets/content/2024/01/HAPPY-VERT.png'>
+    </div>
+    <div class="bigWheel">
         <div class="wheel">
             <div class="caseBorder" style="--a:1"></div>
             <div class="caseBorder" style="--a:2"></div>
@@ -1228,35 +1430,35 @@ export class agenceHandler {
             <div class="caseBorder" style="--a:4"></div>
 
             <div id='1' class="number" style="--i:1; --clr:#C72468">
-              <span>CE QU'ON EST</span>
+              <span><img src="${textData[0].photo}"></span>
             </div>
 
             <div id='2' class="number" style="--i:2; --clr:#A2D2FF">
-              <span>PERDU</span>
+              <span><img src="${textData[1].photo}"></span>
             </div>
 
             <div id='3' class="number" style="--i:3; --clr:#C77DFF">
-              <span>CE QU'ON AIME</span>
+              <span><img src="${textData[2].photo}"></span>
             </div>
 
             <div id='4' class="number" style="--i:4; --clr:#CDDD20">
-              <span>PERDU</span>
+              <span><img src="${textData[3].photo}"></span>
             </div>
 
             <div id='5' class="number" style="--i:5; --clr:#C72468">
-              <span>5</span>
+              <span><img src="${textData[4].photo}"></span>
             </div>
 
             <div id='6' class="number" style="--i:6; --clr:#A2D2FF">
-              <span>PERDU</span>
+              <span><img src="${textData[5].photo}"></span>
             </div>
 
             <div id='7' class="number" style="--i:7; --clr:#C77DFF">
-              <span>7</span>
+              <span><img src="${textData[6].photo}"></span>
             </div>
 
             <div id='8' class="number" style="--i:8; --clr:#CDDD20">
-              <span>PERDU</span>
+              <span><img src="${textData[7].photo}"></span>
             </div>
 
           </div>
@@ -1295,6 +1497,7 @@ export class agenceHandler {
       maxDuration: 2.5,
       inertia: true,
       onDrag: function () {
+        resetScratchCanvas();
         mainCircle.classList.remove("ready");
         var curRotation = gsap.getProperty(mainCircle, "rotation");
         if (curRotation - rotate >= 22.5) {
@@ -1317,7 +1520,49 @@ export class agenceHandler {
         const centerY = rect.top;
         const elementUnderPointer = document.elementFromPoint(centerX, centerY);
 
-        console.log(elementUnderPointer.id);
+        const elementId = elementUnderPointer.id;
+        this.titleHolder = textData[elementId].title;
+
+        let texttitle = document.querySelector(".tittleTicket");
+        let textInfo = document.querySelector(".infoTicket");
+        let ticketDiv = document.querySelector(".hidden-content");
+
+        if (elementId == 0 || elementId == 4) {
+          Object.assign(ticketDiv.style, {
+            "background-image":
+              'url("/wp-content/themes/lesmauvaises-front/assets/content/wheel/red.png")',
+            "background-size": "cover",
+            "background-position": "center",
+            "background-repeat": "no-repeat",
+          });
+        } else if (elementId == 1 || elementId == 5) {
+          Object.assign(ticketDiv.style, {
+            "background-image":
+              'url("/wp-content/themes/lesmauvaises-front/assets/content/wheel/blue.png")',
+            "background-size": "cover",
+            "background-position": "center",
+            "background-repeat": "no-repeat",
+          });
+        } else if (elementId == 2 || elementId == 6) {
+          Object.assign(ticketDiv.style, {
+            "background-image":
+              'url("/wp-content/themes/lesmauvaises-front/assets/content/wheel/purple.png")',
+            "background-size": "cover",
+            "background-position": "center",
+            "background-repeat": "no-repeat",
+          });
+        } else if (elementId == 3 || elementId == 7) {
+          Object.assign(ticketDiv.style, {
+            "background-image":
+              'url("/wp-content/themes/lesmauvaises-front/assets/content/wheel/yellow.png")',
+            "background-size": "cover",
+            "background-position": "center",
+            "background-repeat": "no-repeat",
+          });
+        }
+
+        texttitle.innerHTML = textData[elementId].title;
+        textInfo.innerHTML = `<p>${textData[elementId].description}</p>`;
       },
     });
 
