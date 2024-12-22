@@ -2,13 +2,16 @@
   .quality {
     flex: 1;
     width: 100%;
+
     .fake-section {
       .fake-title {
         h4 {
           font-size: calc(700vw / 1018) !important;
         }
+
         .elementor-widget-container {
           opacity: 0;
+
           &.active {
             transform: translate(0, 0);
           }
@@ -19,6 +22,7 @@
     .container-image {
       img {
         opacity: 0;
+
         &.active {
           opacity: 1;
         }
@@ -37,6 +41,7 @@
         text-transform: uppercase;
         font-family: "MADE SOULMAZE", Sans-serif;
         color: rgb(255, 255, 255);
+
         &.active {
           color: rgba(255, 255, 255, 0.6);
           font-size: 41px;
@@ -58,11 +63,14 @@
 }
 
 .container-text {
-  position: relative; /* ou position: absolute; */
+  position: relative;
+  /* ou position: absolute; */
 }
+
 .section-agency {
   position: relative;
   height: fit-content;
+
   .text-agency {
     width: 100%;
     // .letter {
@@ -101,6 +109,7 @@
     height: fit-content;
     margin: 0 auto;
   }
+
   .team_image {
     height: fit-content;
   }
@@ -116,10 +125,32 @@
   user-select: none;
   cursor: pointer;
 }
-<<<<<<< HEAD
-=======
 
+// ANILMATION DES PHOTOS
 
+#section-photo {
+  transition: none;
+
+  .photoDiv {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(20%);
+  }
+}
+
+.photoDivLast {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(20%);
+}
 
 // ANIMATION DE LETTRE
 
@@ -145,13 +176,11 @@
   position: absolute;
   top: -300% !important;
   left: -33%;
+  margin-top: 10% !important;
   transform: rotate(-45deg);
 }
 
-
-
 // ROUE CSS
-
 
 /* Cercle parent */
 
@@ -159,50 +188,140 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  left: -15%;
 }
 
 #roue-text {
   position: relative;
-  margin: 0 auto;
-  border: 2px solid #333;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-right: 10%;
+  margin-right: 2em;
+  height: 30vh;
+}
+
+.tittleTicket {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 12;
+  font-size: 3em;
+  color: white !important;
+  font-family: "MADE SOULMAZE";
+}
+
+.tittleTicket p {
+  padding-inline: 0.5em;
 }
 
 .hidden-content {
   position: absolute;
   top: 0;
   left: 0;
+  margin-left: -10%;
+  margin-top: -10%;
   width: 100%;
-  height: 100%;
-  background-color: #ff69b4; /* Fond rose */
-  z-index: 1; /* En dessous du canvas */
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  /* Cache le texte qui sort */
+}
+
+.infoTicket {
+  width: 100%;
+  /* Occupe toute la largeur */
+  overflow: hidden;
+  /* Cache les parties hors écran */
+  white-space: nowrap;
+  margin-bottom: 10px;
+  /* Espacement entre chaque ligne */
+}
+
+.infoTicket span {
+  display: inline-block;
+  animation: defilement 120s infinite linear;
+  /* Animation très ralentie */
+  font-size: xx-large;
+  font-family: "MADE SOULMAZE";
+}
+
+.infoTicket span::after {
+  content: attr(data-text) " " attr(data-text) " " attr(data-text);
+  /* Répète le texte 3 fois */
+}
+
+/* Animations avec vitesses ralenties et décalages */
+.infoTicket:nth-child(1) span {
+  animation-duration: 110s;
+  animation-direction: normal;
+}
+
+.infoTicket:nth-child(2) span {
+  animation-duration: 123s;
+  animation-direction: normal;
+}
+
+.infoTicket:nth-child(3) span {
+  animation-duration: 128s;
+  animation-direction: normal;
+}
+
+.infoTicket:nth-child(4) span {
+  animation-duration: 100s;
+  animation-direction: normal;
+}
+
+.infoTicket:nth-child(5) span {
+  animation-duration: 115s;
+  animation-direction: normal;
+}
+
+/* Animation de défilement */
+@keyframes defilement {
+  0% {
+    transform: translateX(-100%);
+    /* Départ hors de l'écran à droite */
+  }
+
+  100% {
+    transform: translateX(30%);
+    /* Fin hors de l'écran à gauche */
+  }
+}
+
+.wheel-line {
+  position: absolute;
+  top: 20%;
+  left: 40%;
+  height: 30vh;
+  transform: rotate(-55deg) scaleX(-1);
 }
 
 #scratchCanvas {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: center;
+  left: center;
   width: 100%;
   height: 100%;
-  z-index: 2; /* Au-dessus du fond rose */
+  z-index: 12;
   cursor: pointer;
 }
 
-
-
 .spinBtn {
   position: absolute;
-  top: 45%;
-  left: 12%;
+  top: center;
+  left: center;
   width: 100px;
   height: 100px;
-  font-family: 'QUICKSAND';
   font-size: 2em;
   background-color: #fff;
   border-radius: 50%;
-  z-index: 10;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -210,7 +329,7 @@
 }
 
 .spinBtn::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 20px;
   left: 100px;
@@ -228,7 +347,6 @@
 .bigWheel {
   position: absolute;
   top: 0;
-  left: -40%;
   width: 100vh;
   height: 100vh;
   border-radius: 50%;
@@ -261,20 +379,21 @@
   height: 50%;
   overflow: hidden;
   background: var(--clr);
-  transform-origin: bottom right; /* Centre exact pour rotation */
+  transform-origin: bottom right;
   transform: rotate(calc(45deg * var(--i)));
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 0);
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* Précision supplémentaire */
+  overflow: hidden;
 
-  span {
-    margin-left: 50%;
+  span img {
+    margin-left: 100%;
+    margin-bottom: 90%;
+    transform: rotate(-90deg);
+    height: 8em;
   }
-
 }
-
 
 /* GUN CSS */
 
@@ -303,7 +422,6 @@ h3 {
   display: none;
 }
 
-
 /* Info overlay */
 .info {
   display: none;
@@ -312,7 +430,7 @@ h3 {
   left: 0;
   height: 100%;
   width: 100%;
-  color: white; 
+  color: white;
   z-index: 18;
   animation: infoStart 1s linear forwards;
 }
@@ -354,11 +472,10 @@ h3 {
   margin-top: 8%;
 }
 
- #hasBeenShootTeam {
+#hasBeenShootTeam {
   height: fit-content;
   width: fit-content;
- }
-
+}
 
 .div_btnClose {
   display: flex;
@@ -368,7 +485,7 @@ h3 {
   padding-right: 10%;
   width: 100%;
   font-size: 55px !important;
-  font-family: 'QUICKSAND';
+  font-family: "QUICKSAND";
 }
 
 .div_btnClose :hover {
@@ -389,14 +506,14 @@ h3 {
 }
 
 .yellowText {
-  font-family: 'MADE SOULMAZE';
+  font-family: "MADE SOULMAZE";
   font-size: 12px;
 }
 
 .div_teamPhrase {
   display: flex;
   justify-content: center;
-  font-family: 'QUICKSAND';
+  font-family: "QUICKSAND";
   margin-left: 5vw;
   width: 75%;
 }
@@ -414,9 +531,9 @@ h3 {
 }
 
 .badges img {
- aspect-ratio: 1/1;
- width: auto;
- max-width: 80%;
+  aspect-ratio: 1/1;
+  width: auto;
+  max-width: 80%;
 }
 
 .Animal {
@@ -443,62 +560,64 @@ h3 {
   transform: rotate(-15deg);
 }
 
-.stamp{
+.stamp {
   height: 35vh;
-  position:relative;
+  position: relative;
   -webkit-animation-name: pulse;
   animation-name: pulse;
-  animation-delay:0s;
-  -webkit-animation-delay:0s;
+  animation-delay: 0s;
+  -webkit-animation-delay: 0s;
   -webkit-animation-duration: 0.5s;
   animation-duration: 0.5s;
   opacity: 0;
-  -webkit-animation-fill-mode:forwards;
-   animation-fill-mode:forwards;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
 }
 
-@keyframes pulse{
-  0%{
+@keyframes pulse {
+  0% {
     opacity: 0;
   }
-  10%{
-    opacity:.50;
+
+  10% {
+    opacity: 0.5;
     transform-origin: 50% 50%;
     transform: rotate(-2deg) scale(5);
-    transition: all .3s cubic-bezier(0.6, 0.04, 0.98, 0.335);
+    transition: all 0.3s cubic-bezier(0.6, 0.04, 0.98, 0.335);
   }
-  50%{
-    opacity:1;
+
+  50% {
+    opacity: 1;
     transform: rotate(0.1turn);
     transform: rotate(-15deg) scale(1);
   }
+
   80% {
-    opacity:1;
+    opacity: 1;
     transform: rotate(-0.1turn);
   }
+
   100% {
-    opacity:1;
+    opacity: 1;
   }
-  
 }
 
 @keyframes infoStart {
   0% {
-    background-color: rgba(0, 0, 0, 0.0);
-    backdrop-filter: blur(0px); 
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
   }
 
   50% {
     background-color: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(5px); 
+    backdrop-filter: blur(5px);
   }
 
   100% {
     background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px); 
+    backdrop-filter: blur(10px);
   }
 }
-
 
 /* Animation des éléments de bille */
 .HasBeenShoot0 {
@@ -528,6 +647,7 @@ h3 {
 .HasBeenShoot6 {
   animation: moveAndScale6 1s linear;
 }
+
 /* Taille des images de bille */
 #bille img {
   height: 4em;
@@ -551,7 +671,8 @@ h3 {
 
 .photo {
   display: block;
-  width: 250px; /* Exemple de largeur fixe */
+  width: 250px;
+  /* Exemple de largeur fixe */
 }
 
 /* Animation de la première image */
@@ -621,15 +742,19 @@ h3 {
   0% {
     transform: translateX(0vw) scale(1) rotateY(0deg);
   }
+
   25% {
     transform: translateX(1vw) translateY(-2vw) scale(1.2) rotateY(180deg);
   }
+
   50% {
     transform: translateX(2vw) translateY(-4vw) scale(2) rotateY(360deg);
   }
+
   75% {
     transform: translateX(3vw) translateY(-6vw) scale(2.2) rotateY(540deg);
   }
+
   100% {
     transform: translateX(4vw) translateY(-6vw) scale(3) rotateY(720deg);
   }
@@ -639,15 +764,19 @@ h3 {
   0% {
     transform: translateX(0%) scale(1) rotateY(0deg);
   }
+
   25% {
     transform: translateY(2vw) scale(1.2) rotateY(180deg);
   }
+
   50% {
     transform: translateY(5vw) scale(2) rotateY(360deg);
   }
+
   75% {
     transform: translateY(7vw) scale(2.2) rotateY(540deg);
   }
+
   100% {
     transform: translateY(10vw) scale(3) rotateY(720deg);
   }
@@ -657,152 +786,269 @@ h3 {
   0% {
     transform: translateX(0%) scale(1) rotateY(0deg);
   }
+
   25% {
     transform: translateX(-2vw) translateY(2vw) scale(1.2) rotateY(180deg);
   }
+
   50% {
     transform: translateX(-5vw) translateY(5vw) scale(2) rotateY(360deg);
   }
+
   75% {
     transform: translateX(-5vw) translateY(7vw) scale(2.2) rotateY(540deg);
   }
+
   100% {
     transform: translateX(-5vw) translateY(10vw) scale(3) rotateY(720deg);
-  } 
+  }
 }
 
 @keyframes moveAndScale3 {
   0% {
     transform: translateX(0%) scale(1) rotateY(0deg);
   }
+
   25% {
     transform: translateX(-5vw) translateY(2vw) scale(1.2) rotateY(180deg);
   }
+
   50% {
     transform: translateX(-9vw) translateY(5vw) scale(2) rotateY(360deg);
   }
+
   75% {
     transform: translateX(-13vw) translateY(7vw) scale(2.2) rotateY(540deg);
   }
+
   100% {
     transform: translateX(-25vw) translateY(10vw) scale(3) rotateY(720deg);
-  } 
+  }
 }
 
 @keyframes moveAndScale4 {
   0% {
     transform: translateX(0%) scale(1) rotateY(0deg);
   }
+
   25% {
     transform: translateX(-10vw) translateY(2vw) scale(1.2) rotateY(180deg);
   }
+
   50% {
     transform: translateX(-20vw) translateY(5vw) scale(2) rotateY(360deg);
   }
+
   75% {
     transform: translateX(-30vw) translateY(7vw) scale(2.2) rotateY(540deg);
   }
+
   100% {
     transform: translateX(-42vw) translateY(10vw) scale(3) rotateY(720deg);
-  } 
+  }
 }
 
 @keyframes moveAndScale5 {
   0% {
     transform: translateX(0%) scale(1) rotateY(0deg);
   }
+
   25% {
     transform: translateX(-15vw) translateY(2vw) scale(1.2) rotateY(180deg);
   }
+
   50% {
     transform: translateX(-30vw) translateY(2vw) scale(2) rotateY(360deg);
   }
+
   75% {
     transform: translateX(-40vw) translateY(2vw) scale(2.2) rotateY(540deg);
   }
+
   100% {
     transform: translateX(-55vw) translateY(2vw) scale(3) rotateY(720deg);
-  } 
+  }
 }
 
 @keyframes moveAndScale6 {
   0% {
     transform: translateX(0%) scale(1) rotateY(0deg);
   }
+
   25% {
     transform: translateX(-15vw) translateY(2vw) scale(1.2) rotateY(180deg);
   }
+
   50% {
     transform: translateX(-30vw) translateY(5vw) scale(2) rotateY(360deg);
   }
+
   75% {
     transform: translateX(-40vw) translateY(8vw) scale(2.2) rotateY(540deg);
   }
+
   100% {
     transform: translateX(-60vw) translateY(15vw) scale(3) rotateY(720deg);
-  } 
+  }
 }
 
 /* Animation de la première image en mouvement */
 @keyframes moove1 {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(50px, -25px); }
-  50% { transform: translate(100px, 0); }
-  75% { transform: translate(50px, 25px); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(50px, -25px);
+  }
+
+  50% {
+    transform: translate(100px, 0);
+  }
+
+  75% {
+    transform: translate(50px, 25px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 /* Animation de la deuxième image en mouvement */
 @keyframes moove2 {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-50px, 25px); }
-  50% { transform: translate(-25px, 50px); }
-  75% { transform: translate(25px, 25px); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-50px, 25px);
+  }
+
+  50% {
+    transform: translate(-25px, 50px);
+  }
+
+  75% {
+    transform: translate(25px, 25px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 /* Animation de la troisième image en mouvement */
 @keyframes moove3 {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(75px, -75px); }
-  50% { transform: translate(0, -100px); }
-  75% { transform: translate(-75px, -75px); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(75px, -75px);
+  }
+
+  50% {
+    transform: translate(0, -100px);
+  }
+
+  75% {
+    transform: translate(-75px, -75px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 /* Animation de la quatrième image en mouvement */
 @keyframes moove4 {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-100px, 25px); }
-  50% { transform: translate(-50px, -25px); }
-  75% { transform: translate(50px, -25px); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-100px, 25px);
+  }
+
+  50% {
+    transform: translate(-50px, -25px);
+  }
+
+  75% {
+    transform: translate(50px, -25px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 /* Animation de la cinquième image en mouvement */
 @keyframes moove5 {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(50px, 50px); }
-  50% { transform: translate(0, 100px); }
-  75% { transform: translate(-50px, 50px); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(50px, 50px);
+  }
+
+  50% {
+    transform: translate(0, 100px);
+  }
+
+  75% {
+    transform: translate(-50px, 50px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 /* Animation de la sixième image en mouvement */
 @keyframes moove6 {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(100px, 0); }
-  50% { transform: translate(75px, -75px); }
-  75% { transform: translate(25px, -25px); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(100px, 0);
+  }
+
+  50% {
+    transform: translate(75px, -75px);
+  }
+
+  75% {
+    transform: translate(25px, -25px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 /* Animation de la septième image en mouvement */
 @keyframes moove7 {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-75px, 25px); }
-  50% { transform: translate(-100px, 0); }
-  75% { transform: translate(-75px, -25px); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-75px, 25px);
+  }
+
+  50% {
+    transform: translate(-100px, 0);
+  }
+
+  75% {
+    transform: translate(-75px, -25px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
->>>>>>> parent of 3ebbf7e (feature/gun/ animation, placement and logic)

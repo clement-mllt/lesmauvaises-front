@@ -1,27 +1,28 @@
-import {gsap} from "gsap";
-import {ScrollTrigger} from "gsap/ScrollTrigger.js";
-import {ScrollToPlugin} from "gsap/ScrollToPlugin.js";
-import {Draggable} from "gsap/Draggable.js";
-import {MotionPathPlugin} from "gsap/MotionPathPlugin.js";
-import {EaselPlugin} from "gsap/EaselPlugin.js";
-import {PixiPlugin} from "gsap/PixiPlugin.js";
-import {TextPlugin} from "gsap/TextPlugin.js";
-import {CSSPlugin} from "gsap/CSSPlugin.js";
-import {DrawSVGPlugin} from "gsap/DrawSVGPlugin.js";
-import {SplitText} from "gsap/SplitText.js";
-import {MorphSVGPlugin} from "gsap/MorphSVGPlugin.js";
-import {menuHandler} from "./menuHandler";
-import {InertiaPlugin} from "gsap/InertiaPlugin";
-import {prepareAnimationHandler} from "./prepareAnimationHandler";
-import {letterSource} from "./letterSource";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger.js";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin.js";
+import { Draggable } from "gsap/Draggable.js";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin.js";
+import { EaselPlugin } from "gsap/EaselPlugin.js";
+import { PixiPlugin } from "gsap/PixiPlugin.js";
+import { TextPlugin } from "gsap/TextPlugin.js";
+import { DrawSVGPlugin } from "gsap/DrawSVGPlugin.js";
+import { SplitText } from "gsap/SplitText.js";
+import { MorphSVGPlugin } from "gsap/MorphSVGPlugin.js";
+import { menuHandler } from "./menuHandler";
+import { InertiaPlugin } from "gsap/InertiaPlugin";
+import { prepareAnimationHandler } from "./prepareAnimationHandler";
+import { letterSource } from "./letterSource";
+import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import * as d3 from "d3";
 
+// import Swiper JS
 import Swiper from "swiper";
+// import Swiper styles
 import "swiper/css";
-import {Value} from "sass";
-import {utilsHandler} from "./utilsHandler";
-import { blur } from "d3";
+import { info } from "sass";
 
-gsap.registerPlugin(CSSPlugin);
 gsap.registerPlugin(
   ScrollTrigger,
   ScrollToPlugin,
@@ -40,6 +41,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export class agenceHandler {
   static onEnter = false;
+  static lineState = false;
   static switchWhy() {
     const targets = document.querySelectorAll(".target-quality");
 
@@ -66,187 +68,231 @@ export class agenceHandler {
     });
   }
 
+  static animateHeader() {
+    const bonsoir = document.querySelector(".header-bonsoir");
+    const nous = document.querySelector(".header-nous");
+    const mauvaises = document.querySelector(".header-mauvaises");
+
+    gsap.set([nous, mauvaises], { scale: 100 });
+
+    const tl = gsap.timeline();
+
+    tl.to(bonsoir, { scale: 0.85, duration: 0.5, ease: "power2.inOut" })
+      .to(bonsoir, { scale: 1, duration: 0.15, ease: "power2.inOut" })
+      .to(nous, { scale: 0.85, duration: 0.5, ease: "power2.inOut" })
+      .to(nous, { scale: 1, duration: 0.15, ease: "power2.inOut" })
+      .to(mauvaises, { scale: 0.85, duration: 0.5, ease: "power2.inOut" })
+      .to(mauvaises, { scale: 1, duration: 0.15, ease: "power2.inOut" });
+  }
+
+  static animateTextOpacityOnScroll() {
     const text = new SplitText(".container-text h2", { type: "words" });
     const container = document.querySelector(".section-agency");
-  static animateTextOpacityOnScroll() {
 
-  static timelineDetailTeam(team) {
-    const tl = gsap.timeline();
-  
-    const containerShoot = document.getElementById('backgroundShoot');
-    containerShoot.classList.add('no-click');
-    const containerPic = document.getElementById('backgroundPic');
-    const containerBlur = document.getElementById('backgroundBlur');
-    const containerText = document.getElementById('backgroundText');
-    
-    const containerRect = containerPic.getBoundingClientRect(); 
-  
-    const detailTeam = team.getBoundingClientRect();
-  
-    const targetX = containerRect.left + containerRect.width / 2 - (detailTeam.left + detailTeam.width / 2);
-    const targetY = containerRect.top + containerRect.height / 2 - (detailTeam.top + detailTeam.height / 2);
-  
-  
-    tl.to(containerBlur,{
-      zIndex : 15,
-    },"sync").to(team,{
-      zIndex : 16,
-    },'sync').to(containerText,{
-      zIndex : 16,
-    },'sync');
+    // Cache la phrase au chargement
+    gsap.set(".container-text h2", { opacity: 0 });
 
-    tl.to(team, {
-      duration: 5,
-      x: targetX,
-      y: targetY,
-      scale: 2.5, 
-      ease: "power2.out",
-    },"sync").to(containerBlur,{
-      duration :5,
-      filter:"blur(50px)"
-  },"sync");
-
-  tl.call(() => {
-    container.classList.remove('no-click'); 
-  });
-  
-    return tl;
-  }
-  
-  static shootTeam() {
-    const timelineShoot = agenceHandler.timelineShoot();
-
-    ScrollTrigger.create({
-      animation: timelineShoot,
-      trigger: "#containerShoot",
-      start: "top top",
-      end: "bottom top",
-      scrub: true,
-      markers: true,
-      anticipePin: 1,
-      pin: true,
-    });
-
-    agenceHandler.handleTeamClick();
-  }
-
-  static timelineShoot() {
-    const tl = gsap.timeline();
-    const text = new SplitText(".main-title-shoot", {type: "chars"});
-    const letters = text.chars;
-    const containerGame = document.getElementById("gameShoot");
-    const teams = document.querySelectorAll(".team");
-
-    const teamsName = [
-      { name: "clement", ax: -20, ay: 20 },
-      { name: "carla", ax: -20, ay: 20 },
-      { name: "ines", ax: -20, ay: 20 },
-      { name: "lucas", ax: -20, ay: 20 },
-      { name: "matteo", ax: -20, ay: 20 },
-    ];
-
-    tl.from(letters, {
-      opacity: 0,
-      y: 50,
-      duration: 1,
-      stagger: 0.1,
-    })
-      .to(letters, {
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        stagger: 0.1,
-      })
-      // .set(".menu", {
-      //   backgroundColor: "transparent",
-      //   onComplete: () => {
-      //     gsap.from(teams, {
-      //       opacity: 0,
-      //       duration: 4,
-      //       stagger: 0.3,
-      //     });
-      //     teams.forEach((team, i) => {
-      //       gsap.to(team, {
-      //         skewY: () => gsap.utils.random(-20, 20),
-      //         skewX: () => gsap.utils.random(-10, 10),
-      //         duration: 0.2,
-      //         ease: "power1.inOut",
-      //         yoyo: true,
-      //         delay: i * 0.1,
-      //         repeat: -1,
-      //         onRepeat: () => {
-      //           gsap.to(team, {
-      //             skewY: () => gsap.utils.random(-20, 20),
-      //             skewX: () => gsap.utils.random(-10, 10),
-      //             duration: 0.2,
-      //             ease: "power1.inOut",
-      //             yoyo: true,
-      //             delay: i * 0.1,
-      //             repeat: -1,
-      //           });
-      //         },
-      //       });
-      //     });
-      //   },
-      // })
-      .to(containerGame, {
-        zIndex: 10,
-        border: "red 1px solid",
-      })
-      .to(letters, {
-        x: 20000,
-        duration: 100,
-      });
-
-    console.log(tl); // Vérifie si la timeline est générée
-    return tl;
-  }
-
-
-
-  static animateTextOpacityOnScroll() {
-    const text = new SplitText(".container-text h2", {type: "words"});
-    const container = document.querySelector(".section-agency");
-
+    // Configuration de ScrollTrigger
     const scrollTriggerConfig = {
       trigger: container,
       scrub: true,
-      start: "top+=100px bottom",
-      end: `+=${container.clientHeight - 200}px`,
-      ease: "power4.out",
+      start: "top-=50px center",
+      end: "+=${container.clientHeight - 300}px",
+      ease: "ease-out",
     };
 
-    const timeline = gsap.timeline({scrollTrigger: scrollTriggerConfig});
+    // Timeline globale
+    const timeline = gsap.timeline({ scrollTrigger: scrollTriggerConfig });
 
-    text.words.forEach((word) => {
-      const wordTimeline = gsap.timeline();
+    const currentColorIndex = parseInt(
+      localStorage.getItem("currentColorIndex")
+    );
+    const nextColorIndex =
+      (currentColorIndex + 1) % prepareAnimationHandler.colors.length;
+    const colorCurrent = prepareAnimationHandler.colors[currentColorIndex];
+    const colorNext = prepareAnimationHandler.colors[nextColorIndex];
 
-      wordTimeline.from(word, {
+    timeline.to(".container-text h2", {
+      opacity: 1,
+      duration: 15,
+    });
+
+    text.words[2].innerHTML += `
+    <svg class="line-les-mauvaises" width="400" height="74" viewBox="0 0 683 74" xmlns="http://www.w3.org/2000/svg">
+      <mask id="mask0_3876_44754" style="mask-type:alpha" x="0" y="0" width="683" height="74">
+        <path style="fill-opacity: 0;" d="M495.248 3.03692C493.396 3.25708 491.543 3.47212 489.691 3.69228C489.766 4.04556 489.849 4.40395 489.924 4.75723C492.236 4.49611 495.391 4.79308 496.716 3.87148C501.837 0.31308 508.027 2.39692 513.682 1.931C514.419 1.86956 515.24 3.14444 516.249 3.47212C517.288 3.80492 518.614 3.73836 519.811 3.84076V1.17836C522.251 1.66988 524.6 2.14091 527.168 2.65803C527.221 2.56587 527.552 1.97708 528.064 1.07084C529.389 1.803 530.609 2.4686 531.867 3.16492C533.862 1.69036 535.865 -0.99253 538.131 3.47723C543.177 -2.15989 548.101 2.71948 553.395 3.61548C553.222 2.3662 553.101 1.48043 552.981 0.594668L553.726 0.43084C554.381 1.39852 555.044 2.36108 556.188 4.04556C556.987 2.46348 557.446 1.54188 557.973 0.492277C563.026 2.571 568.018 3.87659 573.492 0.758512C573.899 1.28075 574.644 2.25868 575.39 3.23148C575.902 2.96524 576.414 2.699 576.926 2.42764C577.009 1.69548 577.092 0.968438 577.144 0.476918C579.991 1.16812 582.461 1.76715 584.93 2.36107C585.171 -1.21269 588.567 0.656122 590.789 0.896762C591.948 1.02476 592.972 1.74156 594.268 2.28428C594.983 1.64428 595.849 0.866033 596.707 0.0877927C596.828 0.415473 596.948 0.738035 597.076 1.06571C598.703 0.958195 600.322 0.794352 601.948 0.758512C603.462 0.727792 604.983 0.901878 606.496 0.860918C617.272 0.574198 628.047 0.226042 638.83 0.000761477C640.065 -0.0248385 641.33 0.599791 643.469 1.15787C646.609 1.15787 651.044 0.932588 655.396 1.23467C658.634 1.45995 661.804 2.30476 664.952 2.98572C666.616 3.34412 669.153 3.723 669.53 4.491C669.989 5.43308 668.732 6.83084 667.986 7.96748C667.391 8.88396 666.345 9.6622 665.705 10.5684C661.578 16.4104 655.027 18.2843 645.005 17.4548C640.954 17.122 636.646 18.6632 632.4 18.8731C626.85 19.1496 621.248 18.8628 615.683 19.0062C614.034 19.0472 612.453 19.979 610.788 20.0763C595.631 20.9876 580.45 21.7044 565.307 22.6875C551.542 23.5784 537.815 24.7457 524.073 25.7646C518.636 26.1691 513.2 26.6401 507.74 26.8449C499.804 27.1419 491.814 26.978 483.908 27.4593C474.405 28.0328 464.955 29.0517 455.49 29.9374C454.744 30.0091 454.097 30.5672 453.57 31.5604C461.612 29.922 469.48 31.755 477.5 31.202C484.819 30.7003 492.357 31.6731 500.045 31.9803C501.716 32.0417 503.388 32.1799 505.06 32.1543C508.885 32.0827 512.71 31.8011 516.528 31.842C523.373 31.9137 530.217 32.3131 537.055 32.2875C542.589 32.267 548.139 31.5348 553.658 31.6423C560.33 31.7703 567.001 32.354 573.643 32.9223C580.443 33.506 587.204 34.3048 594.878 35.1035C593.319 38.0782 591.994 40.6024 590.397 43.6385C590.841 44.0533 591.941 45.067 593.033 46.0859L593.394 44.9083C598.417 45.195 603.447 45.4715 608.469 45.7684C609.403 45.8248 610.359 46.091 611.255 46.0091C616.187 45.5688 621.082 44.9595 626.029 44.6216C627.038 44.555 628.13 45.492 629.275 45.8196C630.095 46.0552 631.225 46.3009 631.948 46.1013C637.753 44.468 637.738 44.4373 642.482 46.1013C646.722 41.0581 651.255 47.8779 655.886 45.7889C655.487 45.4561 655.012 45.0568 654.146 44.3349C662.64 45.0107 670.757 45.4049 678.671 46.4955C680.305 46.7208 682.21 49.5726 682.075 51.1342C681.954 52.45 679.04 53.643 677.052 55.1227C679.394 57.8158 678.852 58.6043 672.7 58.4609C662.166 58.2203 651.639 57.5188 641.112 57.4779C634.071 57.4523 627.031 58.4097 619.968 58.6043C612.091 58.8245 604.192 58.6657 596.301 58.6913C587.144 58.722 577.988 58.7989 568.831 58.804C556.753 58.8142 544.675 58.6043 532.604 58.804C524.141 58.9422 515.707 59.787 507.243 59.9713C500.429 60.1198 493.599 59.6641 486.769 59.6488C482.906 59.6385 479.044 59.9867 475.181 60.1659C458.351 60.9544 441.537 61.9476 424.692 62.4648C411.936 62.8539 399.135 62.5211 386.357 62.7259C380.822 62.818 375.325 63.6168 369.791 63.8165C357.863 64.2414 345.921 64.482 333.978 64.7944C330.281 64.8916 326.569 64.9121 322.879 65.0709C311.426 65.5675 299.98 66.1 288.527 66.6376C271.81 67.4158 255.101 68.2657 238.385 68.962C233.174 69.1771 227.918 68.9979 222.692 68.9979C222.647 68.5934 222.594 68.1838 222.549 67.7793C232.903 67.3134 243.257 66.8424 255.079 66.3099C253.053 65.3678 251.788 64.2824 250.696 64.354C237.075 65.2603 223.468 66.3304 210.004 68.2964C213.393 68.0763 216.781 67.8613 220.17 67.6411C220.253 68.0302 220.343 68.4193 220.426 68.8084C213.197 70.923 205.125 69.7608 197.557 70.5339C189.575 71.3531 181.481 71.732 173.431 72.1979C165.329 72.6638 157.211 73.0017 150.073 73.3499C148.74 69.1105 147.588 65.4395 146.346 61.4766C148.883 61.9016 150.314 62.1422 151.745 62.3829C152.068 61.4049 152.4 60.427 152.648 59.6693C172.814 58.2305 193.416 56.756 214.018 55.2865C214.04 54.6721 214.07 54.0628 214.093 53.4484C207.519 54.3086 201.375 52.8904 195.08 52.7419C187.693 52.5678 180.276 52.9109 172.881 53.1976C165.532 53.4843 158.205 53.9758 150.879 54.3803C151.165 51.4875 151.398 49.0453 151.632 46.6798C143.71 46.8181 149.139 41.9848 145.728 40.3464C150.645 39.7371 154.839 39.22 159.403 38.6568C159.116 39.1534 158.755 39.7832 158.394 40.4129C158.702 40.6331 159.011 40.8532 159.312 41.0683C160.653 40.2081 161.985 39.3428 163.243 38.5339C166.217 41.3601 171.33 39.3275 175.841 39.0561C186.48 38.411 197.083 37.4638 207.692 36.6036C217.557 35.7998 227.421 34.955 237.278 34.1204C249.19 33.1067 261.103 32.0827 273.015 31.0689C285.003 30.0449 296.983 28.9902 308.979 28.0328C314.122 27.6232 319.302 27.4081 324.468 27.1112C333.662 26.5736 342.863 26.0718 352.05 25.4625C353.059 25.396 353.985 24.7508 356.538 23.7576C353.549 23.3787 351.982 22.964 350.469 23.0254C339.498 23.4913 328.541 24.1006 317.57 24.5665C305.884 25.0683 305.876 25.0222 303.361 26.507C299.882 24.2593 293.866 24.3873 291.426 26.3893H280.47C280.477 26.4507 280.485 26.507 280.493 26.5684C274.95 26.5684 269.386 26.3739 263.866 26.6145C256.419 26.9422 248.995 27.6129 241.562 28.1198C234.379 28.6113 227.195 29.1182 219.996 29.538C214.997 29.8299 209.936 29.7889 204.967 30.2343C198.995 30.7668 193.114 31.7704 187.151 32.354C183.122 32.7483 179.018 32.7636 174.952 32.9582C172.181 33.0913 169.402 33.1476 166.654 33.3883C159.455 34.0232 152.287 34.8065 145.081 35.4004C138.258 35.9636 131.406 36.3476 124.561 36.8289C113.726 37.5918 102.875 38.2472 92.0693 39.179C80.3827 40.1876 68.7489 41.4779 57.0774 42.5992C51.2718 43.1572 45.436 43.5413 39.6455 44.1505C32.5673 44.8929 25.5342 45.8452 18.456 46.603C12.5902 47.2328 6.68664 47.7038 0.80571 48.2516L0 47.2123C3.36591 46.1678 6.73182 45.1233 10.0977 44.0789C9.9396 43.6488 9.78147 43.2187 9.62334 42.7886C5.25594 44.043 1.68672 43.9355 2.69574 40.2337C3.06471 38.8769 5.76045 37.044 7.76343 36.788C18.5464 35.4261 29.4574 34.5403 40.3081 33.3985C50.9932 32.2721 61.6481 31.0331 72.4988 29.8248C72.3031 28.9851 72.0922 28.1147 71.8889 27.2443C73.41 30.475 76.5048 29.3384 79.5394 28.9083C84.4414 28.212 89.3962 27.6232 94.3735 27.2443C97.9653 26.9729 101.617 27.1419 105.247 27.0958C108.5 27.0549 108.47 27.0446 108.778 24.372C108.809 24.1262 109.464 23.6961 109.757 23.7217C110.458 23.7883 111.241 23.9726 111.753 24.29C112.671 24.8584 113.417 25.5598 114.238 26.2049C114.682 25.2987 115.126 24.3924 115.209 24.2286C120.156 24.7508 125.262 25.2884 130.796 25.8721V22.0168C131.24 21.8529 131.677 21.6942 132.121 21.5304C132.792 22.3496 133.462 23.1688 134.779 24.7713C136.91 24.5665 140.291 24.1467 143.703 23.9265C152.55 23.3531 161.428 22.964 170.246 22.2472C171.797 22.1192 173.13 20.7572 174.568 19.9636C174.47 19.467 174.365 18.9652 174.267 18.4686C176.059 19.2212 177.844 19.9739 180.592 21.131C180.84 20.9774 182.113 20.1889 183.393 19.4004C183.484 19.6923 183.581 19.9892 183.672 20.2811C185.102 20.0251 186.533 19.764 187.964 19.508L187.535 18.6734C190.223 19.1444 192.911 19.6155 195.607 20.0814L196.104 19.4926C195.456 19.124 194.801 18.7502 193.363 17.931H197.038C196.473 20.8033 199.809 20.1633 201.608 19.8612C203.543 19.5387 205.162 18.3508 206.171 17.89C209.884 18.3201 213.483 19.2212 216.962 19.0523C228.415 18.5044 239.838 17.6392 251.246 16.738C253.964 16.523 258.558 17.3217 257.006 13.1643C261.359 13.1899 265.771 12.0276 269.115 15.0331C269.499 15.3761 270.967 15.2584 271.916 15.1969C291.614 13.9528 311.32 12.6984 331.004 11.3672C331.817 11.3108 332.525 10.4814 333.263 9.995C333.782 9.65196 334.272 8.99148 334.769 8.99148C335.778 8.99148 337.126 9.15019 337.713 9.60587C339.392 10.9166 339.114 10.85 340.785 9.93867C342.141 9.20139 343.948 8.84299 344.076 8.80203C347.615 9.40619 349.829 9.78507 352.043 10.164C351.922 9.58539 351.802 9.01195 351.726 8.65867C354.655 9.00171 358.149 9.41132 361.636 9.82092C361.515 9.34476 361.402 8.86347 361.176 7.95723C362.969 8.80715 364.482 10.9729 366.696 8.05964C367.374 7.16876 373.315 8.1006 376.839 8.23884C378.345 8.29516 380.348 8.92492 381.274 8.47948C386.937 5.75052 394.873 5.4638 399.489 7.38892C404 6.8462 407.953 5.47916 409.941 6.30348C414.451 8.1774 417.606 5.74028 420.935 5.80684C429.639 5.98604 438.351 2.36107 447.071 5.58667C447.207 5.63787 451.695 7.30699 450.046 4.22987C451.19 3.98923 452.327 3.57963 453.487 3.52843C459.375 3.26219 465.279 3.08811 471.536 2.86795C471.943 3.72299 472.379 4.65484 472.733 5.40236C475.105 5.3102 477.229 5.23339 479.661 5.14123C479.541 4.45515 479.42 3.7486 479.126 2.08972C484.774 5.26412 489.811 2.22796 495.082 1.96684C495.15 2.30988 495.21 2.65291 495.278 2.99595L495.248 3.03692ZM247.285 24.5614C242.609 24.6024 237.925 24.587 233.249 24.7406C232.429 24.7662 231.66 25.5086 230.87 25.9182C231.442 26.3073 232.075 27.0753 232.579 27.0343C237.971 26.6145 243.34 26.0718 248.716 25.5649C264.439 25.5035 268.497 24.9352 269.491 21.858C261.803 22.795 254.544 23.6808 247.285 24.5614ZM303.226 21.7198C304.641 21.94 306.087 22.4008 307.48 22.3393C318.542 21.8529 329.603 21.2897 340.65 20.6651C341.252 20.6292 341.772 19.8356 342.321 19.3953C341.425 19.1137 340.514 18.5761 339.626 18.5915C332.683 18.7246 325.725 18.8372 318.798 19.211C313.587 19.4926 308.421 20.1428 303.241 20.6292C295.224 20.8136 291.082 21.713 290.816 23.3275C295.056 22.7796 299.137 22.2523 303.218 21.7198H303.226ZM276.682 63.7806C276.863 64.2772 277.051 64.779 277.232 65.2756C294.265 64.6408 311.29 64.011 328.413 63.3761C326.757 61.1438 323.203 60.7547 317.427 61.1131C305.515 61.8606 293.557 62.2344 281.622 62.8385C279.95 62.9256 278.331 63.4529 276.69 63.7755L276.682 63.7806ZM215.885 48.651C215.991 49.1272 216.096 49.6033 216.209 50.0795C233.942 49.2449 251.668 48.4104 269.401 47.5758C269.582 47.2533 269.755 46.9307 269.928 46.603C268.859 46.2088 267.759 45.4612 266.735 45.5073C265.297 45.5739 263.934 46.562 262.511 46.5876C253.136 46.7617 243.739 46.5877 234.371 46.9256C228.182 47.1509 222.045 48.052 215.878 48.6459L215.885 48.651ZM214.831 55.2507C228.468 54.2113 240.584 53.2897 253.332 52.3169C248.746 50.2945 218.686 52.1173 214.831 55.2507ZM654.846 55.7269C649.146 52.363 634.056 52.3425 628.266 55.7269H654.846ZM329.181 44.8929L329.031 43.4337C319.317 43.8484 309.603 44.2683 299.89 44.683C299.935 45.1182 299.98 45.5534 300.033 45.9835C309.747 45.62 319.468 45.2564 329.181 44.8929ZM415.46 60.002C410.769 56.971 401.477 57.4523 399.406 60.002H415.46ZM364.399 30.8334C364.422 31.4069 364.437 31.9803 364.46 32.5486C371.869 32.2363 379.286 31.924 386.696 31.6116C386.711 31.2532 386.718 30.8897 386.726 30.5313C379.309 27.8177 371.816 32.8404 364.392 30.8283L364.399 30.8334ZM228.513 25.5752C228.264 25.2526 228.023 24.93 227.775 24.6023C222.948 25.1963 218.122 25.7953 213.295 26.3893C213.468 26.9064 213.641 27.4184 213.814 27.9355C218.573 26.7374 224.462 28.8724 228.513 25.57V25.5752ZM373.3 61.1387C377.456 60.3809 382.644 62.5057 387.381 59.1009C381.289 58.7067 376.62 58.0411 373.3 61.1387Z"/>
+      </mask>
+      <g mask="url(#mask0_3876_44754)">
+        <path style="fill-opacity: 0;" d="M-0.5 40L392 13.5L671 8L147 48L595.5 38L147 66L682.5 50.5" stroke="${colorNext}" stroke-width="17"/>
+      </g>
+    </svg>`;
+
+    let svg = document.querySelector(".line-les-mauvaises");
+    let paths = svg.querySelectorAll("path");
+
+    const timelineSvg = prepareAnimationHandler.animeSVGline(paths);
+    const timelineLetter = gsap.timeline();
+
+    // Animation des mots
+    text.words.forEach((word, index) => {
+      timeline.from(word, {
         opacity: 0,
-        duration: 0.5,
+        duration: 1,
+        delay: 2,
+        onUpdate: () => {
+          if (word.innerHTML.includes("mauvaises")) {
+            if (parseFloat(word.style.opacity) > 0.9) {
+              // Utilisation de parseFloat pour garantir une comparaison correcte
+              if (!agenceHandler.lineState) {
+                // console.log("enter");
+
+                agenceHandler.lineState = true; // Change l'état pour marquer l'animation en cours
+                timelineSvg.play();
+
+                timelineSvg.eventCallback("onComplete", () => {
+                  letterSource
+                    .getLetters("M,A,U,V,A,I,S,E,S")
+                    .then((letters) => {
+                      const svgHTML = letters
+                        .map((svg) =>
+                          svg !== "*"
+                            ? `<span>${svg}</span>`
+                            : "<b class='space'></b>"
+                        )
+                        .join("");
+
+                      svg.parentNode.innerHTML += `
+                  <div class="lm-typo top t-55 absolute mauvaisesInner index z-9 rotate ro-10">
+                    ${svgHTML}
+                  </div>`;
+
+                      const tlLetterSourceAnime =
+                        prepareAnimationHandler.animeLetterSource(
+                          word,
+                          70,
+                          0.1,
+                          colorCurrent,
+                          1.5
+                        );
+
+                      return tlLetterSourceAnime.play();
+                    });
+                });
+              }
+            } else if (
+              agenceHandler.lineState &&
+              parseFloat(word.style.opacity) < 0.89
+            ) {
+              // console.log("enter back");
+
+              agenceHandler.lineState = false; // Réinitialise l'état
+              timelineSvg.reverse();
+
+              timelineSvg.eventCallback("onReverseComplete", () => {
+                const mauvaisesInner =
+                  document.querySelector(".mauvaisesInner");
+                if (mauvaisesInner) mauvaisesInner.remove();
+              });
+            }
+          }
+        },
       });
 
-      if (word.innerHTML === "mauvaises") {
-        wordTimeline.to(word, {
-          onComplete: () => {
-            const svgLineErase = `<svg class="erase-word" width="688" height="100" viewBox="0 0 683 74" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0,50 L688,50" stroke="#28282D" stroke-width="17" />
-            </svg>`;
-            word.innerHTML += svgLineErase;
+      if (word.innerHTML === "Bosser") {
+        let bosser = word.innerHTML;
 
-            const svgElement = word.querySelector(".erase-word");
-            gsap.fromTo(
-              svgElement,
-              {drawSVG: "0%"},
-              {drawSVG: "100%", duration: 1}
-            );
+        // Sépare les lettres et insère l'élément animé
+        const letter = bosser.split("");
+        letter[1] = `<span class="bounce">${letter[1]}</span> 
+                     <img class='smiley0' src='/wp-content/themes/lesmauvaises-front/assets/content/2024/01/HAPPY-VERT.png'>`;
+        word.innerHTML = letter.join("");
+
+        const letterElement = word.querySelector(".bounce");
+        const smiley = word.querySelector(".smiley0");
+
+        // Styles pour les éléments
+        Object.assign(letterElement.style, {
+          position: "relative",
+          display: "inline-block",
+          marginRight: "-16px",
+        });
+
+        Object.assign(smiley.style, {
+          height: "4.5vw",
+          display: "block",
+          position: "absolute",
+          top: "120%",
+          left: "13%",
+          opacity: "0",
+          zIndex: "10",
+        });
+
+        // Création d'une timeline pour synchroniser les animations
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: letterElement,
+            scrub: 1,
+            start: "top center",
+            end: "center center",
           },
         });
+
+        // Animation pour le texte (letterElement)
+        timeline.to(letterElement, {
+          duration: 0.1,
+          y: -160,
+          opacity: 0,
+          ease: "power2.out",
+        });
+
+        // Animation pour l'image (smiley)
+        timeline.to(
+          smiley,
+          {
+            duration: 0.5,
+            y: "-135%",
+            opacity: 1,
+            ease: "power2.out",
+          },
+          "<"
+        ); // "<" synchronise cette animation avec la précédente
+      }
+
+      if (word.innerHTML === "créer") {
+        word.innerHTML += `
+          <svg class="line-creer" width="1020" height="606" viewBox="0 0 1020 606" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <mask id="mask0_6602_55955" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="132" width="1000" height="342">
+            <path d="M711.5 438.5L757.504 438.5L788.002 427.5L849.002 410.5L937.004 357M937.004 357L970.004 264.5L889.504 194.5L735.004 175.5L598.502 167L460.504 167L200.502 206L87.5039 245.5L50.002 280.5L62.5039 332.5L87.5039 357L176.004 384L301.502 400L454.002 410.5L607.004 419L757.504 419L937.004 357Z" stroke="${colorCurrent}" stroke-width="70"/>
+            </mask>
+            <g mask="url(#mask0_6602_55955)">
+            <path d="M35.4988 321.056C43.6126 336.76 59.2834 347.663 100.563 364.835C180.231 398.8 239.751 403.742 498.499 415.5C566.757 418.692 603.999 414 603.999 414C603.999 414 632.567 414.105 664.499 411.499C696.032 409.276 706.2 409.29 709.999 409.5C718.997 408.657 730.999 409.5 730.999 409.5L736.999 409.5L744.499 409.5L751.999 409.5L759.499 409.5L765.499 409.5L768.999 409.5L772.499 409.5L774.999 409.5L777.499 409.5L779.499 409.5L782.499 409C781.387 409.191 790.999 409 790.999 409L796.5 408.5L803 407.5L810.571 406.5C810.571 406.5 810.571 406.5 824.571 403.5C824.571 403.5 830.079 403.963 888.543 385C888.543 385 941.571 359 941.571 354C961.058 325.123 974.927 284.548 968.072 248C957.921 196.383 950.064 191.97 888.543 174.595C784.874 145.44 601.874 140.2 433.999 152C354.711 157.643 216.724 180.024 157.639 198.18C87.9382 219.866 53.3384 240.812 37.9849 271.683C28.3411 290.409 27.7275 304.674 35.4988 321.056ZM50.9986 275.5C84.4199 250.776 172.857 222.692 279.999 212.748C279.999 212.748 286.866 209.062 331.499 206.536C376.529 203.626 331.499 198.18 331.499 198.18C331.499 198.18 357.072 200.779 282.499 204C282.499 204 264.153 206.591 181.999 222C156.648 230.252 128.999 237.5 107.479 243.884C88.7971 252.002 61.4099 261.127 57.4986 259.5C56.4794 259.076 71.0694 242.743 85.4986 234.5C103.392 224.685 138.4 211.682 157.639 206.536C193.05 197.433 350.145 169.122 415.999 162C483.668 154.537 748.178 159.675 806.499 167.5C847.42 172.744 951.839 199.935 935.499 203C931.867 203.681 965.312 223.136 935.499 219.5C905.685 215.864 922.037 220.243 925.999 219.5C925.999 219.5 868.601 213.231 897.499 219.5C954.441 232.505 938.612 243.641 951.05 254.842C958.399 261.461 966.041 263.964 960.499 277C964.767 324.923 923.72 352.852 861.999 379.5C812.882 400.708 750.642 396.25 683.499 399C564.126 403.857 376.271 403.684 205.499 382.5C102.514 369.518 97.2503 354.548 71.4986 340C30.3548 316.035 31.5605 289.604 50.9986 275.5ZM358.499 399C429.074 404.526 484.822 401.96 482.664 402.98C480.506 404 460.371 410.22 438.999 409C417.116 407.568 368.861 403.789 331.499 402.492C263.806 399.809 213.397 396.931 217.499 391.24C218.128 389.584 287.413 393.262 358.499 399Z" fill="${colorCurrent}"/>
+            </g>
+          </svg>
+        `;
+
+        let svgElement = document.querySelectorAll(".line-creer path");
+
+        // Timeline pour l'animation
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            paused: true,
+            trigger: word,
+            start: "top-=300px center",
+            end: "bottom center",
+            scrub: 1,
+            // markers: true,
+            toggleActions: "play reverse play reverse",
+          },
+        });
+
+        timeline.fromTo(
+          svgElement,
+          { drawSVG: "0% 0%", duration: 3 },
+          { drawSVG: "0% 100%", duration: 3, ease: "power2.inOut" }
+        );
       }
 
       if (word.innerHTML === "unique.") {
-        console.log("ICI LE MOT", word);
-
         word.innerHTML = "";
         Object.assign(word.style, {
           height: "10vh",
@@ -272,8 +318,8 @@ export class agenceHandler {
         const timeline = gsap.timeline({
           scrollTrigger: {
             trigger: word,
-            start: "top bottom",
-            end: "bottom center",
+            start: "bottom bottom",
+            end: "bottom bottom",
             scrub: 1,
             toggleActions: "play reverse play reverse",
           },
@@ -321,14 +367,13 @@ export class agenceHandler {
       gsap.to(letter, {
         opacity: 1,
         delay: i * 0.05,
-        duration: 0.5,
+        duration: 1,
       });
     });
   }
 
   static eraseText() {
     const tl = prepareAnimationHandler.eraseText();
-
     tl.play();
   }
 
@@ -438,7 +483,7 @@ export class agenceHandler {
     });
 
     const swiperText = new Swiper(".swiper-text", {
-      fadeEffect: {crossFade: true},
+      fadeEffect: { crossFade: true },
       spaceBetween: 0,
       loop: true,
       autoplay: false,
@@ -447,7 +492,7 @@ export class agenceHandler {
     Draggable.create(lever, {
       type: "rotation",
       inertia: false,
-      bounds: {minX: -40, minY: -40, maxX: 40, maxY: 40},
+      bounds: { minX: -40, minY: -40, maxX: 40, maxY: 40 },
       onDragEnd: () => {
         if (gsap.getProperty(".lever", "rotation") > 0) {
           swiper.slideNext();
@@ -504,12 +549,10 @@ export class agenceHandler {
 
     let colorLocal = localStorage.getItem("currentColorIndex");
     let CurrentColor = prepareAnimationHandler.colors[colorLocal];
-    console.log("Initial CurrentColor:", CurrentColor);
 
     function updateColor() {
       colorLocal = localStorage.getItem("currentColorIndex");
       CurrentColor = prepareAnimationHandler.colors[colorLocal];
-      console.log("Updated CurrentColor:", CurrentColor);
     }
 
     // Écouter les changements dans d'autres onglets
@@ -1101,6 +1144,87 @@ export class agenceHandler {
     }, 1);
   }
 
+  static sectionPhoto() {
+    let navBar = document.querySelector(".elementor-element-26a7de8");
+
+    function hideNavBar() {
+      Object.assign(navBar.style, {
+        "background-color": "transparent",
+      });
+    }
+
+    function afficherNavBAr() {
+      Object.assign(navBar.style, {
+        "background-color": "var( --e-global-color-1fe2b94 )",
+      });
+    }
+
+    ScrollTrigger.create({
+      trigger: "#section-photo",
+      start: "top center",
+      end: "bottom center",
+      onEnter: () => hideNavBar(),
+      onLeave: () => afficherNavBAr(),
+      onEnterBack: () => hideNavBar(),
+      onLeaveBack: () => afficherNavBAr(),
+    });
+
+    // Sélectionne le conteneur principal et injecte le HTML
+
+    // Sélectionne la section principale
+    const sectionPhoto = document.querySelector("#section-photo");
+
+    const width = window.innerWidth;
+    // window.addEventListener("resize", detectDeviceByScreenSize);
+
+    //   sectionPhoto.innerHTML = `
+    //   <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/mobil/1.jpg" alt="Photo 1" style="z-index: 60;">
+    //   <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/mobil/2.jpg" alt="Photo 2" style="z-index: 50;">
+    //   <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/mobil/3.jpg" alt="Photo 3" style="z-index: 40;">
+    //   <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/mobil/4.jpg" alt="Photo 4" style="z-index: 30;">
+    //   <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/mobil/5.jpg" alt="Photo 5" style="z-index: 20;">
+    //   <img class='photoDivLast' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/mobil/6.jpg" alt="Photo 6" style="z-index: 10;">
+    // `;
+    //   console.log("L'utilisateur utilise un appareil mobile.");
+
+    sectionPhoto.innerHTML = `
+      <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/ordinateur/1.jpg" alt="Photo 1" style="z-index: 60;">
+      <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/ordinateur/2.jpg" alt="Photo 2" style="z-index: 50;">
+      <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/ordinateur/3.jpg" alt="Photo 3" style="z-index: 40;">
+      <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/ordinateur/4.jpg" alt="Photo 4" style="z-index: 30;">
+      <img class='photoDiv' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/ordinateur/5.jpg" alt="Photo 5" style="z-index: 20;">
+      <img class='photoDivLast' src="/wp-content/themes/lesmauvaises-front/assets/content/sectionPhoto/ordinateur/6.jpg" alt="Photo 6" style="z-index: 10;">
+    `;
+    console.log("L'utilisateur utilise un ordinateur ou une tablette.");
+
+    // Sélection de chaque photoDiv
+    const sections = document.querySelectorAll(".photoDiv");
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: sectionPhoto,
+          start: "top top",
+          end: "+=16.6%",
+          pin: true,
+          scrub: true,
+          markers: true,
+          ease: "none",
+          pinType: "transform",
+          anticipatePin: 1,
+        },
+      })
+      .to(sections, {
+        opacity: 0,
+        duration: 0,
+        delay: 1,
+        stagger: 0.5,
+        ease: "linear",
+      });
+
+    // Écouteur d'événements pour s'adapter aux changements de taille de l'écran
+  }
+
   static SectionRoue() {
     let navBar = document.querySelector(".elementor-element-26a7de8");
 
@@ -1126,69 +1250,167 @@ export class agenceHandler {
       onLeaveBack: () => afficherNavBAr(),
     });
 
-
+    let textData = [
+      {
+        number: 0,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/ANGE-NOIR.png",
+        title: "ce qu'on est",
+        description:
+          "Fous - Uniques - Pas si spéciaux - Drôles - Sympas - Têtus - Créatifs - Perchés - Sans filtre - Gentils",
+      },
+      {
+        number: 1,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/DEMON-NOIR.png",
+        title: "PERDU",
+        description: "On espère que t'es pas trop mauvais perdant...",
+      },
+      {
+        number: 2,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/ANGE-NOIR.png",
+        title: "Ce qu'on aime",
+        description:
+          "Teckels - café - bière - afterwork - la fête - coca - redbull - guarana - idée farfelu",
+      },
+      {
+        number: 3,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/DEMON-NOIR.png",
+        title: "PERDU",
+        description:
+          "Mais non t'es pas nul, t'as juste pas de chance t'inquiete",
+      },
+      {
+        number: 4,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/ANGE-NOIR.png",
+        title: "Ce qu'on fait",
+        description:
+          "Sites internet - Direction artistique - SEO - SEA - Marketing digital - UX - UI - Community Management - Maintenance - Conseil",
+      },
+      {
+        number: 5,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/DEMON-NOIR.png",
+        title: "PERDU",
+        description: "la prochaine c'est la bonne !",
+      },
+      {
+        number: 6,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/ANGE-NOIR.png",
+        title: "Ce qu'on veut",
+        description:
+          "Projets cools - Défis - Rencontres humaines - Oser - Changer - Créer - Idées innovantes - Choquer - Folie",
+      },
+      {
+        number: 7,
+        photo:
+          "/wp-content/themes/lesmauvaises-front/assets/content/2024/01/DEMON-NOIR.png",
+        title: "PERDU",
+        description:
+          "Tu fais semblant de perdre pour qu'on reste amis, avoue ?",
+      },
+    ];
 
     let roueText = document.querySelector("#roue-text");
 
     // Ajout du contenu caché et du canvas
     roueText.innerHTML += `
-      <div class="hidden-content">
-          🎉 Bravo, vous avez gagné !
-      </div>
+    <div class="hidden-content">
+      <div class="tittleTicket"><p></p></div>
+      <div class="infoTicket"><span></span></div>
+      <div class="infoTicket"><span></span></div>
+      <div class="infoTicket"><span></span></div>
+      <div class="infoTicket"><span></span></div>
+      <div class="infoTicket"><span></span></div>
       <canvas id="scratchCanvas"></canvas>
+    </div>
+
     `;
-    
+
     // Récupération du canvas et du contexte
     const canvas = document.getElementById("scratchCanvas");
     const ctx = canvas.getContext("2d");
-    
+
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
-    
+
     // Charger une image à gratter
     const image = new Image();
-    image.src = "/wp-content/themes/lesmauvaises-front/assets/content/leopard.jpg"; // Exemple d'image
+    image.src =
+      "/wp-content/themes/lesmauvaises-front/assets/content/wheel/ticket.png";
     image.onload = () => {
       ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
     };
-    
+
     // Activer le survol
     let isHovering = false;
-    
+    let wheelHasSpun = false;
+
     // Fonction pour "gratter" au survol
     function scratchOnHover(e) {
+      if (!wheelHasSpun) return;
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-    
+
       if (isHovering) {
-        // Dessiner un cercle transparent pour "effacer"
         ctx.globalCompositeOperation = "destination-out";
         ctx.beginPath();
-        ctx.arc(x, y, 80, 0, Math.PI * 2); // Cercle de rayon 20px
+        ctx.arc(x, y, 80, 0, Math.PI * 2);
         ctx.fill();
       }
     }
-    
+
+    function resetScratchCanvas() {
+      // Effacer le canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Réinitialiser le mode de composition
+      ctx.globalCompositeOperation = "source-over";
+
+      // Redessiner l'image de fond à gratter
+      image.onload = () => {
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      };
+      image.src =
+        "/wp-content/themes/lesmauvaises-front/assets/content/wheel/ticket.png";
+    }
+
     // Vérification de progression du grattage
-    
-    
+    function checkScratchProgress() {
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const pixels = imageData.data;
+      let transparentPixels = 0;
+
+      for (let i = 3; i < pixels.length; i += 4) {
+        if (pixels[i] === 0) transparentPixels++;
+      }
+
+      const progress = (transparentPixels / (pixels.length / 4)) * 100;
+
+      if (progress > 90) {
+      }
+    }
+
     // Gestion des événements pour hover
     canvas.addEventListener("mouseenter", () => (isHovering = true));
     canvas.addEventListener("mouseleave", () => (isHovering = false));
     canvas.addEventListener("mousemove", (e) => {
       scratchOnHover(e);
+      checkScratchProgress();
     });
 
-
-    
     let roue = document.querySelector("#roue");
 
     roue.innerHTML = `
-      <div class="spinBtn">
-        <img class='smiley0' src='/wp-content/themes/lesmauvaises-front/assets/content/2024/01/HAPPY-VERT.png'>
-      </div>
-      <div class="bigWheel">
+    <div class="spinBtn">
+      <img class='smiley0' src='/wp-content/themes/lesmauvaises-front/assets/content/2024/01/HAPPY-VERT.png'>
+    </div>
+    <div class="bigWheel">
         <div class="wheel">
             <div class="caseBorder" style="--a:1"></div>
             <div class="caseBorder" style="--a:2"></div>
@@ -1196,35 +1418,35 @@ export class agenceHandler {
             <div class="caseBorder" style="--a:4"></div>
 
             <div id='1' class="number" style="--i:1; --clr:#C72468">
-              <span>CE QU'ON EST</span>
+              <span><img src="${textData[0].photo}"></span>
             </div>
 
             <div id='2' class="number" style="--i:2; --clr:#A2D2FF">
-              <span>PERDU</span>
+              <span><img src="${textData[1].photo}"></span>
             </div>
 
             <div id='3' class="number" style="--i:3; --clr:#C77DFF">
-              <span>CE QU'ON AIME</span>
+              <span><img src="${textData[2].photo}"></span>
             </div>
 
             <div id='4' class="number" style="--i:4; --clr:#CDDD20">
-              <span>PERDU</span>
+              <span><img src="${textData[3].photo}"></span>
             </div>
 
             <div id='5' class="number" style="--i:5; --clr:#C72468">
-              <span>5</span>
+              <span><img src="${textData[4].photo}"></span>
             </div>
 
             <div id='6' class="number" style="--i:6; --clr:#A2D2FF">
-              <span>PERDU</span>
+              <span><img src="${textData[5].photo}"></span>
             </div>
 
             <div id='7' class="number" style="--i:7; --clr:#C77DFF">
-              <span>7</span>
+              <span><img src="${textData[6].photo}"></span>
             </div>
 
             <div id='8' class="number" style="--i:8; --clr:#CDDD20">
-              <span>PERDU</span>
+              <span><img src="${textData[7].photo}"></span>
             </div>
 
           </div>
@@ -1263,6 +1485,7 @@ export class agenceHandler {
       maxDuration: 2.5,
       inertia: true,
       onDrag: function () {
+        resetScratchCanvas();
         mainCircle.classList.remove("ready");
         var curRotation = gsap.getProperty(mainCircle, "rotation");
         if (curRotation - rotate >= 22.5) {
@@ -1285,7 +1508,83 @@ export class agenceHandler {
         const centerY = rect.top;
         const elementUnderPointer = document.elementFromPoint(centerX, centerY);
 
-        console.log(elementUnderPointer.id);
+        const elementId = elementUnderPointer.id;
+        this.titleHolder = textData[elementId].title;
+
+        let texttitle = document.querySelector(".tittleTicket");
+        let textInfo = document.querySelector(".infoTicket");
+        let ticketDiv = document.querySelector(".hidden-content");
+        let title = document.querySelector(".tittleTicket p");
+        console.log("le titre ", title);
+
+        if (elementId == 0 || elementId == 4) {
+          Object.assign(ticketDiv.style, {
+            "background-image":
+              'url("/wp-content/themes/lesmauvaises-front/assets/content/wheel/red.png")',
+            "background-size": "cover",
+            "background-position": "center",
+            "background-repeat": "no-repeat",
+          });
+
+          Object.assign(title.style, {
+            "background-image":
+              'url("/wp-content/themes/lesmauvaises-front/assets/content/wheel/red.png")',
+            "background-size": "100vh",
+            "background-position": "center",
+          });
+        } else if (elementId == 1 || elementId == 5) {
+          Object.assign(ticketDiv.style, {
+            "background-image":
+              'url("/wp-content/themes/lesmauvaises-front/assets/content/wheel/blue.png")',
+            "background-size": "cover",
+            "background-position": "center",
+            "background-repeat": "no-repeat",
+          });
+          Object.assign(title.style, {
+            "background-image":
+              'url("/wp-content/themes/lesmauvaises-front/assets/content/wheel/blue.png")',
+            "background-size": "100vh",
+            "background-position": "center",
+          });
+        } else if (elementId == 2 || elementId == 6) {
+          Object.assign(ticketDiv.style, {
+            "background-image":
+              'url("/wp-content/themes/lesmauvaises-front/assets/content/wheel/purple.png")',
+            "background-size": "cover",
+            "background-position": "center",
+            "background-repeat": "no-repeat",
+          });
+          Object.assign(title.style, {
+            "background-image":
+              'url("/wp-content/themes/lesmauvaises-front/assets/content/wheel/purple.png")',
+            "background-size": "100vh",
+            "background-position": "center",
+          });
+        } else if (elementId == 3 || elementId == 7) {
+          Object.assign(ticketDiv.style, {
+            "background-image":
+              'url("/wp-content/themes/lesmauvaises-front/assets/content/wheel/yellow.png")',
+            "background-size": "cover",
+            "background-position": "center",
+            "background-repeat": "no-repeat",
+          });
+          Object.assign(title.style, {
+            "background-image":
+              'url("/wp-content/themes/lesmauvaises-front/assets/content/wheel/yellow.png")',
+            "background-size": "100vh",
+            "background-position": "center",
+          });
+        }
+
+        console.log("CEST ICI", texttitle.children);
+        texttitle.children[0].innerHTML = textData[elementId].title;
+
+        const infoTickets = document.querySelectorAll(".infoTicket span");
+
+        infoTickets.forEach((span) => {
+          span.innerHTML = textData[elementId].description;
+          span.setAttribute("data-text", textData[elementId].description);
+        });
       },
     });
 

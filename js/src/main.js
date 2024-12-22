@@ -17,56 +17,63 @@ import { controlSpeedHandler } from "./components/controlSpeedHandler";
 import { contactHandler } from "./components/contactHandler";
 
 document.addEventListener("readystatechange", (event) => {
-    switch (document.readyState) {
-        case "loading":
-            break;
-        case "interactive":
-            // generalHandler.setAxeptio();
-            utilsHandler.loadObserver();
-            menuHandler.loadLoader();
-            utilsHandler.loadLenis();
-            // utilsHandler.loadPlanA3();
-            break;
-        case "complete":
-            window.addEventListener("load", () => {
-                transitionPageHandler.loadTransition(() => {
-                    prepareAnimationHandler.detailMenu();
-                    footerHandler.loadFooter();
-                    // blogHandler.loadScrollLecture();
-
-                            animationHandler.init3DScene();
-                            animationHandler.startHomepage();
-                            break;
-                        case location.pathname.includes("les-mauvaises"):
-                            projectHandler.animationCardProject();
-                            utilsHandler.calculCards();
-                            projectHandler.getFontProject();
-                            projectHandler.switchColorProject();
-                            projectHandler.animateStickyModel();
-                            break;
-                        case location.pathname.includes("actualites"):
-                            // actuHandler.setNumberOnArticle();
-                            actuHandler.changeSelectElement();
-                            actuHandler.selectTags();
-                            actuHandler.openMenuFilter();
-                            break;
-                        case location.pathname.includes("services"):
-                            serviceHandler.loadSwitchService();
-                            serviceHandler.trashContent();
-                            utilsHandler.showBrunchText();
-                            break;
-                        case location.pathname.includes("foire-aux-questions"):
-                            faqHandler.closeAccordionsOnLoad();
-                            faqHandler.dispatchLines();
-                            faqHandler.writeSubtitle();
-                            faqHandler.animateWave();
-                            break;
-                        case location.pathname.includes("contact"):
-                            contactHandler.contactTextApparition();
-                            contactHandler.animateFormCard();
-                            contactHandler.animateDatePicker();
-                            contactHandler.calendarHandler();
-                            break;
-                    switch (true) {
-                        case location.pathname.split('"')[0] === "/":
+  switch (document.readyState) {
+    case "loading":
+      break;
+    case "interactive":
+      // generalHandler.setAxeptio();
+      utilsHandler.loadObserver();
+      menuHandler.loadLoader();
+      utilsHandler.loadLenis();
+      // utilsHandler.loadPlanA3();
+      break;
+    case "complete":
+      window.addEventListener("load", () => {
+        transitionPageHandler.loadTransition(() => {
+          prepareAnimationHandler.detailMenu();
+          footerHandler.loadFooter();
+          // blogHandler.loadScrollLecture();
+          switch (true) {
+            case location.pathname.split('"')[0] === "/":
+              animationHandler.init3DScene();
+              animationHandler.startHomepage();
+              break;
+            case location.pathname.includes("les-mauvaises"):
+              projectHandler.animationCardProject();
+              utilsHandler.calculCards();
+              projectHandler.getFontProject();
+              projectHandler.switchColorProject();
+              projectHandler.animateStickyModel();
+              break;
+            case location.pathname.includes("actualites"):
+              // actuHandler.setNumberOnArticle();
+              actuHandler.changeSelectElement();
+              actuHandler.selectTags();
+              actuHandler.openMenuFilter();
+              break;
+            case location.pathname.includes("services"):
+              serviceHandler.loadSwitchService();
+              serviceHandler.trashContent();
+              utilsHandler.showBrunchText();
+              break;
+            case location.pathname.includes("foire-aux-questions"):
+              faqHandler.closeAccordionsOnLoad();
+              faqHandler.dispatchLines();
+              faqHandler.writeSubtitle();
+              faqHandler.animateWave();
+              break;
+            case location.pathname.includes("contact"):
+              contactHandler.contactTextApparition();
+              contactHandler.animateFormCard();
+              contactHandler.animateDatePicker();
+              contactHandler.calendarHandler();
+              break;
+            default:
+              break;
+          }
+          window.scrollTo(0, 0);
+        });
+      });
+      break;
+  }
 });

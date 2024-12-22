@@ -101,11 +101,23 @@ html {
     &.t-15 {
       top: -15px;
     }
+    &.t--15 {
+      top: 15px;
+    }
     &.t--40 {
       top: -40px;
     }
     &.t-25 {
       top: -25px;
+    }
+    &.t-50 {
+      top: 36%;
+    }
+    &.t-8 {
+      top: 8%;
+    }
+    &.t-unique {
+      top: 40%;
     }
   }
   &.index {
@@ -135,6 +147,9 @@ html {
     }
     &.ro--15 {
       transform: rotate(-15deg);
+    }
+    &.ro-15 {
+      transform: rotate(15deg);
     }
     &.ro--4 {
       transform: rotate(-4deg);
