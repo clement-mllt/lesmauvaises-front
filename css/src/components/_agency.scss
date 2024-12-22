@@ -116,3 +116,693 @@
   user-select: none;
   cursor: pointer;
 }
+<<<<<<< HEAD
+=======
+
+
+
+// ANIMATION DE LETTRE
+
+.line-les-mauvaises {
+  width: 100%;
+  position: absolute;
+  top: 20px;
+  left: 0;
+}
+
+.line-creer {
+  width: calc(23000vw / 1018);
+  height: calc(10000vw / 1018);
+  position: absolute;
+  left: calc(-5000vw / 1018);
+  top: calc(-1700vw / 1018);
+  -webkit-transform: rotate(10deg);
+  transform: rotate(5deg);
+}
+
+.line-unique {
+  width: 95%;
+  position: absolute;
+  top: -300% !important;
+  left: -33%;
+  transform: rotate(-45deg);
+}
+
+
+
+// ROUE CSS
+
+
+/* Cercle parent */
+
+#roue {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#roue-text {
+  position: relative;
+  margin: 0 auto;
+  border: 2px solid #333;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-right: 10%;
+}
+
+.hidden-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ff69b4; /* Fond rose */
+  z-index: 1; /* En dessous du canvas */
+}
+
+#scratchCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2; /* Au-dessus du fond rose */
+  cursor: pointer;
+}
+
+
+
+.spinBtn {
+  position: absolute;
+  top: 45%;
+  left: 12%;
+  width: 100px;
+  height: 100px;
+  font-family: 'QUICKSAND';
+  font-size: 2em;
+  background-color: #fff;
+  border-radius: 50%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.spinBtn::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 100px;
+  transform: rotate(90deg);
+  width: 40px;
+  height: 60px;
+  background: #fff;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.spinBtn img {
+  z-index: 1000;
+}
+
+.bigWheel {
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 100vh;
+  height: 100vh;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.wheel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.wheel .caseBorder {
+  position: absolute;
+  overflow: visible;
+  width: 150%;
+  top: 50%;
+  left: -25%;
+  transform: rotate(calc(45deg * var(--a)));
+  border: 3px solid white;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.wheel .number {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  overflow: hidden;
+  background: var(--clr);
+  transform-origin: bottom right; /* Centre exact pour rotation */
+  transform: rotate(calc(45deg * var(--i)));
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Précision supplémentaire */
+
+  span {
+    margin-left: 50%;
+  }
+
+}
+
+
+/* GUN CSS */
+
+#GUNplace {
+  border: red solid 3px;
+}
+
+/* Canvas */
+canvas {
+  z-index: 0;
+}
+
+h3 {
+  font-family: "STAND ROCK", Sans-serif;
+}
+
+/* Bille */
+#bille {
+  z-index: 5;
+  display: block;
+  height: 40px;
+}
+
+/* Masquer les éléments */
+.hidden {
+  display: none;
+}
+
+
+/* Info overlay */
+.info {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  color: white; 
+  z-index: 18;
+  animation: infoStart 1s linear forwards;
+}
+
+/* Effet de flou sur l'info */
+.info::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.infoDetails {
+  height: 100%;
+  width: 50%;
+}
+
+.detailsText {
+  margin-right: 5%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.detailsImg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#teamName {
+  font-family: "MADE SOULMAZE";
+}
+
+.infoDetails img {
+  margin-top: 8%;
+}
+
+ #hasBeenShootTeam {
+  height: fit-content;
+  width: fit-content;
+ }
+
+
+.div_btnClose {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  padding-top: 10%;
+  padding-right: 10%;
+  width: 100%;
+  font-size: 55px !important;
+  font-family: 'QUICKSAND';
+}
+
+.div_btnClose :hover {
+  background-color: transparent;
+}
+
+.div_teamName {
+  display: flex;
+  justify-content: center;
+  font-size: 18vh;
+  margin-bottom: 5%;
+}
+
+.rotateText {
+  margin-top: 3%;
+  margin-bottom: 3%;
+  transform: rotate(9.74deg);
+}
+
+.yellowText {
+  font-family: 'MADE SOULMAZE';
+  font-size: 12px;
+}
+
+.div_teamPhrase {
+  display: flex;
+  justify-content: center;
+  font-family: 'QUICKSAND';
+  margin-left: 5vw;
+  width: 75%;
+}
+
+#teamPhrase {
+  text-align: center;
+}
+
+.badges {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1%;
+}
+
+.badges img {
+ aspect-ratio: 1/1;
+ width: auto;
+ max-width: 80%;
+}
+
+.Animal {
+  margin-top: 10%;
+}
+
+.MrMme {
+  margin-left: 5%;
+  padding-left: 5%;
+}
+
+#Animal {
+  opacity: 0;
+  transform: rotate(5.09deg);
+}
+
+#MrMme {
+  opacity: 0;
+  transform: rotate(11.9deg);
+}
+
+#Song {
+  opacity: 0;
+  transform: rotate(-15deg);
+}
+
+.stamp{
+  height: 35vh;
+  position:relative;
+  -webkit-animation-name: pulse;
+  animation-name: pulse;
+  animation-delay:0s;
+  -webkit-animation-delay:0s;
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  opacity: 0;
+  -webkit-animation-fill-mode:forwards;
+   animation-fill-mode:forwards;
+}
+
+@keyframes pulse{
+  0%{
+    opacity: 0;
+  }
+  10%{
+    opacity:.50;
+    transform-origin: 50% 50%;
+    transform: rotate(-2deg) scale(5);
+    transition: all .3s cubic-bezier(0.6, 0.04, 0.98, 0.335);
+  }
+  50%{
+    opacity:1;
+    transform: rotate(0.1turn);
+    transform: rotate(-15deg) scale(1);
+  }
+  80% {
+    opacity:1;
+    transform: rotate(-0.1turn);
+  }
+  100% {
+    opacity:1;
+  }
+  
+}
+
+@keyframes infoStart {
+  0% {
+    background-color: rgba(0, 0, 0, 0.0);
+    backdrop-filter: blur(0px); 
+  }
+
+  50% {
+    background-color: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(5px); 
+  }
+
+  100% {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px); 
+  }
+}
+
+
+/* Animation des éléments de bille */
+.HasBeenShoot0 {
+  animation: moveAndScale0 1s linear;
+}
+
+.HasBeenShoot1 {
+  animation: moveAndScale1 1s linear;
+}
+
+.HasBeenShoot2 {
+  animation: moveAndScale2 1s linear;
+}
+
+.HasBeenShoot3 {
+  animation: moveAndScale3 1s linear;
+}
+
+.HasBeenShoot4 {
+  animation: moveAndScale4 1s linear;
+}
+
+.HasBeenShoot5 {
+  animation: moveAndScale5 1s linear;
+}
+
+.HasBeenShoot6 {
+  animation: moveAndScale6 1s linear;
+}
+/* Taille des images de bille */
+#bille img {
+  height: 4em;
+}
+
+/* Bille après tir */
+#hasBeenShootBille {
+  height: 12em;
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  z-index: 15;
+}
+
+/* Images animées */
+.images {
+  position: absolute;
+  display: inline-block;
+  z-index: 10;
+}
+
+.photo {
+  display: block;
+  width: 250px; /* Exemple de largeur fixe */
+}
+
+/* Animation de la première image */
+.img1 {
+  top: 25em;
+  left: 5vw;
+  width: auto !important;
+  height: auto !important;
+  z-index: 11;
+  animation: moove1 4s infinite linear;
+}
+
+/* Animation de la deuxième image */
+.img2 {
+  top: 5em;
+  left: 17vw;
+  z-index: 11;
+  width: auto !important;
+  height: auto !important;
+  animation: moove2 4s infinite linear;
+}
+
+/* Animation de la troisième image */
+.img3 {
+  top: 13em;
+  left: 33vw;
+  z-index: 11;
+  animation: moove3 4s infinite linear;
+}
+
+/* Animation de la quatrième image */
+.img4 {
+  top: 10em;
+  left: 48vw;
+  z-index: 11;
+  animation: moove4 4s infinite linear;
+}
+
+/* Animation de la cinquième image */
+.img5 {
+  top: 3em;
+  left: 65vw;
+  z-index: 11;
+  animation: moove5 4s infinite linear;
+}
+
+/* Animation de la sixième image */
+.img6 {
+  top: 35em;
+  left: 69vw;
+  z-index: 11;
+  animation: moove6 4s infinite linear;
+}
+
+/* Animation de la septième image */
+.img7 {
+  top: 3em;
+  left: 85vw;
+  z-index: 11;
+  width: auto !important;
+  height: auto !important;
+  animation: moove7 4s infinite linear;
+}
+
+/* Animation de la bille */
+@keyframes moveAndScale0 {
+  0% {
+    transform: translateX(0vw) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateX(1vw) translateY(-2vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateX(2vw) translateY(-4vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateX(3vw) translateY(-6vw) scale(2.2) rotateY(540deg);
+  }
+  100% {
+    transform: translateX(4vw) translateY(-6vw) scale(3) rotateY(720deg);
+  }
+}
+
+@keyframes moveAndScale1 {
+  0% {
+    transform: translateX(0%) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateY(2vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateY(5vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateY(7vw) scale(2.2) rotateY(540deg);
+  }
+  100% {
+    transform: translateY(10vw) scale(3) rotateY(720deg);
+  }
+}
+
+@keyframes moveAndScale2 {
+  0% {
+    transform: translateX(0%) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateX(-2vw) translateY(2vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateX(-5vw) translateY(5vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateX(-5vw) translateY(7vw) scale(2.2) rotateY(540deg);
+  }
+  100% {
+    transform: translateX(-5vw) translateY(10vw) scale(3) rotateY(720deg);
+  } 
+}
+
+@keyframes moveAndScale3 {
+  0% {
+    transform: translateX(0%) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateX(-5vw) translateY(2vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateX(-9vw) translateY(5vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateX(-13vw) translateY(7vw) scale(2.2) rotateY(540deg);
+  }
+  100% {
+    transform: translateX(-25vw) translateY(10vw) scale(3) rotateY(720deg);
+  } 
+}
+
+@keyframes moveAndScale4 {
+  0% {
+    transform: translateX(0%) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateX(-10vw) translateY(2vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateX(-20vw) translateY(5vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateX(-30vw) translateY(7vw) scale(2.2) rotateY(540deg);
+  }
+  100% {
+    transform: translateX(-42vw) translateY(10vw) scale(3) rotateY(720deg);
+  } 
+}
+
+@keyframes moveAndScale5 {
+  0% {
+    transform: translateX(0%) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateX(-15vw) translateY(2vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateX(-30vw) translateY(2vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateX(-40vw) translateY(2vw) scale(2.2) rotateY(540deg);
+  }
+  100% {
+    transform: translateX(-55vw) translateY(2vw) scale(3) rotateY(720deg);
+  } 
+}
+
+@keyframes moveAndScale6 {
+  0% {
+    transform: translateX(0%) scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: translateX(-15vw) translateY(2vw) scale(1.2) rotateY(180deg);
+  }
+  50% {
+    transform: translateX(-30vw) translateY(5vw) scale(2) rotateY(360deg);
+  }
+  75% {
+    transform: translateX(-40vw) translateY(8vw) scale(2.2) rotateY(540deg);
+  }
+  100% {
+    transform: translateX(-60vw) translateY(15vw) scale(3) rotateY(720deg);
+  } 
+}
+
+/* Animation de la première image en mouvement */
+@keyframes moove1 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(50px, -25px); }
+  50% { transform: translate(100px, 0); }
+  75% { transform: translate(50px, 25px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Animation de la deuxième image en mouvement */
+@keyframes moove2 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-50px, 25px); }
+  50% { transform: translate(-25px, 50px); }
+  75% { transform: translate(25px, 25px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Animation de la troisième image en mouvement */
+@keyframes moove3 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(75px, -75px); }
+  50% { transform: translate(0, -100px); }
+  75% { transform: translate(-75px, -75px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Animation de la quatrième image en mouvement */
+@keyframes moove4 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-100px, 25px); }
+  50% { transform: translate(-50px, -25px); }
+  75% { transform: translate(50px, -25px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Animation de la cinquième image en mouvement */
+@keyframes moove5 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(50px, 50px); }
+  50% { transform: translate(0, 100px); }
+  75% { transform: translate(-50px, 50px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Animation de la sixième image en mouvement */
+@keyframes moove6 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(100px, 0); }
+  50% { transform: translate(75px, -75px); }
+  75% { transform: translate(25px, -25px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Animation de la septième image en mouvement */
+@keyframes moove7 {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-75px, 25px); }
+  50% { transform: translate(-100px, 0); }
+  75% { transform: translate(-75px, -25px); }
+  100% { transform: translate(0, 0); }
+}
+>>>>>>> parent of 3ebbf7e (feature/gun/ animation, placement and logic)

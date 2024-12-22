@@ -34,20 +34,10 @@ document.addEventListener("readystatechange", (event) => {
                     footerHandler.loadFooter();
                     // blogHandler.loadScrollLecture();
 
-                    switch (true) {
-                        case location.pathname.split('"')[0] === "/":
                             animationHandler.init3DScene();
                             animationHandler.startHomepage();
                             break;
                         case location.pathname.includes("les-mauvaises"):
-                            utilsHandler.showBrunchText();
-                            agenceHandler.switchWhy();
-                            agenceHandler.initScrollPaddingAnimation();
-                            // agenceHandler.animateTextOpacityOnScroll();
-                            agenceHandler.teamImageSlider();
-                            agenceHandler.shootTeam();
-                            break;
-                        case location.pathname.includes("realisations"):
                             projectHandler.animationCardProject();
                             utilsHandler.calculCards();
                             projectHandler.getFontProject();
@@ -77,12 +67,6 @@ document.addEventListener("readystatechange", (event) => {
                             contactHandler.animateDatePicker();
                             contactHandler.calendarHandler();
                             break;
-                        default:
-                            break;
-                    }
-                    window.scrollTo(0, 0);
-                });
-            });
-            break;
-    }
+                    switch (true) {
+                        case location.pathname.split('"')[0] === "/":
 });
