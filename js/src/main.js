@@ -15,6 +15,7 @@ import {projectHandler} from "./components/projectHandler";
 import {faqHandler} from "./components/faqHandler";
 import {controlSpeedHandler} from "./components/controlSpeedHandler";
 import { contactHandler } from "./components/contactHandler";
+import { page404Handler } from "./components/page404Handler"
 
 
 document.addEventListener("readystatechange", (event) => {
@@ -35,6 +36,8 @@ document.addEventListener("readystatechange", (event) => {
         transitionPageHandler.loadTransition(() => {
           prepareAnimationHandler.detailMenu();
           footerHandler.loadFooter();
+          page404Handler.init();
+          
           // blogHandler.loadScrollLecture();
 
 
