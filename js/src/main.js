@@ -36,6 +36,7 @@ document.addEventListener("readystatechange", (event) => {
 
                     switch (true) {
                         case location.pathname.split('"')[0] === "/":
+                            animationHandler.init3DScene();
                             animationHandler.startHomepage();
                             break;
                         case location.pathname.includes("les-mauvaises"):
