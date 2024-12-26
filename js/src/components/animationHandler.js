@@ -59,18 +59,17 @@ export class animationHandler {
         },
     };
 
-    static init3DScene() {
-        // Allez je vous laisse avec tout ça.
-        // En esperant vous avoir aidé, bonne continuation à tous !
-        // La bise <3
+  static startHomepage(currentColor) {
+    const tl = gsap.timeline();
+    const tlProject = gsap.timeline();
 
         const container = document.getElementById("canvaContainer");
         const flashScreen = document.createElement("div");
         flashScreen.classList.add("flash-screen");
         container.appendChild(flashScreen);
 
-        const currentColorIndex = localStorage.getItem("currentColorIndex");
-        const currentColor = prepareAnimationHandler.colors[currentColorIndex];
+    const timelineHeaderFirst =
+      prepareAnimationHandler.animationFirstSectionHomepage(currentColor);
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(

@@ -15,6 +15,8 @@ import { projectHandler } from "./components/projectHandler";
 import { faqHandler } from "./components/faqHandler";
 import { controlSpeedHandler } from "./components/controlSpeedHandler";
 import { contactHandler } from "./components/contactHandler";
+import { page404Handler } from "./components/page404Handler"
+
 
 document.addEventListener("readystatechange", (event) => {
     switch (document.readyState) {
@@ -33,6 +35,7 @@ document.addEventListener("readystatechange", (event) => {
                     prepareAnimationHandler.detailMenu();
                     footerHandler.loadFooter();
                     // blogHandler.loadScrollLecture();
+          page404Handler.init();
 
                             animationHandler.init3DScene();
                             animationHandler.startHomepage();
@@ -69,4 +72,6 @@ document.addEventListener("readystatechange", (event) => {
                             break;
                     switch (true) {
                         case location.pathname.split('"')[0] === "/":
+          const currentIndexColor = localStorage.getItem('currentColorIndex')
+          const currentColor = prepareAnimationHandler.colors[currentIndexColor]
 });

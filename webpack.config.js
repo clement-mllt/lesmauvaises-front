@@ -1,11 +1,13 @@
 const path = require("path");
+const webpack = require("webpack");
 
 // css extraction and minification
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const autoprefixer = require("autoprefixer");
 // clean out build dir in-between builds
-const {CleanWebpackPlugin} = require("clean-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+
 module.exports = [
   {
     entry: {
@@ -53,7 +55,6 @@ module.exports = [
               },
             },
           ],
-          // use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
         },
         // loader for webfonts (only required if loading custom fonts)
         {
@@ -74,22 +75,35 @@ module.exports = [
       ],
     },
     plugins: [
-      // clear out build directories on each build
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery",
+        "window.jQuery": "jquery",
+        // _: "underscore",      // Fournit Underscore globalement
+        Backbone: "backbone", // Fournit Backbone globalement
+      }),
       new CleanWebpackPlugin({
         cleanOnceBeforeBuildPatterns: ["./js/build/*", "./css/build/*"],
       }),
-      require("autoprefixer"),
-      // css extraction into dedicated file
       new MiniCssExtractPlugin({
         filename: "./css/build/main.min.css",
       }),
     ],
+    resolve: {
+      alias: {
+        // underscore: path.resolve(__dirname, "node_modules/underscore/underscore.js"),
+        // jquery: path.resolve(__dirname, "node_modules/jquery/dist/jquery.min.js"),
+        // backbone: path.resolve(__dirname, "node_modules/backbone/backbone.js"),
+      },
+    },
+    externals: {
+      jquery: "jQuery",       // jQuery global
+      // underscore: "underscore", // Underscore global (vérifie le nom précis)
+      backbone: "Backbone",   // Backbone global
+    },
     optimization: {
-      // minification - only performed when mode = production
       minimizer: [
-        // js minification - special syntax enabling webpack 5 default terser-webpack-plugin
-        `...`,
-        // css minification
+        `...`, // Default Terser plugin
         new CssMinimizerPlugin(),
       ],
     },

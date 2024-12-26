@@ -44,13 +44,15 @@ export class prepareAnimationHandler {
   static hasClickedFirstAnimation = false;
   static hasClickedSecondAnimation = false;
 
-  static animationFirstSectionHomepage() {
+  static animationFirstSectionHomepage(currentColor) {
     const tl = gsap.timeline({paused: true});
     const tlButton = gsap.timeline({paused: true});
     const containerFirstSection = document.querySelector(".main-container-top");
     const tvElement = document.querySelector(".tv_man");
     const skipVideo = document.querySelector(".skip");
     const containerCurious = document.querySelector(".container-curious");
+    const globalLetter = document.querySelectorAll('.mot-croise > div > div >div');
+
 
     const firstTransitionBlocs = document.querySelector(
       ".container-transition-top"
@@ -120,6 +122,40 @@ export class prepareAnimationHandler {
     const height = clientReact.height;
 
     containerTransition.innerHTML = transitionElement;
+    const titles = document.querySelectorAll(".title-101 h2");
+    const split = new SplitText(titles, { type: "chars" });
+    const highlightedLetters = document.querySelectorAll('.highlight');
+
+    // Vérifier si les lettres sont bien sélectionnées
+    console.log("Lettres highlight trouvées :", highlightedLetters);
+
+    const letters = document.querySelectorAll('.split-char');
+    const rows = 10; 
+    const cols = 10; 
+    let matrix = [];
+    let index = 0;  
+
+    for (let i = 0; i < rows; i++) {
+      matrix[i] = [];
+      for (let j = 0; j < cols; j++) {
+          if (letters[index]) {
+              matrix[i][j] = letters[index];
+              index++;
+          }
+      }
+    }
+
+    let diagonalOrder = [];
+    for (let line = 0; line < rows + cols - 1; line++) {
+      for (let i = 0; i <= line; i++) {
+          let j = line - i;
+          if (i < rows && j < cols && matrix[i][j]) {
+              diagonalOrder.push(matrix[i][j]);
+          }
+      }
+    }
+
+
     const svgElement = containerTransition.querySelector("#transitionElement");
     const pathElement = svgElement.querySelectorAll("path");
 
@@ -495,82 +531,105 @@ export class prepareAnimationHandler {
         ease: "power2.out",
         duration: 3,
       })
-      .set("header > div:first-child", {
-        mixBlendMode: "difference",
-      })
-      .fromTo(
-        ".sectionSplitPartners",
+
+      .to(
+        ".container-services",
         {
           position: "fixed",
-          zIndex: 300,
+          zIndex: 200,
           opacity: 1,
           width: "100vw",
           height: "100vh",
           top: 0,
-          left: "100%",
-        },
-        {
           left: 0,
-          duration: 20,
-          delay: 4,
-        },
-        "+=20"
-      )
-      .from(splitText.chars, {
-        opacity: 0,
-        color: "black",
-        x: -50,
-        y: 100,
-        stagger: 1,
-        ease: "power2.out",
-        duration: 3,
-      })
-      .to(splitText.chars, {
-        opacity: 0,
-        color: "black",
-        x: -50,
-        y: 100,
-        stagger: 1,
-        ease: "power2.out",
-        duration: 3,
-      })
-      .from(
-        ".middle-line",
-        {
-          width: 0,
-          duration: 15,
-          ease: "power2.out",
-        },
-        "-=15"
-      )
-      .to(
-        ".middle-line",
-        {
-          height: "100vh",
-          duration: 10,
-        },
-        "sync-1"
-      )
-      .to("header > div:first-child", {
-        mixBlendMode: "normal",
-      })
-      .addLabel("containerFooter")
-      .to(
-        "footer",
-        {
-          position: "fixed",
-          bottom: "-" + document.querySelector("footer").offsetHeight + "px",
-          width: "100%",
-          zIndex: 500,
-          left: 0,
-        },
-        "containerFooter"
-      )
-      .to("footer", {
-        bottom: 0,
-        duration: 5,
-      });
+          duration: 1,
+          delay: 10,
+          onEnter: () => {
+            letterSource.getLetters("1,0,1").then((letters) => {
+              const container = document.querySelector(".text-101");
+              const svgHTML = letters
+                .map((svg) =>
+                  svg !== "*" ? "<span>" + svg + "</span>" : '<b class="space"></b>'
+                )
+                .join("");
+              container.innerHTML +=
+                '<div class="lm-typo index z-9">' + svgHTML + "</div>";
+              const tlLetterSourceAnime = prepareAnimationHandler.animeLetterSource(
+                container,
+                400,
+                0.5,
+                currentColor,
+                1.5
+              );
+              tlLetterSourceAnime.play();
+            });
 
+            letterSource.getLetters("P,R,E,S,T,A,S").then((letters) => {
+              const container = document.querySelector(".text-presta");
+              const svgHTML = letters
+                .map((svg) =>
+                  svg !== "*" ? "<span>" + svg + "</span>" : '<b class="space"></b>'
+                )
+                .join("");
+              container.innerHTML +=
+                '<div class="lm-typo index z-9">' + svgHTML + "</div>";
+              const tlLetterSourceAnime = prepareAnimationHandler.animeLetterSource(
+                container,
+                110,
+                0.5,
+                currentColor,
+                1.5
+              );
+              tlLetterSourceAnime.play();
+            })
+          }
+        }).from(split.chars, {
+          opacity: 0,
+          y: 40,
+          x: -20,
+          stagger: 0.5,
+          ease: "power2.out",
+          duration: 10,
+          delay: 3,
+        }, "sync-service")
+        .from(diagonalOrder, {
+          y: 40,
+          x: -20,
+          stagger: 0.1,
+          opacity: 0,
+          ease: "power2.out",
+          duration: 0.8,
+          onComplete: () => {
+            const highlightedLetters = document.querySelectorAll('.highlight p');
+            
+            console.log("Lettres trouvées :", highlightedLetters);
+        
+            gsap.to(highlightedLetters, {
+              color: "#C62369",          
+              fontFamily: "'Made SOULMAZE', sans-serif", 
+              duration: 1,              
+              ease: "power2.inOut",     
+              stagger: 0.1,             
+            });
+          }
+        });
+      // .addLabel("containerFooter")
+      // .to(
+      //   "footer",
+      //   {
+      //     position: "fixed",
+      //     bottom: "-" + document.querySelector("footer").offsetHeight + "px",
+      //     width: "100%",
+      //     zIndex: 500,
+      //     left: 0,
+      //   },
+      //   "containerFooter"
+      // )
+      // .to("footer", {
+      //   bottom: 0,
+      //   duration: 5,
+      // });
+    
     return tl;
   }
 
@@ -1056,6 +1115,8 @@ export class prepareAnimationHandler {
         break;
       case 0.1:
         stagger = 0.1;
+      case 0.5:
+        stagger = 0.5;
         break;
       case 0.7:
         stagger = 0.7;
@@ -1826,4 +1887,5 @@ export class prepareAnimationHandler {
     }
     return tl;
   }
+
 }
